@@ -3,11 +3,18 @@ import { createGlobalStyle } from 'styled-components';
 import App from 'next/app';
 
 const GlobalStyle = createGlobalStyle`
+   /* html{
+    scroll-behavior: smooth;
+   } */
     body{
         margin:0;
+        width:100%;
+        height:100%;
     };
     a {
-        text-decoration:none;       
+        text-decoration:none; 
+        outline:none;
+              
     };
     ul{
         list-style:none;

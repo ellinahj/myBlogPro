@@ -4,4 +4,4 @@ import styled from 'styled-components';
 export default function MyRecent() {
   return <MainArea>myRecent</MainArea>;
 }
-const MainArea = styled.div``;
+const MainArea = styled.section``;

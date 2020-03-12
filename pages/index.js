@@ -1,8 +1,9 @@
 import React from 'react';
 import Head from 'next/head';
 import Layout from '../src/components/common/Layout';
-import MainImage from '../src/components/main/MainImage';
+import MainBg from '../src/components/main/MainBg';
 import MyRecent from '../src/components/main/MyRecent';
+
 export default function Index() {
   return (
     <div>
@@ -11,7 +12,7 @@ export default function Index() {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <Layout>
-        <MainImage />
+        <MainBg />
         <MyRecent />
       </Layout>
     </div>
