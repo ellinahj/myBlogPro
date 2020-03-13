@@ -1,10 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
+import { increment } from '../../actions/base';
 
-export default function MyInfo() {
-  return <MyInfoWrap>MyInfo</MyInfoWrap>;
+function MyInfo() {
+  const dispatch = useDispatch();
+  return (
+    <MyInfoWrap>
+      MyInfo
+      <button type="button" onClick={() => dispatch(increment())}>
+        +
+      </button>
+    </MyInfoWrap>
+  );
 }
-
+export default MyInfo;
 const MyInfoWrap = styled.div`
   width: 100%;
   height: 210px;

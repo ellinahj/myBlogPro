@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
+import { useSelector } from 'react-redux';
 
-export default function MyList() {
+function MyList() {
+  const value = useSelector(state => state.counter.number);
   const [isSticky, setSticky] = useState(false);
-
+  console.log(value);
   const handleScroll = () => {
     if (window.pageYOffset >= 150) {
       setSticky(true);
@@ -21,11 +23,12 @@ export default function MyList() {
   return (
     <MyListWrap>
       <MenuWrap isSticky={isSticky}>Menu</MenuWrap>
-      <List>내용</List>
+      <List>내용{value}</List>
     </MyListWrap>
   );
 }
 
+export default MyList;
 const MyListWrap = styled.div`
   width: 100%;
   height: 100%;

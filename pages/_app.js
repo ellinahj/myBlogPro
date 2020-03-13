@@ -1,6 +1,8 @@
 import React from 'react';
 import { createGlobalStyle } from 'styled-components';
 import App from 'next/app';
+import { Provider } from 'react-redux';
+import store from '../src/store';
 
 const GlobalStyle = createGlobalStyle`
    /* html{
@@ -20,6 +22,7 @@ const GlobalStyle = createGlobalStyle`
         list-style:none;
     };
 `;
+
 export default class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
     let pageProps = {};
@@ -35,7 +38,9 @@ export default class MyApp extends App {
     const { Component, pageProps } = this.props;
     return (
       <>
-        <Component {...pageProps} />
+        <Provider store={store}>
+          <Component {...pageProps} />
+        </Provider>
         <GlobalStyle />
       </>
     );
