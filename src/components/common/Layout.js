@@ -25,7 +25,7 @@ export default function Layout({ children }) {
   return (
     <LayoutWrap>
       <Header />
-      {children}
+      <Container>{children}</Container>
       <BottomMenu isScrollDown={isScrollDown} />
     </LayoutWrap>
   );
@@ -36,8 +36,13 @@ const LayoutWrap = styled.div`
   max-width: 767px;
   height: 100%;
   margin: 0 auto;
-  position: relative;
   background-color: #fff;
-  border-left: 1px solid #ddd;
-  border-right: 1px solid #ddd;
+  border-left: 1px solid #dedede;
+  border-right: 1px solid #dedede;
+  box-sizing: border-box;
+`;
+const Container = styled.div`
+  width: 100%;
+  height: 100%;
+  margin-top: 60px;
 `;

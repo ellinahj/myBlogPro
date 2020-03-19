@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 import { useSelector } from 'react-redux';
 
 function MyList() {
-  const value = useSelector(state => state.counter.number);
+  const value = useSelector(state => state.common.number);
   const [isSticky, setSticky] = useState(false);
   console.log(value);
   const handleScroll = () => {
@@ -22,21 +22,25 @@ function MyList() {
   }, []);
   return (
     <MyListWrap>
-      <MenuWrap isSticky={isSticky}>Menu</MenuWrap>
-      <List>내용{value}</List>
+      <MenuWrap isSticky={isSticky}>
+        <Menu>메뉴1</Menu>
+        <Menu>메뉴2</Menu>
+        <Menu>메뉴3</Menu>
+      </MenuWrap>
+      <List>내용</List>
     </MyListWrap>
   );
 }
 
 export default MyList;
-const MyListWrap = styled.div`
+const MyListWrap = styled.section`
   width: 100%;
   height: 100%;
   position: relative;
 `;
 const MenuWrap = styled.div`
   width: 100%;
-  max-width: 767px;
+  max-width: 765px;
   height: 60px;
   background-color: #fff;
   position: relative;
@@ -44,6 +48,7 @@ const MenuWrap = styled.div`
   border-bottom: 1px solid #ddd;
   display: flex;
   align-items: center;
+  justify-content: space-around;
   ${props =>
     props.isSticky &&
     css`
@@ -52,8 +57,13 @@ const MenuWrap = styled.div`
       z-index: 100;
     `}
 `;
+const Menu = styled.div`
+  :hover {
+    cursor: pointer;
+    opacity: 0.7;
+  }
+`;
 const List = styled.div`
   width: 100%;
-  height: 1000px;
-  position: relative;
+  height: 100%;
 `;

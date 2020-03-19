@@ -1,17 +1,23 @@
-import { INCREMENT } from '../../actions/base/actionTypes';
+import { INCREMENT, SET_THEME_COLOR } from '../../actions/base/actionTypes';
 
 export const initialState = {
-  number: 0
+  number: 0,
+  enteredColor: '#ff838b'
 };
 
-const counter = (state = initialState, action) => {
+const commonReducer = (state = initialState, action) => {
   if (action.type === INCREMENT) {
     return {
-      //   ...state,
+      ...state,
       number: state.number + 1
+    };
+  } if (action.type === SET_THEME_COLOR) {
+    return {
+      ...state,
+      enteredColor: action.payload
     };
   }
   return state;
 };
 
-export default counter;
+export default commonReducer;

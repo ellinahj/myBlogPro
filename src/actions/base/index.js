@@ -1,4 +1,4 @@
-import { INCREMENT } from './actionTypes';
+import { INCREMENT, SET_THEME_COLOR } from './actionTypes';
 
 const increment = payload => {
   return {
@@ -6,4 +6,10 @@ const increment = payload => {
     payload
   };
 };
-export { increment };
+const setThemeColor = payload => {
+  return {
+    type: SET_THEME_COLOR,
+    payload
+  };
+};
+export { increment, setThemeColor };

@@ -1,17 +1,17 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { createGlobalStyle } from 'styled-components';
-import App from 'next/app';
 import { Provider } from 'react-redux';
 import store from '../src/store';
+import { setThemeColor } from '../src/actions/base';
 
 const GlobalStyle = createGlobalStyle`
-   /* html{
-    scroll-behavior: smooth;
-   } */
-    body{
+    html,#__next,body{
         margin:0;
+        padding:0;
         width:100%;
         height:100%;
+        font-family: 'Noto Sans KR', sans-serif;
+        /* font-family: 'Nanum Gothic Coding', monospace; */
     };
     a {
         text-decoration:none; 
@@ -20,29 +20,31 @@ const GlobalStyle = createGlobalStyle`
     };
     ul{
         list-style:none;
-    };
+    }; 
 `;
 
-export default class MyApp extends App {
-  static async getInitialProps({ Component, ctx }) {
-    let pageProps = {};
+export default function MyApp({ Component, pageProps }) {
+  const [currentColor, setCurrentColor] = useState('#000');
+  useEffect(() => {
+    const getMyTheme = localStorage.getItem('myThemeColor') || '#000';
+    store.dispatch(setThemeColor(getMyTheme));
+  }, []);
 
-    if (Component.getInitialProps) {
-      pageProps = await Component.getInitialProps(ctx);
+  useEffect(() => {
+    function handleSubscribe() {
+      const newColor = store.getState().common.enteredColor;
+      if (newColor !== currentColor) {
+        setCurrentColor(newColor);
+      }
     }
-    pageProps = { query: ctx.query };
-    return { pageProps };
-  }
+    const subscribeStore = store.subscribe(handleSubscribe);
+    return () => subscribeStore();
+  }, [currentColor]);
 
-  render() {
-    const { Component, pageProps } = this.props;
-    return (
-      <>
-        <Provider store={store}>
-          <Component {...pageProps} />
-        </Provider>
-        <GlobalStyle />
-      </>
-    );
-  }
+  return (
+    <Provider store={store}>
+      <GlobalStyle userTheme={currentColor} />
+      <Component {...pageProps} />
+    </Provider>
+  );
 }
