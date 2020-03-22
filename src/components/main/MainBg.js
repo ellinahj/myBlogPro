@@ -26,7 +26,7 @@ export default function MainBg(props) {
 const MainbgWrap = styled.section``;
 const BasicBg = styled.div`
   width: 100%;
-  height: 400px;
+  height: 300px;
   padding: 60px 30px 0;
   box-sizing: border-box;
   /* background-color: #fd6067; */
