@@ -2,12 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import defaultImg from '../../../static/images/default_profile.png';
-
+import {colorLuminance} from '../../js/common'
 function MyInfo() {
   const userColor = useSelector(state => state.common.enteredColor);
-
+  const luminantColor = colorLuminance(userColor,0.7);
   return (
-    <MyInfoWrap userColor={userColor}>
+    <MyInfoWrap userColor={userColor} luminantColor={luminantColor}>
       <Profile>
         <Img src={defaultImg} />
         <NickName>리나</NickName>
@@ -22,8 +22,7 @@ const MyInfoWrap = styled.section`
   height: 200px;
   padding: 60px 30px 0;
   box-sizing: border-box;
-  background-image: linear-gradient(90deg, ${props => props.userColor}, #e68ca7);
-  background-repeat: no-repeat;
+  background-image: linear-gradient(90deg, ${props => props.userColor}, ${props=>props.luminantColor});
 `;
 const Profile = styled.div`
   display: flex;

@@ -1,14 +1,16 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import { useSelector } from 'react-redux';
+import {colorLuminance} from '../../../src/js/common'
 
 export default function MainBg(props) {
   const userTheme = useSelector(state => state.common.enteredColor);
+  const luminantColor = colorLuminance(userTheme,0.7);
 
   return (
     <MainbgWrap>
       {!props.isLogin ? (
-        <BasicBg userTheme={userTheme}>
+        <BasicBg userTheme={userTheme} luminantColor={luminantColor}>
           <BasicTitle>
             나의 일상을 기록하고
             <br />
@@ -33,7 +35,7 @@ const BasicBg = styled.div`
   ${props =>
     props.userTheme &&
     css`
-      background-image: linear-gradient(90deg, ${props.userTheme}, #e68ca7);
+      background-image: linear-gradient(90deg, ${props.userTheme}, ${props.luminantColor});
     `} /* background-repeat: no-repeat; */
 `;
 const BasicTitle = styled.div`

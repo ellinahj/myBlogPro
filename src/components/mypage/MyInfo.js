@@ -7,9 +7,11 @@ import { setThemeColor } from '../../actions/base';
 import defaultImg from '../../../static/images/default_profile.png';
 import edit from '../../../static/images/edit.svg';
 
+
 function MyInfo() {
   const dispatch = useDispatch();
   const [openPicker, setOpenPicker] = useState(false);
+ 
   const handlePickComplete = color => {
     dispatch(setThemeColor(color.hex));
     localStorage.setItem('myThemeColor', color.hex);

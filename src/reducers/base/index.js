@@ -11,7 +11,7 @@ const commonReducer = (state = initialState, action) => {
       ...state,
       number: state.number + 1
     };
-  } if (action.type === SET_THEME_COLOR) {
+  } else if (action.type === SET_THEME_COLOR) {
     return {
       ...state,
       enteredColor: action.payload
