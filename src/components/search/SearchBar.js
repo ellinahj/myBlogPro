@@ -1,23 +1,39 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import search from '../../../static/images/search.svg';
+import Img_search from '../../../static/images/search.svg';
 
 export default function SearchBar() {
   const [searchValue, setSearchValue] = useState('');
+  const [storageValue, setStorageValue] = useState('');
   useEffect(() => {
     console.log(searchValue, '검색어');
   }, [searchValue]);
+  const search = () => {
+    const searchArr = searchValue;
+
+    const getSearchHistory = JSON.parse(localStorage.getItem('searchHistory')) || [];
+    console.log(getSearchHistory, 'gh');
+    const combineSearchHistory = [...getSearchHistory, searchArr];
+
+    localStorage.setItem('searchHistory', JSON.stringify(combineSearchHistory));
+  };
+  const showSearchHistory = () => {
+    const getSearchHistory = localStorage.getItem('searchHistory');
+    const combineSearchHistory = JSON.parse(getSearchHistory);
+    setStorageValue(combineSearchHistory);
+  };
 
   return (
     <SearchWrap>
-      <Img src={search} width={28} />
+      <Img src={Img_search} width={28} onClick={search} />
       <Input
         type="text"
-        ref={input => input && input.focus()}
+        onClick={showSearchHistory}
         onChange={e => setSearchValue(e.target.value)}
         placeholder="검색어를 입력하세요"
         value={searchValue}
       />
+      {storageValue}
     </SearchWrap>
   );
 }

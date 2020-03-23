@@ -1,11 +1,11 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import { useSelector } from 'react-redux';
-import {colorLuminance} from '../../../src/js/common'
+import { colorLuminance } from '../../../src/js/common';
 
 export default function MainBg(props) {
   const userTheme = useSelector(state => state.common.enteredColor);
-  const luminantColor = colorLuminance(userTheme,0.7);
+  const luminantColor = colorLuminance(userTheme, 0.7);
 
   return (
     <MainbgWrap>
@@ -42,7 +42,7 @@ const BasicTitle = styled.div`
   box-sizing: border-box;
   padding: 5vh 0 0 5vh;
   color: #fff;
-  font-size: 24px;
+  font-size: ${props => props.theme.largeFont};
   line-height: 45px;
 `;
 

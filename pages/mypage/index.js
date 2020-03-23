@@ -1,11 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Layout from '../../src/components/common/Layout';
 import MyInfo from '../../src/components/mypage/MyInfo';
+import MoveLogin from '../../src/components/common/MoveLogin';
 
 export default function Mypage() {
-  return (
-    <Layout>
-      <MyInfo />
-    </Layout>
-  );
+  const [isLogin, setIsLogin] = useState(false);
+  return <Layout>{isLogin ? <MyInfo /> : <MoveLogin />}</Layout>;
 }

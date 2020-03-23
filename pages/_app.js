@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle, ThemeProvider } from 'styled-components';
 import { Provider } from 'react-redux';
 import store from '../src/store';
 import { setThemeColor } from '../src/actions/base';
+import * as theme from '../src/js/theme';
 
 const GlobalStyle = createGlobalStyle`
     html,#__next,body{
@@ -44,7 +45,9 @@ export default function MyApp({ Component, pageProps }) {
   return (
     <Provider store={store}>
       <GlobalStyle userTheme={currentColor} />
-      <Component {...pageProps} />
+      <ThemeProvider theme={theme}>
+        <Component {...pageProps} />
+      </ThemeProvider>
     </Provider>
   );
 }
