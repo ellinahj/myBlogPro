@@ -29,7 +29,7 @@ const MainbgWrap = styled.section``;
 const BasicBg = styled.div`
   width: 100%;
   height: 300px;
-  padding: 60px 30px 0;
+  padding: 30px 30px 0;
   box-sizing: border-box;
   /* background-color: #fd6067; */
   ${props =>
@@ -40,7 +40,7 @@ const BasicBg = styled.div`
 `;
 const BasicTitle = styled.div`
   box-sizing: border-box;
-  padding: 5vh 0 0 5vh;
+  padding: 30px 0 0 30px;
   color: #fff;
   font-size: ${props => props.theme.largeFont};
   line-height: 45px;

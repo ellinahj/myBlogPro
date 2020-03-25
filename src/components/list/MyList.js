@@ -111,20 +111,20 @@ const MainArea = styled.section`
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-
+  /* 
   .slider-slide {
-    width: 100%;
+    height: 0 !important;
+    padding-top: 50%;
+    overflow: hidden;
   }
-  .slide-visible {
-    width: 100%;
-  }
-  .slider-slide > img {
-    width: 210px;
-    height: 300px;
-  }
-  .slider-control-bottomcenter {
+  .slider-slide img {
+    position: absolute;
+    top: 0;
+  } */
+
+  /* .slider-control-bottomcenter {
     bottom: -50px !important;
-  }
+  } */
 `;
 const Title = styled.div`
   font-weight: bold;
