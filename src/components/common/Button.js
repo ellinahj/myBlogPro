@@ -4,7 +4,7 @@ export default function Button(props) {
   return <ButtonContainer type={props.type}>{props.children}</ButtonContainer>;
 }
 const ButtonContainer = styled.button`
-  font-size: ${props => props.theme.normalFont};
+  font-size: ${props => props.theme.mFont};
 `;
 Button.propTypes = {
   type: PropTypes.string.isRequired

@@ -5,14 +5,14 @@ import ImageSlider from '../common/ImageSlider';
 export default function MyRecent() {
   return (
     <Container>
-      <Title>My recent story</Title>
+      <Title>내 최근 활동</Title>
       <ImageSlider />
     </Container>
   );
 }
 const Container = styled.section`
   width: 100%;
-  padding: 30px;
+  padding: 35px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -23,7 +23,7 @@ const Container = styled.section`
   .slide-visible {
     width: 100%;
   }
-  .slider-slide > img {
+  ㅈ .slider-slide > img {
     width: 210px;
     height: 300px;
   }
@@ -35,5 +35,5 @@ const Title = styled.div`
   font-weight: bold;
   font-size: 20px;
   color: #333;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 `;

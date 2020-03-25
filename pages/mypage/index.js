@@ -4,6 +4,6 @@ import MyInfo from '../../src/components/mypage/MyInfo';
 import MoveLogin from '../../src/components/common/MoveLogin';
 
 export default function Mypage() {
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
   return <Layout>{isLogin ? <MyInfo /> : <MoveLogin />}</Layout>;
 }

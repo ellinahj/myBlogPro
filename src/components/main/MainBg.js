@@ -42,7 +42,7 @@ const BasicTitle = styled.div`
   box-sizing: border-box;
   padding: 30px 0 0 30px;
   color: #fff;
-  font-size: ${props => props.theme.largeFont};
+  font-size: ${props => props.theme.xlFont};
   line-height: 45px;
 `;
 

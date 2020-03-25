@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { useSelector } from 'react-redux';
-import ImageSlider from '../common/ImageSlider';
+import Component_ImageSlider from '../common/ImageSlider';
+import Button from '../common/Button';
+import add from '../../../static/images/add.svg';
+import Router from 'next/router';
+
 function MyList() {
   const userColor = useSelector(state => state.common.enteredColor);
   const [menuIndex, setMenuIndex] = useState(0);
@@ -41,12 +45,16 @@ function MyList() {
           <MenuBorder userColor={userColor} active={menuIndex === 3} />
         </Menu>
       </MenuWrap>
-      <List>
-        <MainArea>
-          <Title>{menuIndex}번째</Title>
-          <ImageSlider />
-        </MainArea>
-      </List>
+      {/* List*/}
+      <ListArea>
+        <Content>
+          <AddArea onClick={() => Router.push('/list/add')}>
+            <Btn_Write src={add} />
+            <Title>추가</Title>
+          </AddArea>
+          <Component_ImageSlider />
+        </Content>
+      </ListArea>
     </MyListWrap>
   );
 }
@@ -99,36 +107,29 @@ const MenuBorder = styled.div`
       opacity: 0.3;
     `}
 `;
-const List = styled.div`
+const ListArea = styled.div`
   width: 100%;
   height: 100%;
 `;
-
-//
-const MainArea = styled.section`
+const Content = styled.section`
   width: 100%;
+  height: 100%;
   padding: 30px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  /* 
-  .slider-slide {
-    height: 0 !important;
-    padding-top: 50%;
-    overflow: hidden;
-  }
-  .slider-slide img {
-    position: absolute;
-    top: 0;
-  } */
-
-  /* .slider-control-bottomcenter {
-    bottom: -50px !important;
-  } */
+`;
+const AddArea = styled.div`
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  margin-bottom: 25px;
+  margin-top: 7px;
+  cursor: pointer;
 `;
 const Title = styled.div`
-  font-weight: bold;
-  font-size: 20px;
-  color: #333;
-  margin-bottom: 20px;
+  font-size: 17px;
+  color: #888;
+  margin-left: 5px;
 `;
+const Btn_Write = styled.img``;

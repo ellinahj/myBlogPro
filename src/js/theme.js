@@ -1,5 +1,6 @@
-const smallFont = '15px';
-const nomalFont = '18px';
-const largeFont = '23px';
+const sFont = '12px';
+const mFont = '15px';
+const lFont = '20px';
+const xlFont = '23px';
 
-export { smallFont, nomalFont, largeFont };
+export { sFont, mFont, lFont, xlFont };
