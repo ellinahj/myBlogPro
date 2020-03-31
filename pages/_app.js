@@ -4,6 +4,9 @@ import { Provider } from 'react-redux';
 import store from '../src/store';
 import { setThemeColor } from '../src/actions/base';
 import * as theme from '../src/js/theme';
+import DatePicker from 'react-datepicker';
+
+import 'react-datepicker/dist/react-datepicker.css';
 
 const GlobalStyle = createGlobalStyle`
     html,#__next,body{
