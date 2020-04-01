@@ -12,6 +12,7 @@ export default function MyRecent() {
 }
 const Container = styled.section`
   width: 100%;
+  height: 100%;
   padding: 35px;
   box-sizing: border-box;
   display: flex;

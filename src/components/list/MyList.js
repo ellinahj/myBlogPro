@@ -5,13 +5,16 @@ import Component_ImageSlider from '../common/ImageSlider';
 import Button from '../common/Button';
 import add from '../../../static/images/add.svg';
 import Router from 'next/router';
+import useRequest from '../../../src/hooks/useRequest';
+import spinner from '../../../static/images/spinner.svg';
+import slide1 from '../../../static/images/slide1.jpg';
+import CardImg from '../common/CardImg';
 
 function MyList() {
   const userColor = useSelector(state => state.common.enteredColor);
   const [menuIndex, setMenuIndex] = useState(0);
-  console.log(userColor);
+  // console.log(userColor);
   const [isSticky, setSticky] = useState(false);
-  // console.log(value);
   const handleScroll = () => {
     if (window.pageYOffset >= 150) {
       setSticky(true);
@@ -29,6 +32,12 @@ function MyList() {
   const handleClick = index => {
     setMenuIndex(index);
   };
+  const [loading, response, error] = useRequest('https://jsonplaceholder.typicode.com/posts');
+  console.log(loading, response, error);
+  if (!loading && !response) {
+    return null;
+  }
+  console.log(isSticky, 'stidy');
   return (
     <MyListWrap luminantColor>
       <MenuWrap isSticky={isSticky}>
@@ -50,25 +59,56 @@ function MyList() {
         <Content>
           <AddArea onClick={() => Router.push('/list/add')}>
             <Btn_Write src={add} />
-            <Title>추가</Title>
+            <AddBtnname>추가</AddBtnname>
           </AddArea>
-          <Component_ImageSlider />
+          {/* <Component_ImageSlider /> */}
+          {/* {response && <div>response.data[0].title</div>} */}
+          {/* <div>{response && response.data[0].title}</div> */}
+          {/* <Card res={response} src={slide1} alt="이미지1" /> */}
+          {response &&
+            response.data.map(item => {
+              return (
+                // <ImageWrap>
+                //   {/* <Image src={props.src} alt={props.alt} /> */}
+                //   <ImageCover />
+                //   <OnTextWrap>
+                //     <Date>20.03.25</Date>
+                //     <Title>{item.title}</Title>
+                //     <CardContent>{item.body}</CardContent>
+                //   </OnTextWrap>
+                // </ImageWrap>
+                <CardWrap>
+                  <div>{item.title}</div>
+                  <div>{item.body}</div>
+                </CardWrap>
+              );
+            })}
         </Content>
       </ListArea>
+      {loading && <LoadingState src={spinner} />}
+      {error && <div>에러발생!</div>}
     </MyListWrap>
   );
 }
 
 export default MyList;
+const CardWrap = styled.div`
+  width: 500px;
+  min-height: 700px;
+  margin: 0 auto 30px;
+  border: 1px solid #ddd;
+`;
 const MyListWrap = styled.section`
   width: 100%;
   height: 100%;
   position: relative;
+  overflow-y: scroll;
 `;
 const MenuWrap = styled.div`
   width: 100%;
   max-width: 765px;
   height: 60px;
+  overflow-x:scroll;
   background-color: #fff;
   position: relative;
   border-top: 1px solid #ddd;
@@ -127,9 +167,68 @@ const AddArea = styled.div`
   margin-top: 7px;
   cursor: pointer;
 `;
-const Title = styled.div`
+const AddBtnname = styled.div`
   font-size: 17px;
   color: #888;
   margin-left: 5px;
 `;
 const Btn_Write = styled.img``;
+const LoadingState = styled.img`
+  position: absolute;
+  z-index: 101;
+  width: 64px;
+  height: 64px;
+  top: 50%;
+  left: 50%;
+`;
+const ImageWrap = styled.div`
+  /* display: inline-block;
+  position: relative; */
+  width: 100px;
+  height: 200px;
+`;
+const Image = styled.img`
+  width: 100%;
+  height: 100%;
+`;
+const ImageCover = styled.div`
+  width: 100%;
+  height: 100%;
+  opacity: 0.3;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-image: linear-gradient(#fff, #000);
+`;
+const OnTextWrap = styled.div`
+  color: #000;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 13px;
+  display: flex;
+  flex-direction: column;
+`;
+const Date = styled.div``;
+const Title = styled.div`
+  font-size: ${props => props.theme.lFont};
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  word-wrap: break-word;
+  height: 2em;
+  line-height: 2em;
+`;
+const CardContent = styled.div`
+  font-size: ${props => props.theme.mFont};
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  word-wrap: break-word;
+  line-height: 1.6em;
+  height: 3.2em;
+`;

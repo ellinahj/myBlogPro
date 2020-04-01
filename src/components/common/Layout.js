@@ -45,8 +45,11 @@ const LayoutWrap = styled.div`
   box-sizing: border-box;
   overflow: hidden;
 `;
+
 const Container = styled.div`
   width: 100%;
   height: 100%;
   margin-top: 60px;
+  padding-bottom: 30px;
+  box-sizing: border-box;
 `;

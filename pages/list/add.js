@@ -1,25 +1,33 @@
 import { useSelector } from 'react-redux';
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import Layout from '../../src/components/common/Layout';
 import Con from '../../src/components/common/Container';
 import Button from '../../src/components/common/Button';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import ko from 'date-fns/locale/ko';
+import axios from 'axios';
 
 export default function add() {
   const [startDate, setStartDate] = useState(new Date());
   const userColor = useSelector(state => state.common.enteredColor);
-
   const handleChange = date => {
     setStartDate(date);
   };
   registerLocale('ko', ko);
-  console.log(startDate, 'start');
+  //   console.log(startDate, 'start');
+  //   useEffect(() => {
+  //     //   const keyword = '사가정역';
+  //     //   axios
+  //     //     .get('https://jsonplaceholder.typicode.com/posts')
+  //     //     .then(response => console.log(response, 'response'))
+  //     //     .then(json => console.log(json));
+
   return (
     <Layout>
       <Contaniner>
         <Row>
+          {/* <div id="map" style={{ width: '100%', height: '400px' }}></div> */}
           <Col>
             <Button type="button">저장</Button>
           </Col>
@@ -86,6 +94,8 @@ const Row = styled.div`
   }
   .react-datepicker__input-container input {
     height: 25px;
+    font-size: 15px;
+    line-height: 25px;
   }
 `;
 const Col = styled.div`

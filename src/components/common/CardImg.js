@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export default function CardImg(props) {
   return (
     <ImageWrap>
-      <Image src={props.src} alt={props.alt}></Image>
+      <Image src={props.src} alt={props.alt} />
       <ImageCover />
       <OnTextWrap>
         <Date>20.03.25</Date>
@@ -16,6 +16,8 @@ export default function CardImg(props) {
 const ImageWrap = styled.div`
   display: inline-block;
   position: relative;
+  width: 100%;
+  height: 100%;
 `;
 const Image = styled.img`
   width: 100%;
