@@ -9,22 +9,37 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 const GlobalStyle = createGlobalStyle`
-    html,#__next,body{
+  html{
+        width:100%;
+        height:100%;
+  };
+  body{
         margin:0;
         padding:0;
         width:100%;
         height:100%;
+        position: relative;
         font-family: 'Noto Sans KR', sans-serif;
         /* font-family: 'Nanum Gothic Coding', monospace; */
-    };
-    a {
-        text-decoration:none; 
-        outline:none;
-              
-    };
-    ul{
-        list-style:none;
-    }; 
+  };
+  #__next{
+            max-width:767px;
+            min-height:100%;
+            box-sizing:border-box;
+            margin: 0 auto;
+            overflow-y:auto;
+            border-left: 1px solid #dedede;
+            border-right: 1px solid #dedede;
+          /* font-family: 'Nanum Gothic Coding', monospace; */
+  };
+  a {
+      text-decoration:none; 
+      outline:none;
+            
+  };
+  ul{
+      list-style:none;
+  }; 
 `;
 
 export default function MyApp({ Component, pageProps }) {

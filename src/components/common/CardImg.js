@@ -1,14 +1,27 @@
 import styled from 'styled-components';
 
+//임시 image
+import testImage from '../../../static/images/slide2.jpg';
 export default function CardImg(props) {
+  const array = new Array(
+    '../../../static/images/slide1.jpg',
+    '../../../static/images/slide2.jpg',
+    '../../../static/images/slide3.jpg',
+    '../../../static/images/slide4.jpg',
+    '../../../static/images/slide5.jpg'
+  );
+  function randomItem(a) {
+    return a[Math.floor(Math.random() * a.length)];
+  }
+
   return (
     <ImageWrap>
-      <Image src={props.src} alt={props.alt} />
+      <Image src={randomItem(array)} />
       <ImageCover />
       <OnTextWrap>
         <Date>20.03.25</Date>
-        <Title>코로나는 언제 끝날것인가</Title>
-        <Content>추웠던 겨울이 지나고 봄이 오나보다.올해는 코로나라는 전염병이</Content>
+        {/* <Title>{props.item.title}}</Title>
+        <Content>{props.item.body}</Content> */}
       </OnTextWrap>
     </ImageWrap>
   );
@@ -17,15 +30,17 @@ const ImageWrap = styled.div`
   display: inline-block;
   position: relative;
   width: 100%;
-  height: 100%;
+  height: auto;
 `;
 const Image = styled.img`
   width: 100%;
-  height: 100%;
+  /*이미지 가운데로 오기*/
+  /*parent에서 높이 받아서 고정*/
+  height: 300px;
 `;
 const ImageCover = styled.div`
   width: 100%;
-  height: 100%;
+  height: auto;
   opacity: 0.3;
   position: absolute;
   top: 0;

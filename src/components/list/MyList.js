@@ -10,10 +10,9 @@ import spinner from '../../../static/images/spinner.svg';
 import slide1 from '../../../static/images/slide1.jpg';
 import CardImg from '../common/CardImg';
 
-function MyList() {
+function MyList(props) {
   const userColor = useSelector(state => state.common.enteredColor);
   const [menuIndex, setMenuIndex] = useState(0);
-  // console.log(userColor);
   const [isSticky, setSticky] = useState(false);
   const handleScroll = () => {
     if (window.pageYOffset >= 150) {
@@ -32,12 +31,50 @@ function MyList() {
   const handleClick = index => {
     setMenuIndex(index);
   };
-  const [loading, response, error] = useRequest('https://jsonplaceholder.typicode.com/posts');
-  console.log(loading, response, error);
-  if (!loading && !response) {
-    return null;
-  }
-  console.log(isSticky, 'stidy');
+  // const [loading, response, error] = useRequest('');
+  // console.log(loading, response, error);
+  // if (!loading && !response) {
+  //   return null;
+  // }
+
+  const [loadMore, setLoadMore] = useState(true);
+  const getData = load => {
+    if (load) {
+      console.log('getData() call');
+      fetch('')
+        .then(res => {
+          console.log('getData then1');
+          return !res.ok ? res.json().then(e => Promise.reject(e)) : res.json();
+        })
+        .then(res => {
+          console.log('getData then2');
+          props.setState([...props.state, ...res.message]);
+        });
+    }
+  };
+  useEffect(() => {
+    if (document.body.scrollHeight <= window.innerHeight && props.state.length > 0) {
+      console.log(document.body.scrollHeight, window.innerHeight, 'scrollHeight<inner?');
+      setLoadMore(true);
+    }
+  }, [props.state]);
+  useEffect(() => {
+    if (loadMore) {
+      getData(loadMore);
+      setLoadMore(false);
+    }
+  }, [getData, loadMore]);
+
+  useEffect(() => {
+    window.addEventListener('scroll', () => {
+      if (window.scrollY + window.innerHeight === document.body.scrollHeight) {
+        console.log('-->bottom');
+        setLoadMore(true);
+      }
+    });
+  }, []);
+
+  console.log(props.state, 'props.state2');
   return (
     <MyListWrap luminantColor>
       <MenuWrap isSticky={isSticky}>
@@ -61,54 +98,81 @@ function MyList() {
             <Btn_Write src={add} />
             <AddBtnname>추가</AddBtnname>
           </AddArea>
-          {/* <Component_ImageSlider /> */}
-          {/* {response && <div>response.data[0].title</div>} */}
-          {/* <div>{response && response.data[0].title}</div> */}
-          {/* <Card res={response} src={slide1} alt="이미지1" /> */}
-          {response &&
-            response.data.map(item => {
-              return (
-                // <ImageWrap>
-                //   {/* <Image src={props.src} alt={props.alt} /> */}
-                //   <ImageCover />
-                //   <OnTextWrap>
-                //     <Date>20.03.25</Date>
-                //     <Title>{item.title}</Title>
-                //     <CardContent>{item.body}</CardContent>
-                //   </OnTextWrap>
-                // </ImageWrap>
-                <CardWrap>
-                  <div>{item.title}</div>
-                  <div>{item.body}</div>
-                </CardWrap>
-              );
-            })}
+          <CardContainer>
+            {/* <Component_ImageSlider /> */}
+            {/* {response && <div>response.data[0].title</div>} */}
+            {/* <div>{response && response.data[0].title}</div> */}
+            {/* <Card res={response} src={slide1} alt="이미지1" /> */}
+
+            {/* {response &&
+              response.data.map(item => {
+                return (
+                  <CardWrap>
+                    <CardImg item={item} />
+                  </CardWrap>
+                );
+              })} */}
+            <ul id="list">
+              {props.state.map((img, i) => (
+                <li style={{ backgroundImage: `url(${img})` }} key={i} />
+              ))}
+            </ul>
+          </CardContainer>
         </Content>
       </ListArea>
-      {loading && <LoadingState src={spinner} />}
-      {error && <div>에러발생!</div>}
+      {/* {loading && <LoadingState src={spinner} />}
+      {error && <div>에러발생!</div>} */}
     </MyListWrap>
   );
 }
 
 export default MyList;
 const CardWrap = styled.div`
-  width: 500px;
-  min-height: 700px;
-  margin: 0 auto 30px;
-  border: 1px solid #ddd;
+  float: left;
+  width: calc(50% - 10px);
+  min-height: auto;
+  margin-bottom: 20px;
+  @media (min-width: 320px) and (max-width: 480px) {
+    width: 100%;
+  }
+  /* box-sizing: border-box; */
+  :nth-child(2n) {
+    margin-left: 20px;
+  }
+`;
+const CardContainer = styled.div`
+  width: 100%;
+  li {
+    display: inline-block;
+    width: 100%;
+    height: 200px;
+    background-size: cover;
+  }
+
+  #block {
+    width: 100%;
+    height: 700px;
+  }
+
+  #list {
+    width: 100%;
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    /* height: 600px;
+  overflow: scroll; */
+  }
 `;
 const MyListWrap = styled.section`
   width: 100%;
   height: 100%;
   position: relative;
-  overflow-y: scroll;
 `;
+
 const MenuWrap = styled.div`
   width: 100%;
   max-width: 765px;
   height: 60px;
-  overflow-x:scroll;
   background-color: #fff;
   position: relative;
   border-top: 1px solid #ddd;
@@ -153,18 +217,18 @@ const ListArea = styled.div`
 `;
 const Content = styled.section`
   width: 100%;
-  height: 100%;
   padding: 30px;
-  box-sizing: border-box;
+  /* box-sizing: border-box; */
+  overflow: auto;
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
 `;
 const AddArea = styled.div`
+  width: 100%;
   display: flex;
-  align-items: center;
-  margin-left: auto;
+  justify-content: flex-end;
   margin-bottom: 25px;
-  margin-top: 7px;
+  margin: 7px 0 25px;
   cursor: pointer;
 `;
 const AddBtnname = styled.div`
