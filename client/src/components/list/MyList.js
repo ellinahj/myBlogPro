@@ -5,7 +5,7 @@ import Component_ImageSlider from '../common/ImageSlider';
 import Button from '../common/Button';
 import add from '../../../static/images/add.svg';
 import Router from 'next/router';
-import useRequest from '../../../src/hooks/useRequest';
+import useRequest from '../../hooks/useRequest';
 import spinner from '../../../static/images/spinner.svg';
 import slide1 from '../../../static/images/slide1.jpg';
 import CardImg from '../common/CardImg';
@@ -31,7 +31,7 @@ function MyList(props) {
   const handleClick = index => {
     setMenuIndex(index);
   };
-  // const [loading, response, error] = useRequest('');
+  // const [loading, response, error] = useRequest('https://jsonplaceholder.typicode.com/posts');
   // console.log(loading, response, error);
   // if (!loading && !response) {
   //   return null;
@@ -40,16 +40,14 @@ function MyList(props) {
   const [loadMore, setLoadMore] = useState(true);
   const getData = load => {
     if (load) {
-      console.log('getData() call');
-      fetch('')
-        .then(res => {
-          console.log('getData then1');
-          return !res.ok ? res.json().then(e => Promise.reject(e)) : res.json();
-        })
-        .then(res => {
-          console.log('getData then2');
-          props.setState([...props.state, ...res.message]);
-        });
+      fetch('http://localhost:3001/api/hello').then(res => {
+        console.log('getData then1');
+        return !res.ok ? res.json().then(e => Promise.reject(e)) : res.json().then(body => console.log(body, 'body'));
+      });
+      // .then(res => {
+      //   console.log('getData then2');
+      //   props.setState([...props.state, ...res.message]);
+      // });
     }
   };
   useEffect(() => {
@@ -69,12 +67,12 @@ function MyList(props) {
     window.addEventListener('scroll', () => {
       if (window.scrollY + window.innerHeight === document.body.scrollHeight) {
         console.log('-->bottom');
+        console.log(window.scrollY, '*window.scrollY');
+        console.log(document.body.scrollHeight, '*document.body.scrollHeight');
         setLoadMore(true);
       }
     });
   }, []);
-
-  console.log(props.state, 'props.state2');
   return (
     <MyListWrap luminantColor>
       <MenuWrap isSticky={isSticky}>
@@ -142,6 +140,7 @@ const CardWrap = styled.div`
 `;
 const CardContainer = styled.div`
   width: 100%;
+  box-sizing: border-box;
   li {
     display: inline-block;
     width: 100%;
