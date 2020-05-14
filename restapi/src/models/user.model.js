@@ -13,4 +13,21 @@ const getAllUserModel = () => {
     });
   });
 };
-export { getAllUserModel };
+const getUserModel = user_id => {
+  return new Promise((resolve, reject) => {
+    connection.query(
+      "select * from mydiary.users WHERE user_id = ?",
+      [user_id],
+      function(err, rows) {
+        if (err) {
+          return reject(err);
+        } else {
+          const data = rows[0];
+          delete data.password;
+          return resolve(data);
+        }
+      }
+    );
+  });
+};
+export { getAllUserModel, getUserModel };

@@ -2,6 +2,8 @@ const mysql_dbc = require("../config/db_con")();
 const connection = mysql_dbc.init();
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
+import jwt from "jsonwebtoken";
+import config from "../config/config";
 
 mysql_dbc.db_open(connection);
 const findId = function(user_id) {
@@ -14,6 +16,7 @@ const findId = function(user_id) {
         if (err) {
           return reject(err);
         } else {
+          console.log(rows[0].count, "rows[0].count");
           return resolve(rows[0].count);
         }
       }
@@ -22,7 +25,6 @@ const findId = function(user_id) {
 };
 const findNickname = function(nickname) {
   return new Promise((resolve, reject) => {
-    console.log(nickname, "user nickname");
     connection.query(
       "SELECT count(*) as count FROM mydiary.users WHERE nickname = ?",
       [nickname],
@@ -30,6 +32,7 @@ const findNickname = function(nickname) {
         if (err) {
           return reject(err);
         } else {
+          console.log(rows[0].count, "rows[0].count");
           return resolve(rows[0].count);
         }
       }
@@ -38,7 +41,6 @@ const findNickname = function(nickname) {
 };
 const findDuplicatedUser = function(user_id, nickname) {
   return new Promise((resolve, reject) => {
-    console.log(user_id, nickname, "user nick");
     connection.query(
       "SELECT count(*) as count FROM mydiary.users WHERE user_id = ? or nickname=?",
       [user_id, nickname],
@@ -86,14 +88,44 @@ const login = (user_id, password) => {
                 return reject(error);
               } else {
                 if (result === true) {
-                  return resolve(2);
+                  connection.query(
+                    "SELECT * FROM mydiary.users WHERE user_id = ?",
+                    [user_id],
+                    function(err, result) {
+                      if (result) {
+                        const { id, user_id, nickname } = result[0];
+                        const token = jwt.sign(
+                          { id, userId: user_id, userName: nickname },
+                          config.jwtSecretKey,
+                          {
+                            expiresIn: "30m"
+                          }
+                        );
+
+                        const sendResult = {
+                          token,
+                          loginState: "success"
+                        };
+                        return resolve(sendResult); // 로그인성공
+                      } else {
+                        throw err;
+                      }
+                    }
+                  );
                 } else {
-                  return resolve(1);
+                  const sendResult = {
+                    loginState: "pwError"
+                  };
+                  return resolve(sendResult); // 비번오류
                 }
               }
             });
           } else {
-            return resolve(0);
+            //아이디 오류
+            const sendResult = {
+              loginState: "idError"
+            };
+            return resolve(sendResult);
           }
         }
       }

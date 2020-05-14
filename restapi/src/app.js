@@ -5,7 +5,8 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
 import authRoute from "./routes/auth";
-import usersRoute from "./routes/users";
+import userRoute from "./routes/user";
+import cateRoute from "./routes/category";
 
 const app = express();
 app.use(logger("dev"));
@@ -14,8 +15,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 //route
-app.use("/users", usersRoute);
-app.use("/auth", authRoute);
+app.use("/api/user", userRoute);
+app.use("/api/auth", authRoute);
+app.use("/api/category", cateRoute);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
