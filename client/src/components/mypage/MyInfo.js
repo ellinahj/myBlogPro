@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
@@ -17,7 +17,20 @@ function MyInfo() {
     setOpenPicker(!openPicker);
   };
   const userColor = useSelector(state => state.common.enteredColor);
+  // useEffect(()=>{
 
+  // const config = {
+  //   header:{
+  //     access_token :''
+  //   }
+
+  //  }
+  //     axios
+  //       .get('http://127.0.0.1:3001/api/user/info', data,config)
+  //       .then(res => console.log(res, 'res'))
+  //       .catch(err => console.log(err, 'err'));
+
+  // },[])
   return (
     <MyInfoWrap>
       <div>

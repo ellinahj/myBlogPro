@@ -104,6 +104,7 @@ const login = (user_id, password) => {
 
                         const sendResult = {
                           token,
+                          nickname,
                           loginState: "success"
                         };
                         return resolve(sendResult); // 로그인성공

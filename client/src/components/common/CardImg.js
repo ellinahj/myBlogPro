@@ -1,22 +1,26 @@
 import styled from 'styled-components';
+import { useState, useEffect, useRef } from 'react';
 
 //임시 image
 import testImage from '../../../static/images/slide2.jpg';
 export default function CardImg(props) {
-  const array = new Array(
-    '../../../static/images/slide1.jpg',
-    '../../../static/images/slide2.jpg',
-    '../../../static/images/slide3.jpg',
-    '../../../static/images/slide4.jpg',
-    '../../../static/images/slide5.jpg'
+  const [index, setIndex] = useState(0);
+  const array = useRef(
+    new Array(
+      '../../../static/images/slide1.jpg',
+      '../../../static/images/slide2.jpg',
+      '../../../static/images/slide3.jpg',
+      '../../../static/images/slide4.jpg',
+      '../../../static/images/slide5.jpg'
+    )
   );
-  function randomItem(a) {
-    return a[Math.floor(Math.random() * a.length)];
-  }
-
+  //
+  useEffect(() => {
+    setIndex(Math.floor(Math.random() * array.current.length));
+  }, []);
   return (
     <ImageWrap>
-      <Image src={randomItem(array)} />
+      <Image src={array.current[index]} />
       <ImageCover />
       <OnTextWrap>
         <Date>20.03.25</Date>

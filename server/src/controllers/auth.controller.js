@@ -73,13 +73,13 @@ const loginController = (req, res, next) => {
             .end();
         } else if (result.loginState === "success") {
           //로그인 성공
-          const { token } = result;
+          const { token, nickname } = result;
           res
             .status(200)
             .json({
-              status: 200,
               message: "register success",
-              response: { access_token: token }
+              access_token: token,
+              nickname
             })
             .end();
         }

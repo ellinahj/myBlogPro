@@ -13,14 +13,15 @@ import { authCheck } from "../public/function";
 //   }
 // };
 const getUserInfo = (req, res, next) => {
-  const token = req.headers["access-token"];
+  const token = req.headers["access_token"];
   const result = authCheck(token);
-
+  // console.log(token, "token");
+  // console.log(result, "result");
   try {
-    if (result) {
+    if (result.userId) {
       getUserModel(result.userId)
         .then(data =>
-          res.status(200).json({ status: 200, message: "ok", data })
+          res.status(200).json({ status: 200, message: "ok", ...data })
         )
         .catch(err => console.log(err, "err"));
     } else {

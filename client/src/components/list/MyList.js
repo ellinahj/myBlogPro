@@ -139,8 +139,6 @@ const CardWrap = styled.div`
   }
 `;
 const CardContainer = styled.div`
-  width: 100%;
-  box-sizing: border-box;
   li {
     display: inline-block;
     width: 100%;
@@ -215,9 +213,8 @@ const ListArea = styled.div`
   height: 100%;
 `;
 const Content = styled.section`
-  width: 100%;
   padding: 30px;
-  /* box-sizing: border-box; */
+  box-sizing: border-box;
   overflow: auto;
   display: flex;
   flex-wrap: wrap;

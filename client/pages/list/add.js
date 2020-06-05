@@ -7,27 +7,21 @@ import Button from '../../src/components/common/Button';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import ko from 'date-fns/locale/ko';
 import axios from 'axios';
+import UploadComponent from '../../src/components/list/Upload';
 
 export default function add() {
   const [startDate, setStartDate] = useState(new Date());
   const userColor = useSelector(state => state.common.enteredColor);
+
   const handleChange = date => {
     setStartDate(date);
   };
   registerLocale('ko', ko);
-  //   console.log(startDate, 'start');
-  //   useEffect(() => {
-  //     //   const keyword = '사가정역';
-  //     //   axios
-  //     //     .get('https://jsonplaceholder.typicode.com/posts')
-  //     //     .then(response => console.log(response, 'response'))
-  //     //     .then(json => console.log(json));
 
   return (
     <Layout>
       <Contaniner>
         <Row>
-          {/* <div id="map" style={{ width: '100%', height: '400px' }}></div> */}
           <Col>
             <Button type="button">저장</Button>
           </Col>
@@ -73,7 +67,7 @@ export default function add() {
         </Row>
         <Row>
           <Subject>사진첨부</Subject>
-          <Button type="button">첨부</Button>
+          <UploadComponent />
         </Row>
       </Contaniner>
     </Layout>
@@ -82,7 +76,6 @@ export default function add() {
 const Contaniner = styled(Con)`
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
 `;
 const Row = styled.div`
   display: flex;
@@ -106,8 +99,6 @@ const Col = styled.div`
   }
 `;
 const Subject = styled.div`
-  /* width: 10%;
-  height: 100%; */
   margin-right: 20px;
   white-space: pre;
 `;
