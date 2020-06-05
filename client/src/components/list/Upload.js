@@ -89,9 +89,10 @@ export default function Upload() {
       .then(res => console.log(res, 'res'))
       .catch(err => console.log(err, 'err_upload'));
   };
+
   return (
     <Row>
-      <div>
+      <>
         <ReactCropDiv
           src={upImg}
           onImageLoaded={onLoad}
@@ -100,7 +101,7 @@ export default function Upload() {
           onComplete={makeClientCrop}
           uploadImg={upImg}
         />
-      </div>
+      </>
       <ImageRow>
         <AddBtn name="button" onClick={e => controlFileBtn(e, 0)}>
           사진1 추가
@@ -169,5 +170,6 @@ const ImageRow = styled.div`
   display: flex;
 `;
 const ReactCropDiv = styled(ReactCrop)`
-  border: ${props => (props.uploadImg ? '1px solid yellow' : 'none')};
+  border: ${props => (props.uploadImg.length > 0 ? '1px solid yellow' : 'none')};
+  margin-bottom: ${props => (props.uploadImg.length > 0 ? '30px' : '0px')};
 `;

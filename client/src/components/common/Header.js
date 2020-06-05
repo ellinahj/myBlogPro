@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import Router from 'next/router';
 import { colorLuminance } from '../../../src/js/common';
 import Link from 'next/link';
 
@@ -21,12 +22,14 @@ export default function Header() {
         .get('http://127.0.0.1:3001/api/user/info', config)
         .then(res => {
           if (res.status === 200 && res.data) {
-            console.log(res, 'res');
-
             setNickname(res.data.nickname);
+          } else {
+            console.log(err, 'err');
           }
         })
-        .catch(err => console.log(err, 'login err'));
+        .catch(err => {
+          Router.push('/login');
+        });
     }
   }, [nickName]);
   return (

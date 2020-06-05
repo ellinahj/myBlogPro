@@ -3,45 +3,36 @@ import {
   insertCategoryModel
 } from "../models/category.model";
 import { authCheck } from "../public/function";
-const getCateNumber = (req, res, next) => {
-  const token = req.headers["access-token"];
-  const result = authCheck(token);
-  try {
-    if (result) {
-      getCateNumberModel(result.id)
-        .then(data => {
-          if (data.length < 3) {
-            res
-              .status(200)
-              .json({ status: 200, message: "ok", data })
-              .end();
-          } else {
-            res
-              .status(400)
-              .json({ status: 400, message: "notOk", data })
-              .end();
-          }
-        })
-        .catch(err => console.log(err, "err"));
-    } else {
-      res
-        .status(400)
-        .json({ status: 400, message: " invalid token" })
-        .end();
-    }
-  } catch {
-    next(e);
+const getCateNumber = async (req, res, next) => {
+  const token = req.headers.access_token;
+  const result = await authCheck(token);
+
+  if (result === "empty token") {
+    res
+      .status(400)
+      .json({ status: 400, message: " invalid token" })
+      .end();
+  } else {
+    getCateNumberModel(result.id)
+      .then(data => {
+        if (data) {
+          res
+            .status(200)
+            .json({ status: 200, message: "ok", data: [...data] })
+            .end();
+        }
+      })
+      .catch(err => console.log(err, "err"));
   }
 };
-const insertCategory = (req, res, next) => {
-  const token = req.headers["access-token"];
-  const result = authCheck(token);
+const insertCategory = async (req, res, next) => {
+  const token = req.headers["access_token"];
+  const result = await authCheck(token);
   const { title } = req.body;
   try {
     if (result) {
       insertCategoryModel(result.id, title)
         .then(data => {
-          console.log(data.length, "data");
           if (data === 1) {
             res
               .status(200)

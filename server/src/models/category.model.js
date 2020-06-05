@@ -5,7 +5,7 @@ mysql_dbc.db_open(connection);
 const getCateNumberModel = id => {
   return new Promise((resolve, reject) => {
     connection.query(
-      "select id, cate_name from mydiary.category WHERE user_id = ?",
+      "select id, title from mydiary.category WHERE user_id = ?",
       [id],
       function(err, rows) {
         if (err) {

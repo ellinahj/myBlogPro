@@ -6,12 +6,8 @@ export default function Login() {
   const [id, setId] = useState('');
   const [pw, setPw] = useState('');
 
-  useEffect(() => {
-    console.log(id, 'id');
-  }, [id]);
-  useEffect(() => {
-    console.log(pw, 'id');
-  }, [pw]);
+  useEffect(() => {}, [id]);
+  useEffect(() => {}, [pw]);
 
   const login = () => {
     const data = { user_id: id, password: pw };
@@ -19,14 +15,13 @@ export default function Login() {
       .post('http://127.0.0.1:3001/api/auth/login', data)
       .then(res => {
         if (res.status === 200) {
-          console.log(res.data, 'token');
           const token = res.data.access_token;
           localStorage.setItem('mydiary_token', token);
           alert(' 로그인되었습니다.');
           Router.push('/');
         }
       })
-      .catch(err => console.log(err, 'login err'));
+      .catch(err => alert('아이디나 비밀번호를 확인해주세요.'));
   };
 
   return (

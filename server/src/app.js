@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import logger from "morgan";
 import cors from "cors";
 import bodyParser from "body-parser";
+
 import authRoute from "./routes/auth";
 import userRoute from "./routes/user";
 import cateRoute from "./routes/category";
@@ -29,7 +30,6 @@ app.use("/api/user", userRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/category", cateRoute);
 app.use("/api/board", uploadRoute);
-
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
   next(createError(404));

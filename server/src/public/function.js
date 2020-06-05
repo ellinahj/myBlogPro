@@ -2,14 +2,17 @@ import jwt from "jsonwebtoken";
 import config from "../config/config";
 const authCheck = token => {
   if (!token) {
-    return "not-exist token";
+    return "empty token";
   } else {
-    try {
-      const result = jwt.verify(token, config.jwtSecretKey);
-      return result;
-    } catch (err) {
-      console.log(err.message, "er message");
-    }
+    return new Promise(function(resolve, reject) {
+      jwt.verify(token, config.jwtSecretKey, function(err, decoded) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(decoded);
+        }
+      });
+    });
   }
 };
 

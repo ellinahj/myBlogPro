@@ -4,8 +4,9 @@ import { Provider } from 'react-redux';
 import store from '../src/store';
 import { setThemeColor } from '../src/actions/base';
 import * as theme from '../src/js/theme';
-import ReactCrop from 'react-image-crop';
+//css
 import 'react-image-crop/dist/ReactCrop.css';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const GlobalStyle = createGlobalStyle`
   html{

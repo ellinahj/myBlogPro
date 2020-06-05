@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { useSelector } from 'react-redux';
+import axios from 'axios';
 import Component_ImageSlider from '../common/ImageSlider';
 import Button from '../common/Button';
 import add from '../../../static/images/add.svg';
@@ -14,6 +15,7 @@ function MyList(props) {
   const userColor = useSelector(state => state.common.enteredColor);
   const [menuIndex, setMenuIndex] = useState(0);
   const [isSticky, setSticky] = useState(false);
+  const [category, setCategory] = useState([]);
   const handleScroll = () => {
     if (window.pageYOffset >= 150) {
       setSticky(true);
@@ -73,21 +75,42 @@ function MyList(props) {
       }
     });
   }, []);
+  useEffect(() => {
+    // 반복로직... 고민
+    const getToken = localStorage.getItem('mydiary_token');
+    if (getToken) {
+      const config = {
+        headers: {
+          access_token: getToken
+        }
+      };
+      axios
+        .get('http://127.0.0.1:3001/api/category', config)
+        .then(res => {
+          if (res.status === 200 && res.data) {
+            setCategory(res.data.data);
+          }
+        })
+        .catch(err => {
+          Router.push('/login');
+        });
+    }
+  }, []);
+
   return (
     <MyListWrap luminantColor>
       <MenuWrap isSticky={isSticky}>
-        <Menu onClick={e => handleClick(1)}>
-          메뉴1
-          <MenuBorder userColor={userColor} active={menuIndex === 1} />
-        </Menu>
-        <Menu onClick={e => handleClick(2)}>
-          메뉴2
-          <MenuBorder userColor={userColor} active={menuIndex === 2} />
-        </Menu>
-        <Menu onClick={e => handleClick(3)}>
-          메뉴3
-          <MenuBorder userColor={userColor} active={menuIndex === 3} />
-        </Menu>
+        {category.length > 0 &&
+          category.map((item, index) => {
+            return (
+              <>
+                <Menu onClick={e => handleClick(index)} key={index}>
+                  {item.title}
+                  <MenuBorder userColor={userColor} active={menuIndex === index} />
+                </Menu>
+              </>
+            );
+          })}
       </MenuWrap>
       {/* List*/}
       <ListArea>
