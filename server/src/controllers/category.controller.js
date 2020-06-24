@@ -13,16 +13,27 @@ const getCateNumber = async (req, res, next) => {
       .json({ status: 400, message: " invalid token" })
       .end();
   } else {
-    getCateNumberModel(result.id)
-      .then(data => {
-        if (data) {
-          res
-            .status(200)
-            .json({ status: 200, message: "ok", data: [...data] })
-            .end();
-        }
-      })
-      .catch(err => console.log(err, "err"));
+    console.log(result, "result!!");
+    if (result && result.id) {
+      console.log("1");
+      getCateNumberModel(result.id)
+        .then(data => {
+          if (data) {
+            res
+              .status(200)
+              .json({ status: 200, message: "ok", data: [...data] })
+              .end();
+          }
+        })
+        .catch(err => console.log(err, "err"));
+    } else {
+      console.log("2");
+      res
+        .status(400)
+        .json({ status: 400 })
+        .end();
+      // res.json({ status: 400, message: " invalid token" });
+    }
   }
 };
 const insertCategory = async (req, res, next) => {

@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import ko from 'date-fns/locale/ko';
@@ -8,7 +8,7 @@ import Router from 'next/router';
 import styled from 'styled-components';
 import Con from '../../components/common/Container';
 import Button from '../../components/common/Button';
-import UploadComponent from '../../components/list/Upload';
+import UploadComponent from '../../components/main/PhotoUpload';
 
 export default function addContainer() {
   const [startDate, setStartDate] = useState('');
@@ -16,7 +16,6 @@ export default function addContainer() {
   const [radioIndex, setRadioIndex] = useState(0);
   const userColor = useSelector(state => state.common.enteredColor);
   useEffect(() => {
-    // 반복로직... 고민
     const getToken = localStorage.getItem('mydiary_token');
     if (getToken) {
       const config = {
@@ -47,9 +46,6 @@ export default function addContainer() {
   return (
     <Contaniner>
       <Row>
-        <Col>
-          <Button type="button">저장</Button>
-        </Col>
         <Col className="end" userColor={userColor}>
           <svg
             role="img"
@@ -117,6 +113,11 @@ export default function addContainer() {
         <Subject>사진첨부</Subject>
         <UploadComponent />
       </Row>
+      <RowRight>
+        <Col>
+          <SubmitBtn>저장</SubmitBtn>
+        </Col>
+      </RowRight>
     </Contaniner>
   );
 }
@@ -183,7 +184,7 @@ const Row = styled.div`
 
   /* When the radio button is checked, add a blue background */
   .radio_container input:checked ~ .checkmark {
-    background-color: #ec0909;
+    background-color: #ff254f;
   }
 
   /* Create the indicator (the dot/circle - hidden when not checked) */
@@ -240,4 +241,14 @@ const Input = styled.input`
 const Textarea = styled.textarea`
   flex: 1;
   min-height: 200px;
+`;
+const SubmitBtn = styled.button`
+  padding: 8px 15px;
+  background: #ff254f;
+  border: 1px solid #bbb;
+  color: #fff;
+  cursor: pointer;
+`;
+const RowRight = styled(Row)`
+  justify-content: flex-end;
 `;

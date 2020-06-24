@@ -70,7 +70,7 @@ export default function() {
         console.log('previewUrl', previewUrl);
         resolve(blob);
       }, fileType);
-    });
+    }).catch(err, console.log('blob promise err ')); //*에러처리 필요
   };
   console.log(file);
   const submitImg = () => {

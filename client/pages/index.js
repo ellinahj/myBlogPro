@@ -1,21 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import Head from 'next/head';
 import Layout from '../src/components/common/Layout';
-import MainBg from '../src/components/main/MainBg';
-import MyRecent from '../src/components/main/MyRecent';
+import Login from '../src/containers/login';
+import { useSelector } from 'react-redux';
+import ListContainer from '../src/containers/main/ListContainer';
 
 export default function Index() {
+  const isLoggedIn = useSelector(state => state.common.isLoggedIn);
+  console.log('index: logged In', isLoggedIn);
+
   return (
     <div>
       <Head>
-        <title>My Diary</title>
+        <title>My Blog</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <Layout>
-        <MainBg />
-        <MyRecent />
-      </Layout>
+      <Layout>{isLoggedIn ? <ListContainer /> : <Login />}</Layout>
     </div>
   );
 }

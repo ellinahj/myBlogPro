@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
-import { useSelector } from 'react-redux';
+import Search from './Search';
+import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import Component_ImageSlider from '../common/ImageSlider';
 import Button from '../common/Button';
@@ -10,115 +11,32 @@ import useRequest from '../../hooks/useRequest';
 import spinner from '../../../static/images/spinner.svg';
 import slide1 from '../../../static/images/slide1.jpg';
 import CardImg from '../common/CardImg';
+import { setUserInfo } from '../../actions/base';
 
 function MyList(props) {
-  const userColor = useSelector(state => state.common.enteredColor);
-  const [menuIndex, setMenuIndex] = useState(0);
-  const [isSticky, setSticky] = useState(false);
-  const [category, setCategory] = useState([]);
-  const handleScroll = () => {
-    if (window.pageYOffset >= 150) {
-      setSticky(true);
-    } else {
-      setSticky(false);
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-  const handleClick = index => {
-    setMenuIndex(index);
-  };
-  // const [loading, response, error] = useRequest('https://jsonplaceholder.typicode.com/posts');
-  // console.log(loading, response, error);
-  // if (!loading && !response) {
-  //   return null;
-  // }
-
-  const [loadMore, setLoadMore] = useState(true);
-  const getData = load => {
-    if (load) {
-      fetch('http://localhost:3001/api/hello').then(res => {
-        console.log('getData then1');
-        return !res.ok ? res.json().then(e => Promise.reject(e)) : res.json().then(body => console.log(body, 'body'));
-      });
-      // .then(res => {
-      //   console.log('getData then2');
-      //   props.setState([...props.state, ...res.message]);
-      // });
-    }
-  };
-  useEffect(() => {
-    if (document.body.scrollHeight <= window.innerHeight && props.state.length > 0) {
-      console.log(document.body.scrollHeight, window.innerHeight, 'scrollHeight<inner?');
-      setLoadMore(true);
-    }
-  }, [props.state]);
-  useEffect(() => {
-    if (loadMore) {
-      getData(loadMore);
-      setLoadMore(false);
-    }
-  }, [getData, loadMore]);
-
-  useEffect(() => {
-    window.addEventListener('scroll', () => {
-      if (window.scrollY + window.innerHeight === document.body.scrollHeight) {
-        console.log('-->bottom');
-        console.log(window.scrollY, '*window.scrollY');
-        console.log(document.body.scrollHeight, '*document.body.scrollHeight');
-        setLoadMore(true);
-      }
-    });
-  }, []);
-  useEffect(() => {
-    // 반복로직... 고민
-    const getToken = localStorage.getItem('mydiary_token');
-    if (getToken) {
-      const config = {
-        headers: {
-          access_token: getToken
-        }
-      };
-      axios
-        .get('http://127.0.0.1:3001/api/category', config)
-        .then(res => {
-          if (res.status === 200 && res.data) {
-            setCategory(res.data.data);
-          }
-        })
-        .catch(err => {
-          Router.push('/login');
-        });
-    }
-  }, []);
-
+  const { luminantColor, isSticky, userColor, menuIndex, category } = props;
   return (
     <MyListWrap luminantColor>
       <MenuWrap isSticky={isSticky}>
-        {category.length > 0 &&
+        {category &&
+          category.length > 0 &&
           category.map((item, index) => {
             return (
-              <>
-                <Menu onClick={e => handleClick(index)} key={index}>
-                  {item.title}
-                  <MenuBorder userColor={userColor} active={menuIndex === index} />
-                </Menu>
-              </>
+              <Menu onClick={e => props.handleMenuClick(index)} key={index}>
+                {item.title}
+                <MenuBorder userColor={userColor} active={menuIndex === index} />
+              </Menu>
             );
           })}
       </MenuWrap>
       {/* List*/}
       <ListArea>
         <Content>
-          <AddArea onClick={() => Router.push('/list/add')}>
+          {/* <AddArea onClick={() => Router.push('/post')}>
             <Btn_Write src={add} />
             <AddBtnname>추가</AddBtnname>
-          </AddArea>
+          </AddArea> */}
+          <Search />
           <CardContainer>
             {/* <Component_ImageSlider /> */}
             {/* {response && <div>response.data[0].title</div>} */}
@@ -134,9 +52,9 @@ function MyList(props) {
                 );
               })} */}
             <ul id="list">
-              {props.state.map((img, i) => (
+              {/* {props.state.map((img, i) => (
                 <li style={{ backgroundImage: `url(${img})` }} key={i} />
-              ))}
+              ))} */}
             </ul>
           </CardContainer>
         </Content>
@@ -238,9 +156,10 @@ const ListArea = styled.div`
 const Content = styled.section`
   padding: 30px;
   box-sizing: border-box;
-  overflow: auto;
+  /* overflow: auto; */
   display: flex;
   flex-wrap: wrap;
+  flex-direction: column;
 `;
 const AddArea = styled.div`
   width: 100%;

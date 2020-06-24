@@ -56,20 +56,21 @@ const createUser = (req, res, next) => {
 };
 const loginController = (req, res, next) => {
   const { user_id, password } = req.body;
+  console.log(user_id, password, "server console");
   if (user_id && password) {
     login(user_id, password)
       .then(result => {
         if (result.loginState === "idError") {
           //아이디 틀린경우
           res
-            .status(400)
-            .json({ status: 400, message: "non-existent ID" })
+            .status(401)
+            .json({ message: "non-existent ID" })
             .end();
         } else if (result.loginState === "pwError") {
           //비번이 틀린경우
           res
-            .status(400)
-            .json({ status: 400, message: "incorrect password" })
+            .status(401)
+            .json({ message: "incorrect password" })
             .end();
         } else if (result.loginState === "success") {
           //로그인 성공

@@ -1,51 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
-import axios from 'axios';
-import Router from 'next/router';
-import { colorLuminance } from '../../../src/js/common';
+import { useSelector, useDispatch } from 'react-redux';
+import { colorLuminance } from '../../utils/common';
 import Link from 'next/link';
 
 export default function Header() {
+  const dispatch = useDispatch();
   const userColor = useSelector(state => state.common.enteredColor);
+  const getUserInfo = useSelector(state => state.common.userInfo);
+  const nickname = getUserInfo ? getUserInfo.nickname : '';
   const luminantColor = colorLuminance(userColor, 0.7);
-  const [nickName, setNickname] = useState('');
   useEffect(() => {
-    const getToken = localStorage.getItem('mydiary_token');
-    if (getToken) {
-      const config = {
-        headers: {
-          access_token: getToken
-        }
-      };
-      axios
-        .get('http://127.0.0.1:3001/api/user/info', config)
-        .then(res => {
-          if (res.status === 200 && res.data) {
-            setNickname(res.data.nickname);
-          } else {
-            console.log(err, 'err');
-          }
-        })
-        .catch(err => {
-          Router.push('/login');
-        });
-    }
-  }, [nickName]);
+    localStorage.setItem('nickname', nickname);
+  }, []);
+
   return (
     <HeadWrap userColor={userColor} luminantColor={luminantColor}>
-      <Logo>Logo</Logo>
-      <LoginContainer>
-        {nickName ? (
+      <Link href="/">
+        <Logo>MyBlog_</Logo>
+      </Link>
+      <NicknameContainer>
+        {nickname ? (
           <Link href="/mypage">
-            <StyledLink>{`${nickName}님`}</StyledLink>
+            <StyledLink>{`${nickname}님`}</StyledLink>
           </Link>
         ) : (
-          <Link href="/login">
-            <StyledLink>로그인</StyledLink>
-          </Link>
+          <StyledTitle>나의 색깔에 맞는, 나의 로그.</StyledTitle>
         )}
-      </LoginContainer>
+      </NicknameContainer>
     </HeadWrap>
   );
 }
@@ -68,10 +50,16 @@ const Logo = styled.div`
   font-weight: bold;
   font-size: 25px;
   margin-left: 20px;
+  color: #fff;
+  cursor: pointer;
 `;
-const LoginContainer = styled.div`
+const NicknameContainer = styled.div`
   margin-right: 20px;
 `;
 const StyledLink = styled.a`
   cursor: pointer;
+`;
+const StyledTitle = styled.span`
+  color: #fff;
+  font-size: 17px;
 `;

@@ -1,15 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
+import React, { useState, useEffect, useRef } from 'react';
+import styled, { css } from 'styled-components';
 import Img_search from '../../../static/images/search.svg';
 import Img_close from '../../../static/images/close.svg';
 
 export default function SearchContainer() {
   const [searchValue, setSearchValue] = useState('');
   const [storageValue, setStorageValue] = useState('');
+  const [showHistory, setShowHistory] = useState(false);
+  const inputArea = useRef(null);
+
   useEffect(() => {
     const replace = searchValue.replace(/^ /gi, '');
     setSearchValue(replace);
   }, [searchValue]);
+
   const search = () => {
     if (searchValue === '') return;
     const getSearchHistory = JSON.parse(localStorage.getItem('searchedHistory')) || [];
@@ -20,26 +24,46 @@ export default function SearchContainer() {
       const combineSearchHistory = [...getSearchHistory, searchValue];
       localStorage.setItem('searchedHistory', JSON.stringify(combineSearchHistory));
     }
+    showSearchHistory();
   };
 
   const showSearchHistory = () => {
-    const getSearchHistory = localStorage.getItem('searchedHistory') || [];
+    const getSearchHistory = localStorage.getItem('searchedHistory');
     const combineSearchHistory = JSON.parse(getSearchHistory);
     setStorageValue(combineSearchHistory);
+
+    setShowHistory(true);
+    console.log(storageValue, 'svsv');
   };
+
   const removeHistory = index => {
     const arr = JSON.parse(localStorage.getItem('searchedHistory')) || [];
     arr.splice(index, 1);
     localStorage.setItem('searchedHistory', JSON.stringify(arr));
+    console.log(arr, '1arr');
     setStorageValue(arr);
+    arr.length === 0 && setStorageValue(null);
   };
+  useEffect(() => {
+    //입력창 밖 선택 시 검색내역창 감추기
+    function handleClickOutside(e) {
+      if (inputArea.current && !inputArea.current.contains(e.target)) {
+        setShowHistory(false);
+        setSearchValue('');
+      }
+    }
 
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [inputArea]);
   return (
     <Container>
       <SearchCon>
-        <Img src={Img_search} width={28} onClick={search} />
         <Input
           type="text"
+          ref={inputArea}
           onClick={showSearchHistory}
           onKeyDown={e => {
             e.keyCode === 13 && search();
@@ -48,10 +72,11 @@ export default function SearchContainer() {
           placeholder="검색어를 입력하세요"
           value={searchValue}
         />
+        <Img src={Img_search} width={28} onClick={search} />
       </SearchCon>
-      <SearchHistoryCon>
+      <SearchHistoryCon showHistory={showHistory} ref={inputArea}>
         <ul>
-          {storageValue &&
+          {storageValue ? (
             storageValue.map((item, index) => {
               return (
                 <li key={index}>
@@ -61,7 +86,10 @@ export default function SearchContainer() {
                   </IconCloseCon>
                 </li>
               );
-            })}
+            })
+          ) : (
+            <HistoryNotexist>최근 검색어가 없습니다.</HistoryNotexist>
+          )}
         </ul>
       </SearchHistoryCon>
     </Container>
@@ -77,7 +105,6 @@ const SearchCon = styled.div`
   height: 45px;
   border-radius: 5px;
   background-color: #efefef;
-  margin-top: 20px;
   display: flex;
   align-items: center;
 `;
@@ -85,7 +112,7 @@ const Img = styled.img`
   width: ${props => props.width || '32px'};
   height: ${props => props.width || '32px'};
   cursor: pointer;
-  margin-left: 10px;
+  margin-right: 15px;
 `;
 const Input = styled.input`
   background-color: transparent;
@@ -95,8 +122,10 @@ const Input = styled.input`
   border: none;
   outline: none;
   font-size: 18px;
+  font-family: 'Nanum Myeongjo', serif !important ; //사용자
 `;
 const SearchHistoryCon = styled.div`
+  display: ${props => !props.showHistory && 'none'};
   width: 95%;
   ul {
     padding: 0;
@@ -110,6 +139,9 @@ const SearchHistoryCon = styled.div`
     display: flex;
     justify-content: space-between;
   }
+`;
+const HistoryNotexist = styled.div`
+  color: #aaa;
 `;
 const IconCloseCon = styled.div`
   width: 18px;

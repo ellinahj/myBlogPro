@@ -45,6 +45,7 @@ const LayoutWrap = styled.div`
 
 const Container = styled.div`
   padding-bottom: 30px;
+  background: #fdfaf2;
   /* box-sizing: border-box; */
 `;
 const Main = styled.div`

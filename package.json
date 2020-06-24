@@ -5,8 +5,7 @@
   "license": "MIT",
   "scripts": {
     "client": "cd client && yarn dev",
-    "server": "cd server && cd src && yarn start",
-    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
+    "server": "cd server && cd src && yarn start"
   },
   "dependencies": {},
   "devDependencies": {

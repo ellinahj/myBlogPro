@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
+
 function useInnerWidth() {
+  //카드 이미지 반응형 변환
   const [innerWidth, setInnerWidth] = useState(0);
 
   useEffect(() => {
@@ -14,14 +16,13 @@ function useInnerWidth() {
 }
 
 function colorLuminance(hex, lum) {
-  // validate hex string
+  //사용자 테마설정시 그라데이션
   hex = String(hex).replace(/[^0-9a-f]/gi, '');
   if (hex.length < 6) {
     hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
   }
   lum = lum || 0;
 
-  // convert to decimal and change luminosity
   let rgb = '#';
   let c;
   let i;

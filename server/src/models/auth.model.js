@@ -21,7 +21,7 @@ const findId = function(user_id) {
         }
       }
     );
-  });
+  }).catch(err, console.log("find id return err ")); //*에러처리 필요;
 };
 const findNickname = function(nickname) {
   return new Promise((resolve, reject) => {
@@ -92,7 +92,8 @@ const login = (user_id, password) => {
                     "SELECT * FROM mydiary.users WHERE user_id = ?",
                     [user_id],
                     function(err, result) {
-                      if (result) {
+                      if (err) {
+                      } else if (result) {
                         const { id, user_id, nickname } = result[0];
                         const token = jwt.sign(
                           { id, userId: user_id, userName: nickname },

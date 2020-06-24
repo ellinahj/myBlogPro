@@ -8,7 +8,7 @@ import slide3 from '../../../static/images/slide3.jpg';
 import slide4 from '../../../static/images/slide4.jpg';
 import slide5 from '../../../static/images/slide5.jpg';
 import CardImg from '../../components/common/CardImg';
-import { useInnerWidth } from '../../js/common';
+import { useInnerWidth } from '../../utils/common';
 
 export default function ImageSlider() {
   const innerWidth = useInnerWidth();

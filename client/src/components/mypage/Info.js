@@ -17,20 +17,8 @@ function MyInfo() {
     setOpenPicker(!openPicker);
   };
   const userColor = useSelector(state => state.common.enteredColor);
-  // useEffect(()=>{
+  const userInfo = useSelector(state => state.common.userInfo);
 
-  // const config = {
-  //   header:{
-  //     access_token :''
-  //   }
-
-  //  }
-  //     axios
-  //       .get('http://127.0.0.1:3001/api/user/info', data,config)
-  //       .then(res => console.log(res, 'res'))
-  //       .catch(err => console.log(err, 'err'));
-
-  // },[])
   return (
     <MyInfoWrap>
       <div>
@@ -41,13 +29,13 @@ function MyInfo() {
               <EditImg src={edit} width={16} />
             </Link>
           </EditWrap>
-          <NickName>리나</NickName>
+          <NickName>{userInfo && userInfo.nickname}</NickName>
         </Profile>
 
-        <Comment>오늘보다 나은 내일</Comment>
+        <Comment>{userInfo && userInfo.main_title}</Comment>
       </div>
       <div>
-        <ThemeButton type="button" onClick={() => setOpenPicker(!openPicker)} userColor={userColor}>
+        <ThemeButton onClick={() => setOpenPicker(!openPicker)} userColor={userColor}>
           테마변경
         </ThemeButton>
         {openPicker && <ChromePicker color={userColor} onChangeComplete={handlePickComplete} />}
@@ -106,7 +94,7 @@ const Comment = styled.div`
   font-weight: bold;
   margin-top: 15px;
 `;
-const ThemeButton = styled.div`
+const ThemeButton = styled.button`
   width: 90px;
   height: 38px;
   display: flex;
@@ -117,7 +105,4 @@ const ThemeButton = styled.div`
   cursor: pointer;
   border: 1px solid ${props => props.userColor};
   color: ${props => props.userColor};
-  :hover {
-    opacity: 0.7;
-  }
 `;

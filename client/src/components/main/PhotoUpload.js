@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import axios from 'axios';
 import ReactCrop from 'react-image-crop';
 
@@ -79,6 +79,8 @@ export default function Upload() {
         tempFile.splice(index, 1, blobToFile);
         setFile(tempFile);
       }, fileInfo);
+    }).catch(err => {
+      console.log('blob promise err', err);
     });
   };
   const submitImg = () => {
@@ -153,8 +155,7 @@ export default function Upload() {
 }
 const AddBtn = styled.button`
   border-radius: 5px;
-  width: 80px;
-  height: 28px;
+  padding: 5px;
   margin-bottom: 5px;
 `;
 const Row = styled.div`
@@ -164,12 +165,12 @@ const Row = styled.div`
 `;
 const PreviewImg = styled.img`
   width: 100%;
-  margin-left: 10px;
 `;
 const ImageRow = styled.div`
   display: flex;
+  flex-direction: column;
 `;
 const ReactCropDiv = styled(ReactCrop)`
-  border: ${props => (props.uploadImg.length > 0 ? '1px solid yellow' : 'none')};
+  border: ${props => (props.uploadImg.length > 0 ? '1px solid #ff254f' : 'none')};
   margin-bottom: ${props => (props.uploadImg.length > 0 ? '30px' : '0px')};
 `;

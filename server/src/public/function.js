@@ -12,7 +12,7 @@ const authCheck = token => {
           resolve(decoded);
         }
       });
-    });
+    }).catch(err => console.log(err.message, "in function jwt expired"));
   }
 };
 
