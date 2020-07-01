@@ -1,9 +1,10 @@
-import Login from '../../src/containers/login';
 import Layout from '../../src/components/common/Layout';
-export default function LoginPage() {
+import LoginContainer from '../../src/containers/login';
+
+export default function LoginIndex() {
   return (
     <Layout>
-      <Login />
+      <LoginContainer />
     </Layout>
   );
 }

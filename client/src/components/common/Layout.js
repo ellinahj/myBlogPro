@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import Header from './Header';
 import BottomMenu from './BottomMenu';
+import { useSelector } from 'react-redux';
 
 export default function Layout({ children }) {
   const [isScrollDown, setScollDown] = useState(true);
@@ -24,10 +25,11 @@ export default function Layout({ children }) {
     };
   }, []);
 
+  const rgbaColor = useSelector(state => state.common.rgbaColor);
   return (
     <LayoutWrap>
       <Header />
-      <Container>
+      <Container rgbaColor={rgbaColor}>
         <Main>{children}</Main>
       </Container>
       <BottomMenu isScrollDown={isScrollDown} />
@@ -45,7 +47,7 @@ const LayoutWrap = styled.div`
 
 const Container = styled.div`
   padding-bottom: 30px;
-  background: #fdfaf2;
+  background: ${props => props.rgbaColor};
   /* box-sizing: border-box; */
 `;
 const Main = styled.div`

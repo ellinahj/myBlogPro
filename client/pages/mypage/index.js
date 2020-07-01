@@ -1,10 +1,21 @@
 import React from 'react';
-import Layout from '../../src/components/common/Layout';
-import MyInfo from '../../src/components/mypage/Info';
-import Login from '../../src/containers/login';
 import { useSelector } from 'react-redux';
+import Layout from '../../src/components/common/Layout';
+import MyInfo from '../../src/containers/mypage/Info';
+import MyEdit from '../../src/containers/mypage/Edit';
+import LoginPage from '../login';
 export default function Mypage() {
   const isLoggedIn = useSelector(state => state.common.isLoggedIn);
-
-  return <Layout>{isLoggedIn ? <MyInfo /> : <Login />}</Layout>;
+  return (
+    <Layout>
+      {isLoggedIn ? (
+        <>
+          <MyInfo />
+          <MyEdit />
+        </>
+      ) : (
+        <LoginPage />
+      )}
+    </Layout>
+  );
 }

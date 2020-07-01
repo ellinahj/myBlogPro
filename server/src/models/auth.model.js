@@ -94,18 +94,27 @@ const login = (user_id, password) => {
                     function(err, result) {
                       if (err) {
                       } else if (result) {
-                        const { id, user_id, nickname } = result[0];
+                        const {
+                          id,
+                          user_id,
+                          nickname,
+                          profile_photo,
+                          user_color,
+                          main_title
+                        } = result[0];
                         const token = jwt.sign(
                           { id, userId: user_id, userName: nickname },
                           config.jwtSecretKey,
                           {
-                            expiresIn: "40m"
+                            expiresIn: "4m"
                           }
                         );
-
                         const sendResult = {
                           token,
                           nickname,
+                          profile_photo,
+                          user_color,
+                          main_title,
                           loginState: "success"
                         };
                         return resolve(sendResult); // 로그인성공

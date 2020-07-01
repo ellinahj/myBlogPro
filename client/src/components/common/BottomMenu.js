@@ -49,7 +49,7 @@ const BottomMenuWrap = styled.nav`
       display: none;
     `}
   left: 50%;
-  bottom: 20px;
+  bottom: 5px;
   z-index: 100;
 
   transform: translateX(-50%);

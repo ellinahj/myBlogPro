@@ -1,8 +1,11 @@
 import axios from 'axios';
+import Router from 'next/router';
+import store from '../store';
+import { setUserInfo, setLogin, setThemeColor } from '../actions/base';
 
 const instance = axios.create({
   baseURL: 'http://127.0.0.1:3001/api',
-  timeout: 1000
+  timeout: 3000
 });
 
 instance.interceptors.request.use(
@@ -30,6 +33,19 @@ instance.interceptors.response.use(
         응답 에러 처리
         .catch()
     */
+    if (error.response.status === 401) {
+      alert('아이디나 비밀번호를 확인해주세요.');
+    } else if (error.response.status === 400) {
+      store.dispatch(setLogin(false));
+      store.dispatch(setUserInfo(undefined));
+      store.dispatch(setThemeColor(''));
+      alert('로그인이 만료되었습니다.');
+      Router.push('/login');
+    } else if (error.response.status === 404) {
+      alert('404 누락된 요청');
+    } else if (error.response.status >= 500) {
+      alert('서버 에러');
+    }
     return Promise.reject(error);
   }
 );

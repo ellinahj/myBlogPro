@@ -31,9 +31,7 @@ export default function SearchContainer() {
     const getSearchHistory = localStorage.getItem('searchedHistory');
     const combineSearchHistory = JSON.parse(getSearchHistory);
     setStorageValue(combineSearchHistory);
-
     setShowHistory(true);
-    console.log(storageValue, 'svsv');
   };
 
   const removeHistory = index => {
@@ -52,7 +50,6 @@ export default function SearchContainer() {
         setSearchValue('');
       }
     }
-
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
@@ -101,12 +98,13 @@ const Container = styled.div`
   align-items: center;
 `;
 const SearchCon = styled.div`
-  width: 95%;
+  width: 100%;
   height: 45px;
   border-radius: 5px;
   background-color: #efefef;
   display: flex;
   align-items: center;
+  margin-bottom: 20px;
 `;
 const Img = styled.img`
   width: ${props => props.width || '32px'};

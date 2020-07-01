@@ -1,44 +1,41 @@
 import { useState, useEffect, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Router from 'next/router';
 import styled from 'styled-components';
-import axios from 'axios';
 import store from '../../store';
-import { setUserInfo, setLogin } from '../../actions/base';
-import auth from '../../api/auth';
+import { setUserInfo, setLogin, setThemeColor } from '../../actions/base';
+import { login } from '../../api/auth';
 
-export default function Login() {
+export default function LoginContainer() {
   const [id, setId] = useState('');
   const [pw, setPw] = useState('');
   const dispatch = useDispatch();
   const pwValue = useRef(null);
+  const isLoggedIn = useSelector(state => state.common.isLoggedIn);
+
+  useEffect(() => {
+    isLoggedIn && Router.push('/blog');
+  }, []);
+
   const userLogin = () => {
     const data = { user_id: id, password: pw };
-    auth
-      .login(data)
-      .then(res => {
-        if (res.status < 300) {
-          const token = res.data.access_token;
-          localStorage.setItem('mydiary_token', token);
-          store.dispatch(setLogin(true));
-          store.dispatch(setUserInfo(res.data));
-          alert(' 로그인되었습니다.');
-        } else if (res.status === 401) {
-          alert('400 여기는 안들어오지?');
-        }
-      })
-      .catch(err => {
-        if (err.response && err.response.status === 401) {
-          alert('아이디나 비밀번호를 확인해주세요.');
-        } else {
-          alert('서버접속이 원활하지 않습니다.');
-        }
-      });
+    login(data).then(res => {
+      console.log(res, 'res');
+      if (res.status < 300) {
+        const token = res.data.access_token;
+        localStorage.setItem('mydiary_token', token);
+        store.dispatch(setLogin(true));
+        store.dispatch(setUserInfo(res.data));
+        store.dispatch(setThemeColor(res.data.user_color));
+        alert(' 로그인되었습니다.');
+        Router.push('/blog');
+      }
+    });
   };
 
   const enterKey = () => {
     if (window.event.keyCode === 13) {
-      login();
+      userLogin();
     }
   };
   const showPw = () => {

@@ -6,7 +6,7 @@ const router = express.Router();
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
 
-import { imgUpload } from "../controllers/board.controller";
+import { imgUpload, getBlog, setBlog } from "../controllers/blog.controller";
 
 fs.readdir("uploads/images", error => {
   if (error) {
@@ -22,7 +22,9 @@ const storage = multer.diskStorage({
   }
 });
 const upload = multer({ storage: storage }).array("file", 3);
+
 router.post("/imgUpload", (req, res) => {
+  //이미지 등록 3개 까지
   upload(req, res, function(err) {
     if (err) {
       console.log(err, "unknown err");
@@ -30,4 +32,8 @@ router.post("/imgUpload", (req, res) => {
     console.log(req.files, "file");
   });
 });
+
+router.post("/write", setBlog);
+router.get("/read/:id", getBlog);
+
 module.exports = router;

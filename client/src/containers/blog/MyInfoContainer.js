@@ -3,22 +3,21 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import defaultImg from '../../../static/images/default_profile.png';
 import { colorLuminance } from '../../utils/common';
-function MyInfo(props) {
+export default function MyInfo() {
   const userColor = useSelector(state => state.common.enteredColor);
-  const luminantColor = colorLuminance(userColor, 0.7);
+  const luminantColor = userColor && colorLuminance(userColor, 0.7);
   const userInfo = useSelector(state => state.common.userInfo);
   return (
     <MyInfoWrap userColor={userColor} luminantColor={luminantColor}>
       <Profile>
-        <Img src={defaultImg} />
+        <Img src={userInfo && userInfo.profile_url ? userInfo.profile_url : defaultImg} />
         <NickName>{userInfo && userInfo.nickname}</NickName>
       </Profile>
       <Comment>{userInfo && userInfo.main_title}</Comment>
-      {props.children}
     </MyInfoWrap>
   );
 }
-export default MyInfo;
+
 const MyInfoWrap = styled.section`
   width: 100%;
   height: 200px;

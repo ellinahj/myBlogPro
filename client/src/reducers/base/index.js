@@ -1,10 +1,19 @@
-import { INCREMENT, SET_THEME_COLOR, SET_LOGIN, SET_USER_INFO } from '../../actions/base/actionTypes';
+import {
+  INCREMENT,
+  SET_THEME_COLOR,
+  SET_THEME_RGBA,
+  SET_LOGIN,
+  SET_USER_INFO,
+  SET_CATE
+} from '../../actions/base/actionTypes';
 
 export const initialState = {
   number: 0,
   enteredColor: '#ff254f',
+  rgbaColor: '',
   isLoggedIn: false,
-  userInfo: undefined
+  userInfo: undefined,
+  category: undefined
 };
 
 const commonReducer = (state = initialState, action) => {
@@ -18,6 +27,11 @@ const commonReducer = (state = initialState, action) => {
       ...state,
       enteredColor: action.payload
     };
+  } else if (action.type === SET_THEME_RGBA) {
+    return {
+      ...state,
+      rgbaColor: action.payload
+    };
   } else if (action.type === SET_LOGIN) {
     return {
       ...state,
@@ -28,7 +42,12 @@ const commonReducer = (state = initialState, action) => {
       ...state,
       userInfo: action.payload
     };
+  } else if (action.type === SET_CATE) {
+    return {
+      category: action.payload
+    };
   }
+
   return state;
 };
 

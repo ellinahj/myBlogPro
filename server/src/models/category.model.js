@@ -2,7 +2,7 @@ var mysql_dbc = require("../config/db_con")();
 var connection = mysql_dbc.init();
 mysql_dbc.db_open(connection);
 
-const getCateNumberModel = id => {
+const selectCateNumber = id => {
   return new Promise((resolve, reject) => {
     connection.query(
       "select id, title from mydiary.category WHERE user_id = ?",
@@ -17,7 +17,7 @@ const getCateNumberModel = id => {
     );
   });
 };
-const insertCategoryModel = (id, title) => {
+const insertCategory = (id, title) => {
   return new Promise((resolve, reject) => {
     connection.query(
       "select count(*) as count from mydiary.category WHERE user_id = ?",
@@ -46,4 +46,4 @@ const insertCategoryModel = (id, title) => {
     );
   });
 };
-export { getCateNumberModel, insertCategoryModel };
+export { selectCateNumber, insertCategory };

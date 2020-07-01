@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
 import { Provider } from 'react-redux';
-import axios from 'axios';
 import store from '../src/store';
-import { setThemeColor, setLogin, setUserInfo } from '../src/actions/base';
 import * as theme from '../src/utils/theme';
-//css
 import 'react-image-crop/dist/ReactCrop.css';
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -33,7 +30,7 @@ const GlobalStyle = createGlobalStyle`
             /* overflow-y:auto; */
             border-left: 1px solid #dedede;
             border-right: 1px solid #dedede;
-            background: #fdfaf2;//color
+            background: #fbfbfb;
           /* font-family: 'Nanum Gothic Coding', monospace; */
   };
   a {
@@ -49,16 +46,12 @@ const GlobalStyle = createGlobalStyle`
     }
   }
   ::-webkit-input-placeholder {
-  font-family: 'Nanum Myeongjo', serif;
+  font-family: 'Nanum Myeongjo'H, serif;
 }
 `;
 
 export default function MyApp({ Component, pageProps }) {
-  const [currentColor, setCurrentColor] = useState('#000');
-  useEffect(() => {
-    const getMyTheme = localStorage.getItem('myThemeColor') || '#000';
-    store.dispatch(setThemeColor(getMyTheme));
-  }, []);
+  const [currentColor, setCurrentColor] = useState('#ff254f');
 
   useEffect(() => {
     function handleSubscribe() {
@@ -70,35 +63,6 @@ export default function MyApp({ Component, pageProps }) {
     const subscribeStore = store.subscribe(handleSubscribe);
     return () => subscribeStore();
   }, [currentColor]);
-
-  useEffect(() => {
-    const storedToken = localStorage.getItem('mydiary_token') && localStorage.getItem('mydiary_token');
-
-    const config = {
-      headers: {
-        access_token: storedToken
-      }
-    };
-
-    axios
-      .get('http://127.0.0.1:3001/api/user/info', config)
-      .then(res => {
-        if (res.status < 300) {
-          store.dispatch(setLogin(true));
-          store.dispatch(setUserInfo(res.data));
-        } else if (res.status === 400) {
-          alert('여기는 안들어오지?400 _app');
-        }
-      })
-      .catch(err => {
-        console.log(err, '_app err');
-        if (err.response && err.response.status === 400) {
-          store.dispatch(setLogin(false));
-        } else {
-          alert('서버접속이 원활하지 않습니다.??');
-        }
-      });
-  }, []);
 
   return (
     <Provider store={store}>

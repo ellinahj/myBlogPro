@@ -56,7 +56,6 @@ const createUser = (req, res, next) => {
 };
 const loginController = (req, res, next) => {
   const { user_id, password } = req.body;
-  console.log(user_id, password, "server console");
   if (user_id && password) {
     login(user_id, password)
       .then(result => {
@@ -74,13 +73,23 @@ const loginController = (req, res, next) => {
             .end();
         } else if (result.loginState === "success") {
           //로그인 성공
-          const { token, nickname } = result;
+          const {
+            token,
+            nickname,
+            profile_photo,
+            user_color,
+            main_title
+          } = result;
+          const profile_url = "http://127.0.0.1:3001/images/" + profile_photo;
           res
             .status(200)
             .json({
-              message: "register success",
+              message: "ok",
               access_token: token,
-              nickname
+              nickname,
+              profile_url,
+              user_color,
+              main_title
             })
             .end();
         }

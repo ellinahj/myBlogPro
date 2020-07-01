@@ -8,7 +8,7 @@ import Router from 'next/router';
 import styled from 'styled-components';
 import Con from '../../components/common/Container';
 import Button from '../../components/common/Button';
-import UploadComponent from '../../components/main/PhotoUpload';
+import UploadComponent from '../../components/blog/PhotoUpload';
 
 export default function addContainer() {
   const [startDate, setStartDate] = useState('');

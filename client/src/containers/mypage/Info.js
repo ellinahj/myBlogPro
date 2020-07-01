@@ -1,29 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Link from 'next/link';
+import Router from 'next/router';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
-import { ChromePicker } from 'react-color';
-import { setThemeColor } from '../../actions/base';
 import defaultImg from '../../../static/images/default_profile.png';
 import edit from '../../../static/images/edit.svg';
+import store from '../../store';
+import { setLogin, setThemeColor, setUserInfo } from '../../actions/base';
 
-function MyInfo() {
+export default function MyInfo() {
   const dispatch = useDispatch();
-  const [openPicker, setOpenPicker] = useState(false);
-
-  const handlePickComplete = color => {
-    dispatch(setThemeColor(color.hex));
-    localStorage.setItem('myThemeColor', color.hex);
-    setOpenPicker(!openPicker);
-  };
-  const userColor = useSelector(state => state.common.enteredColor);
   const userInfo = useSelector(state => state.common.userInfo);
-
+  const logout = () => {
+    localStorage.removeItem('mydiary_token');
+    store.dispatch(setLogin(false));
+    store.dispatch(setUserInfo(undefined));
+    store.dispatch(setThemeColor(''));
+    Router.push('/login');
+  };
   return (
     <MyInfoWrap>
       <div>
         <Profile>
-          <Img src={defaultImg} width={70} />
+          <Img src={userInfo && userInfo.profile_url ? userInfo.profile_url : defaultImg} width={70} />
           <EditWrap>
             <Link href="/mypage/edit">
               <EditImg src={edit} width={16} />
@@ -34,20 +33,16 @@ function MyInfo() {
 
         <Comment>{userInfo && userInfo.main_title}</Comment>
       </div>
-      <div>
-        <ThemeButton onClick={() => setOpenPicker(!openPicker)} userColor={userColor}>
-          테마변경
-        </ThemeButton>
-        {openPicker && <ChromePicker color={userColor} onChangeComplete={handlePickComplete} />}
-      </div>
+      <LogoutContainer>
+        <Logout onClick={logout}>로그아웃</Logout>
+      </LogoutContainer>
     </MyInfoWrap>
   );
 }
-export default MyInfo;
+
 const MyInfoWrap = styled.section`
   width: 100%;
-  height: 170px;
-  padding: 30px 30px 0;
+  padding: 30px;
   box-sizing: border-box;
   background-color: #fafafa;
   background-repeat: no-repeat;
@@ -94,15 +89,12 @@ const Comment = styled.div`
   font-weight: bold;
   margin-top: 15px;
 `;
-const ThemeButton = styled.button`
-  width: 90px;
-  height: 38px;
+
+const LogoutContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
-  border-radius: 10px;
-  outline: none;
+`;
+const Logout = styled.div`
+  color: #aaa;
   cursor: pointer;
-  border: 1px solid ${props => props.userColor};
-  color: ${props => props.userColor};
 `;

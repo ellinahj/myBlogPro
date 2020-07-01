@@ -6,11 +6,12 @@ import cookieParser from "cookie-parser";
 import logger from "morgan";
 import cors from "cors";
 import bodyParser from "body-parser";
+import path from "path";
 
 import authRoute from "./routes/auth";
 import userRoute from "./routes/user";
 import cateRoute from "./routes/category";
-import uploadRoute from "./routes/board";
+import blogRoute from "./routes/blog";
 
 const app = express();
 app.use(logger("dev"));
@@ -18,7 +19,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(cors());
-app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, "./uploads")));
 var options = {
   inflate: true,
   limit: "1000kb",
@@ -29,7 +30,7 @@ app.use(bodyParser.raw(options));
 app.use("/api/user", userRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/category", cateRoute);
-app.use("/api/board", uploadRoute);
+app.use("/api/blog", blogRoute);
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
   next(createError(404));
