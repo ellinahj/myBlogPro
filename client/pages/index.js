@@ -1,5 +1,7 @@
 import React from 'react';
-import Head from 'next/head';∂
+import { useSelector } from 'react-redux';
+import Head from 'next/head';
+import styled from 'styled-components';
 import BlogPage from './blog';
 export default function Index() {
   return (

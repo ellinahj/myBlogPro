@@ -1,4 +1,12 @@
-import { INCREMENT, SET_THEME_COLOR, SET_THEME_RGBA, SET_LOGIN, SET_USER_INFO, SET_CATE } from './actionTypes';
+import {
+  INCREMENT,
+  SET_THEME_COLOR,
+  SET_THEME_RGBA,
+  SET_LOGIN,
+  SET_USER_INFO,
+  SET_CATE,
+  SET_LOADING
+} from './actionTypes';
 
 const increment = payload => {
   return {
@@ -36,4 +44,10 @@ const setCate = payload => {
     payload
   };
 };
-export { increment, setThemeColor, setThemeRGBA, setLogin, setUserInfo, setCate };
+const setLoding = payload => {
+  return {
+    type: SET_LOGIN,
+    payload
+  };
+};
+export { increment, setThemeColor, setThemeRGBA, setLogin, setUserInfo, setCate, setLoding };

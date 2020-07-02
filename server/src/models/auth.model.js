@@ -106,7 +106,7 @@ const login = (user_id, password) => {
                           { id, userId: user_id, userName: nickname },
                           config.jwtSecretKey,
                           {
-                            expiresIn: "4m"
+                            expiresIn: "1m"
                           }
                         );
                         const sendResult = {

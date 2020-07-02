@@ -38,7 +38,6 @@ const createUser = (req, res, next) => {
     .then(count => {
       console.log(count, "count");
       if (count >= 1) {
-        // t.프론트 처리..
         res.status(400).send({
           status: 400,
           message: "one of user_id,nickname is duplicated"

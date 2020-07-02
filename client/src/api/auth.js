@@ -7,5 +7,11 @@ const login = data => {
     data: data
   });
 };
-
-export { login };
+const loginCheck = config => {
+  return apiSend({
+    url: '/user/info',
+    method: 'get',
+    headers: config
+  });
+};
+export { login, loginCheck };

@@ -8,7 +8,8 @@ import edit from '../../../static/images/edit.svg';
 import store from '../../store';
 import { setLogin, setThemeColor, setUserInfo } from '../../actions/base';
 
-export default function MyInfo() {
+export default function MyInfo(props) {
+  const { clickEdit } = props;
   const dispatch = useDispatch();
   const userInfo = useSelector(state => state.common.userInfo);
   const logout = () => {
@@ -23,14 +24,11 @@ export default function MyInfo() {
       <div>
         <Profile>
           <Img src={userInfo && userInfo.profile_url ? userInfo.profile_url : defaultImg} width={70} />
-          <EditWrap>
-            <Link href="/mypage/edit">
-              <EditImg src={edit} width={16} />
-            </Link>
-          </EditWrap>
-          <NickName>{userInfo && userInfo.nickname}</NickName>
+          <Column>
+            <NickName>{userInfo && userInfo.nickname}</NickName>
+            <ProfileEdit onClick={e => clickEdit(e)}>프로필편집</ProfileEdit>
+          </Column>
         </Profile>
-
         <Comment>{userInfo && userInfo.main_title}</Comment>
       </div>
       <LogoutContainer>
@@ -42,7 +40,7 @@ export default function MyInfo() {
 
 const MyInfoWrap = styled.section`
   width: 100%;
-  padding: 30px;
+  padding: 50px 30px 40px;
   box-sizing: border-box;
   background-color: #fafafa;
   background-repeat: no-repeat;
@@ -50,6 +48,10 @@ const MyInfoWrap = styled.section`
   flex-direction: row;
   justify-content: space-between;
   border-bottom: 1px solid #dedede;
+`;
+const Column = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 const Profile = styled.div`
   position: relative;
@@ -63,25 +65,15 @@ const Img = styled.img`
   border-radius: ${props => props.width / 2 || 15}px;
   margin-right: 15px;
 `;
-const EditWrap = styled.div`
+const ProfileEdit = styled.div`
+  color: #6da3f7;
+  font-weight: bold;
+  margin-top: 10px;
   cursor: pointer;
-  background-color: #666;
-  position: absolute;
-  bottom: 0;
-  left: 46px;
-  margin-right: 0;
-  width: 24px;
-  height: 24px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `;
-const EditImg = styled(Img)`
-  margin-right: 0;
-`;
+
 const NickName = styled.div`
-  font-size: 15px;
+  font-size: 18px;
   font-weight: bold;
 `;
 const Comment = styled.div`

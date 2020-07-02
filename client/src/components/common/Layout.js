@@ -26,8 +26,10 @@ export default function Layout({ children }) {
   }, []);
 
   const rgbaColor = useSelector(state => state.common.rgbaColor);
+  const loading = useSelector(state => state.common.loading);
   return (
     <LayoutWrap>
+      {loading ? <Loading>loading...</Loading> : null}
       <Header />
       <Container rgbaColor={rgbaColor}>
         <Main>{children}</Main>
@@ -42,14 +44,24 @@ const LayoutWrap = styled.div`
   height: 100%;
   padding-top: 60px;
   background-color: #fff;
-  /* box-sizing: border-box; */
+  position: relative;
 `;
 
 const Container = styled.div`
   padding-bottom: 30px;
-  background: ${props => props.rgbaColor};
-  /* box-sizing: border-box; */
+  /* background: ${props => props.rgbaColor}; */
 `;
 const Main = styled.div`
   position: relative;
+`;
+
+const Loading = styled.div`
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
 `;

@@ -1,14 +1,10 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import styled from 'styled-components';
-
 import MyList from '../../components/blog/List';
 import Menu from '../../components/blog/Menu';
-
 import { colorLuminance } from '../../utils/common';
-import { setLogin, setCate, setUserInfo, setThemeColor } from '../../actions/base';
-import Router from 'next/router';
+import { setCate } from '../../actions/base';
 import { getCate, getBlog } from '../../api/blog';
 import store from '../../store';
 export default function ListContainer() {
@@ -44,16 +40,14 @@ export default function ListContainer() {
       const config = {
         access_token: getToken
       };
-      getCate(config)
-        .then(res => {
-          if (res.status === 200 && res.data) {
-            store.dispatch(setLogin(true));
-            store.dispatch(setCate(res.data.data));
-          }
-        })
-        .catch(err => {
-          console.log(err.response.status, 'error.response.status');
-        });
+      getCate(config).then(res => {
+        if (res.status === 200 && res.data) {
+          store.dispatch(setCate(res.data.data));
+        }
+      });
+      // .catch(error => {
+      //   console.log(error, 'error.response.status');
+      // });
     }
   }, []);
 
@@ -69,16 +63,14 @@ export default function ListContainer() {
     };
     if (category && category.length > 0) {
       const cateId = category[0].id;
-      getBlog(config, cateId)
-        .then(res => {
-          if (res.status < 300) {
-            store.dispatch(setLogin(true));
-            setBlogData(res.data.data);
-          }
-        })
-        .catch(err => {
-          console.log(err.response.status, '2error.response.status');
-        });
+      getBlog(config, cateId).then(res => {
+        if (res.status < 300) {
+          setBlogData(res.data.data);
+        }
+      });
+      // .catch(err => {
+      //   console.log(err.response.status, '1error.response.status');
+      // });
     }
   }, [category]);
   useEffect(() => {
@@ -87,16 +79,14 @@ export default function ListContainer() {
       access_token: storedToken
     };
     const cateId = selectedCateId;
-    getBlog(config, cateId)
-      .then(res => {
-        if (res.status < 300) {
-          store.dispatch(setLogin(true));
-          setBlogData(res.data.data);
-        }
-      })
-      .catch(err => {
-        console.log(err.response.status, '2error.response.status');
-      });
+    getBlog(config, cateId).then(res => {
+      if (res.status < 300) {
+        setBlogData(res.data.data);
+      }
+    });
+    // .catch(error => {
+    //   console.log(error, '2error.response.status');
+    // });
   }, [menuIndex]);
 
   // const [loading, response, error] = useRequest('https://jsonplaceholder.typicode.com/posts');

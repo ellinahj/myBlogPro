@@ -16,13 +16,16 @@ const getUserInfo = async (req, res, next) => {
   const token = req.headers["access_token"];
   const result = await authCheck(token);
   if (result) {
+    console.log("in");
     getUserModel(result.userId)
       .then(data => {
         const profile_url =
           "http://127.0.0.1:3001/images/" + data.profile_photo;
         delete data.profile_photo;
+        delete data.id;
+        delete data.access_token;
         data = { ...data, profile_url };
-        res.status(200).json({ status: 200, ...data });
+        res.status(200).json({ ...data });
       })
       .catch(err => console.log(err, "get UserInfo err"));
   } else {

@@ -5,7 +5,9 @@ import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { colorLuminance } from '../../utils/common';
 import store from '../../store';
+import { loginCheck } from '../../api/auth';
 import { setUserInfo, setThemeColor, setLogin } from '../../actions/base';
+import { Router } from 'next/router';
 
 export default function Header() {
   const dispatch = useDispatch();
@@ -16,32 +18,18 @@ export default function Header() {
   useEffect(() => {
     const storedToken = localStorage.getItem('mydiary_token') && localStorage.getItem('mydiary_token');
     const config = {
-      headers: {
-        access_token: storedToken
-      }
+      access_token: storedToken
     };
-    axios.get('http://127.0.0.1:3001/api/user/info', config).then(res => {
+    // console.log(isLoggedIn, 'isLoggedIn');
+
+    loginCheck(config).then(res => {
       if (res.status < 300) {
-        store.dispatch(setLogin(true));
+        // console.log(res.data, 'header res.data');
         store.dispatch(setThemeColor(res.data.user_color));
         store.dispatch(setUserInfo(res.data));
       }
     });
-    // .catch(err => {
-    //   console.log(err, '_app err'); //제거
-    //   if (err.response && err.response.status === 400) {
-    //     store.dispatch(setLogin(false));
-    //     store.dispatch(setUserInfo(undefined));
-    //     store.dispatch(setThemeColor(''));
-    //   } else {
-    //     alert('서버접속이 원활하지 않습니다._app');
-    //   }
-    // });
   }, [isLoggedIn]);
-  // useEffect(() => {
-  //   console.log('Header render isLoggedIn');
-  //   isLoggedIn === false && store.dispatch(setUserInfo(undefined)) && store.dispatch(setThemeColor('#ff254f'));
-  // }, [isLoggedIn]);
   return (
     <HeadWrap userColor={userColor} luminantColor={luminantColor}>
       <Link href="/blog">

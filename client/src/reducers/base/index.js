@@ -4,16 +4,18 @@ import {
   SET_THEME_RGBA,
   SET_LOGIN,
   SET_USER_INFO,
-  SET_CATE
+  SET_CATE,
+  SET_LOADING
 } from '../../actions/base/actionTypes';
 
 export const initialState = {
   number: 0,
   enteredColor: '#ff254f',
-  rgbaColor: '',
+  rgbaColor: '#fbfbfb',
   isLoggedIn: false,
   userInfo: undefined,
-  category: undefined
+  category: undefined,
+  loading: false
 };
 
 const commonReducer = (state = initialState, action) => {
@@ -45,6 +47,10 @@ const commonReducer = (state = initialState, action) => {
   } else if (action.type === SET_CATE) {
     return {
       category: action.payload
+    };
+  } else if (action.type === SET_LOADING) {
+    return {
+      loading: action.payload
     };
   }
 

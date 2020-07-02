@@ -30,7 +30,7 @@ const GlobalStyle = createGlobalStyle`
             /* overflow-y:auto; */
             border-left: 1px solid #dedede;
             border-right: 1px solid #dedede;
-            background: #fbfbfb;
+            /* background: #fbfbfb; */
           /* font-family: 'Nanum Gothic Coding', monospace; */
   };
   a {

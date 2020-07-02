@@ -20,11 +20,10 @@ export default function LoginContainer() {
   const userLogin = () => {
     const data = { user_id: id, password: pw };
     login(data).then(res => {
-      console.log(res, 'res');
+      console.log(res, 'login res login');
       if (res.status < 300) {
         const token = res.data.access_token;
         localStorage.setItem('mydiary_token', token);
-        store.dispatch(setLogin(true));
         store.dispatch(setUserInfo(res.data));
         store.dispatch(setThemeColor(res.data.user_color));
         alert(' 로그인되었습니다.');
