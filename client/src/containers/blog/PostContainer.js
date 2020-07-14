@@ -8,13 +8,26 @@ import Router from 'next/router';
 import styled from 'styled-components';
 import Con from '../../components/common/Container';
 import Button from '../../components/common/Button';
-import UploadComponent from '../../components/blog/PhotoUpload';
+import UploadComponent from '../../components/blog/ThreePhotoUpload';
+import { setBlog } from '../../../src/api/blog';
 
 export default function addContainer() {
   const [startDate, setStartDate] = useState('');
   const [category, setCategory] = useState([]);
   const [radioIndex, setRadioIndex] = useState(0);
-  const userColor = useSelector(state => state.common.enteredColor);
+  const [imgFile, setImgFile] = useState('');
+  const userColor = useSelector(state => state.common.userColor);
+
+  const handleChange = date => {
+    setStartDate(date);
+  };
+  registerLocale('ko', ko);
+  const checked = (e, index) => {
+    setRadioIndex(index);
+  };
+  const imgFormData = file => {
+    setImgFile(file);
+  };
   useEffect(() => {
     const getToken = localStorage.getItem('mydiary_token');
     if (getToken) {
@@ -35,13 +48,28 @@ export default function addContainer() {
         });
     }
   }, []);
-
-  const handleChange = date => {
-    setStartDate(date);
-  };
-  registerLocale('ko', ko);
-  const checked = (e, index) => {
-    setRadioIndex(index);
+  const upload = () => {
+    const formData = new FormData();
+    imgFile && imgFile.forEach((item, index) => formData.append(`file`, item));
+    console.log(imgFile, 'file');
+    console.log(formData, 'formData');
+    const data = {
+      id: 1,
+      id2: 'id2'
+    };
+    formData.append('data', JSON.stringify(data));
+    const getToken = localStorage.getItem('mydiary_token');
+    if (getToken) {
+      const config = {
+        access_token: getToken
+      };
+      // console.log(data, 'in data');
+      setBlog(config, formData).then(res => {
+        if (res.status === 200 && res.data) {
+          console.log(res.data, 'post data');
+        }
+      });
+    }
   };
   return (
     <Contaniner>
@@ -83,7 +111,7 @@ export default function addContainer() {
       </Row>
       <Row>
         <Subject>제목</Subject>
-        <Input type="text"></Input>
+        <Input type="text" name="title"></Input>
       </Row>
       <Row>
         <Subject>날짜</Subject>
@@ -106,16 +134,16 @@ export default function addContainer() {
         <Button type="button">장소추가</Button>
       </Row>
       <Row>
-        <Subject>내용</Subject>
+        <Subject name="content">내용</Subject>
         <Textarea type="text" maxLength="200"></Textarea>
       </Row>
       <Row>
         <Subject>사진첨부</Subject>
-        <UploadComponent />
+        <UploadComponent imgFormData={e => imgFormData(e)} />
       </Row>
       <RowRight>
         <Col>
-          <SubmitBtn>저장</SubmitBtn>
+          <SubmitBtn onClick={e => upload(e)}>저장</SubmitBtn>
         </Col>
       </RowRight>
     </Contaniner>
@@ -139,9 +167,11 @@ const Row = styled.div`
     line-height: 25px;
     padding-left: 5px;
     background: #efefef;
-    border: 1px solid #aaa;
+    border: 1px solid #777;
     cursor: pointer;
-    color: #000;
+    ::placeholder {
+      color: #000;
+    }
   }
   /* Customize the label (the container) */
   .radio_container {
@@ -243,12 +273,14 @@ const Textarea = styled.textarea`
   min-height: 200px;
 `;
 const SubmitBtn = styled.button`
-  padding: 8px 15px;
+  padding: 9px 20px;
   background: #ff254f;
-  border: 1px solid #bbb;
+  border: none;
   color: #fff;
   cursor: pointer;
+  font-size: 16px;
+  border-radius: 3px;
 `;
 const RowRight = styled(Row)`
-  justify-content: flex-end;
+  justify-content: center;
 `;

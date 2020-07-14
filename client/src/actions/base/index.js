@@ -46,7 +46,7 @@ const setCate = payload => {
 };
 const setLoding = payload => {
   return {
-    type: SET_LOGIN,
+    type: SET_LOADING,
     payload
   };
 };

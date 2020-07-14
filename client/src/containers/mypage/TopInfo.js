@@ -1,14 +1,11 @@
 import React from 'react';
-import Link from 'next/link';
 import Router from 'next/router';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
-import defaultImg from '../../../static/images/default_profile.png';
-import edit from '../../../static/images/edit.svg';
 import store from '../../store';
 import { setLogin, setThemeColor, setUserInfo } from '../../actions/base';
 
-export default function MyInfo(props) {
+export default function TopInfo(props) {
   const { clickEdit } = props;
   const dispatch = useDispatch();
   const userInfo = useSelector(state => state.common.userInfo);
@@ -23,7 +20,10 @@ export default function MyInfo(props) {
     <MyInfoWrap>
       <div>
         <Profile>
-          <Img src={userInfo && userInfo.profile_url ? userInfo.profile_url : defaultImg} width={70} />
+          <Img
+            src={userInfo && userInfo.profile_url ? userInfo.profile_url : '/images/default_profile.png'}
+            width={70}
+          />
           <Column>
             <NickName>{userInfo && userInfo.nickname}</NickName>
             <ProfileEdit onClick={e => clickEdit(e)}>프로필편집</ProfileEdit>

@@ -29,7 +29,7 @@ export default function Layout({ children }) {
   const loading = useSelector(state => state.common.loading);
   return (
     <LayoutWrap>
-      {loading ? <Loading>loading...</Loading> : null}
+      {/* {loading ? <Loading>loading...</Loading> : null} */}
       <Header />
       <Container rgbaColor={rgbaColor}>
         <Main>{children}</Main>

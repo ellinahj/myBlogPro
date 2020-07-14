@@ -1,9 +1,10 @@
 import styled, { css } from 'styled-components';
-import { useState, useRef, useCallback } from 'react';
-import axios from 'axios';
+import { useState, useRef, useCallback, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import ReactCrop from 'react-image-crop';
 
-export default function Upload() {
+export default function Upload(props) {
+  const { imgFormData } = props;
   const [file, setFile] = useState([null, null, null]);
   const [upImg, setUpImg] = useState([]);
   const [crop, setCrop] = useState({ unit: '%', width: 100, aspect: 1 });
@@ -12,6 +13,7 @@ export default function Upload() {
   const [filename, setFilename] = useState('');
   const [fileInfo, setFileInfo] = useState('');
   const imgRef = useRef(null);
+  const userColor = useSelector(state => state.common.userColor);
 
   let inputRefs = useRef([]);
   const controlFileBtn = (e, index) => {
@@ -66,14 +68,11 @@ export default function Upload() {
           reject(new Error('Canvas is empty'));
           return;
         }
-
         blob.name = fileName;
-
         window.URL.revokeObjectURL(previewUrl);
         const tempPreviewUrl = [...previewUrl];
         tempPreviewUrl.splice(index, 1, window.URL.createObjectURL(blob));
         setPreviewUrl(tempPreviewUrl);
-
         const blobToFile = new File([blob], filename);
         const tempFile = [...file];
         tempFile.splice(index, 1, blobToFile);
@@ -83,31 +82,25 @@ export default function Upload() {
       console.log('blob promise err', err);
     });
   };
-  const submitImg = () => {
-    const formData = new FormData();
-    file.forEach((item, index) => formData.append(`file`, item));
-    axios
-      .post('http://127.0.0.1:3001/api/board/imgUpload', formData)
-      .then(res => console.log(res, 'res'))
-      .catch(err => console.log(err, 'err_upload'));
-  };
+  useEffect(() => {
+    imgFormData(file);
+  }, [file]);
 
   return (
     <Row>
-      <>
-        <ReactCropDiv
-          src={upImg}
-          onImageLoaded={onLoad}
-          crop={crop}
-          onChange={c => setCrop(c)}
-          onComplete={makeClientCrop}
-          uploadImg={upImg}
-        />
-      </>
-      <ImageRow>
-        <AddBtn name="button" onClick={e => controlFileBtn(e, 0)}>
-          사진1 추가
-        </AddBtn>
+      <ReactCropDiv
+        userColor={userColor}
+        src={upImg}
+        onImageLoaded={onLoad}
+        crop={crop}
+        onChange={img => setCrop(img)}
+        onComplete={makeClientCrop}
+        uploadImg={upImg}
+      />
+      <ImageRow existImg={previewUrl && previewUrl[0]}>
+        <EditWrap>
+          <EditImg src={'/images/edit.svg'} width={16} onClick={e => controlFileBtn(e, 0)} />
+        </EditWrap>
         <input
           name="file"
           type="file"
@@ -118,46 +111,9 @@ export default function Upload() {
         />
         {previewUrl && previewUrl[0] && <PreviewImg src={previewUrl[0]} />}
       </ImageRow>
-      <ImageRow>
-        <AddBtn name="button" onClick={e => controlFileBtn(e, 1)}>
-          사진2 추가
-        </AddBtn>
-        <input
-          name="file"
-          type="file"
-          accept="image/*"
-          ref={ref => (inputRefs.current[1] = ref)}
-          style={{ display: 'none' }}
-          onChange={e => addImg(e, 1)}
-        />
-        {previewUrl && previewUrl[1] && <PreviewImg src={previewUrl[1]} />}
-      </ImageRow>
-      <ImageRow>
-        <AddBtn type="button" name="file" onClick={e => controlFileBtn(e, 2)}>
-          사진3 추가
-        </AddBtn>
-        <input
-          name="file"
-          type="file"
-          accept="image/*"
-          ref={ref => (inputRefs.current[2] = ref)}
-          style={{ display: 'none' }}
-          onChange={e => addImg(e, 2)}
-        />
-
-        {previewUrl && previewUrl[2] && <PreviewImg src={previewUrl[2]} />}
-      </ImageRow>
-      <button type="button" onClick={submitImg}>
-        사진전송
-      </button>
     </Row>
   );
 }
-const AddBtn = styled.button`
-  border-radius: 5px;
-  padding: 5px;
-  margin-bottom: 5px;
-`;
 const Row = styled.div`
   display: flex;
   flex-direction: column;
@@ -169,8 +125,29 @@ const PreviewImg = styled.img`
 const ImageRow = styled.div`
   display: flex;
   flex-direction: column;
+  margin-bottom: ${props => props.existImg && '30px'};
 `;
 const ReactCropDiv = styled(ReactCrop)`
-  border: ${props => (props.uploadImg.length > 0 ? '1px solid #ff254f' : 'none')};
-  margin-bottom: ${props => (props.uploadImg.length > 0 ? '30px' : '0px')};
+  margin-bottom: ${props => (props.uploadImg.length > 0 ? '20px' : '0px')};
+  width: ${props => props.uploadImg.length && '200px'};
+  height: ${props => props.uploadImg.length && '200px'};
+`;
+const EditImg = styled.img`
+  width: ${props => props.width || '30px'};
+  height: ${props => props.width || '30px'};
+  border-radius: ${props => props.width / 2 || 15}px;
+`;
+const EditWrap = styled.div`
+  cursor: pointer;
+  background-color: #666;
+  position: absolute;
+  bottom: 0;
+  left: 46px;
+  margin-right: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;

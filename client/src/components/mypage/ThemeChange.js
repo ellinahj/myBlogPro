@@ -3,11 +3,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setThemeColor, setThemeRGBA } from '../../actions/base';
 import ChromePicker from 'react-color';
-export default function ThemeChange() {
+export default function ThemeChange(props) {
+  const { handleThemeChange } = props;
   const dispatch = useDispatch();
   const [openPicker, setOpenPicker] = useState(false);
   const themeButton = useRef(null);
-  const userColor = useSelector(state => state.common.enteredColor);
+  const userColor = useSelector(state => state.common.userColor);
   const rgbaColor = useSelector(state => state.common.rgbaColor);
 
   const popover = {
@@ -48,9 +49,11 @@ export default function ThemeChange() {
   }, []);
   return (
     <Con>
-      <ThemeButton onClick={handleClick} userColor={userColor}>
-        테마변경
-      </ThemeButton>
+      <WidthDiv>
+        <ThemeButton onClick={handleClick} userColor={userColor}>
+          테마변경
+        </ThemeButton>
+      </WidthDiv>
       {openPicker ? (
         <div style={popover} ref={themeButton}>
           <div style={cover} onClick={handleClose} />
@@ -65,9 +68,12 @@ const Con = styled.div`
   display: flex;
   align-items: center;
 `;
+const WidthDiv = styled.div`
+  width: 120px;
+`;
 const ThemeButton = styled.button`
-  width: 90px;
-  height: 38px;
+  width: 80px;
+  height: 33px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -80,9 +86,8 @@ const ThemeButton = styled.button`
 `;
 
 const ColorBox = styled.div`
-  width: 35px;
-  height: 35px;
-  margin-left: 30px;
+  width: 30px;
+  height: 30px;
   border-radius: 10px;
   background: ${props => props.userColor};
 `;

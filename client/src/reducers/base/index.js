@@ -10,7 +10,7 @@ import {
 
 export const initialState = {
   number: 0,
-  enteredColor: '#ff254f',
+  userColor: '#ff254f',
   rgbaColor: '#fbfbfb',
   isLoggedIn: false,
   userInfo: undefined,
@@ -27,7 +27,7 @@ const commonReducer = (state = initialState, action) => {
   } else if (action.type === SET_THEME_COLOR) {
     return {
       ...state,
-      enteredColor: action.payload
+      userColor: action.payload
     };
   } else if (action.type === SET_THEME_RGBA) {
     return {
@@ -46,10 +46,12 @@ const commonReducer = (state = initialState, action) => {
     };
   } else if (action.type === SET_CATE) {
     return {
+      ...state,
       category: action.payload
     };
   } else if (action.type === SET_LOADING) {
     return {
+      ...state,
       loading: action.payload
     };
   }

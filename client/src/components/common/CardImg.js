@@ -2,16 +2,16 @@ import styled from 'styled-components';
 import { useState, useEffect, useRef } from 'react';
 
 //임시 image
-import testImage from '../../../static/images/slide2.jpg';
+import testImage from '../../../public/images/slide2.jpg';
 export default function CardImg(props) {
   const [index, setIndex] = useState(0);
   const array = useRef(
     new Array(
-      '../../../static/images/slide1.jpg',
-      '../../../static/images/slide2.jpg',
-      '../../../static/images/slide3.jpg',
-      '../../../static/images/slide4.jpg',
-      '../../../static/images/slide5.jpg'
+      '../../../public/images/slide1.jpg',
+      '../../../public/images/slide2.jpg',
+      '../../../public/images/slide3.jpg',
+      '../../../public/images/slide4.jpg',
+      '../../../public/images/slide5.jpg'
     )
   );
   //

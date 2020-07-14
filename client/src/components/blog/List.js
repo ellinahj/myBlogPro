@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import Search from './Search';
-import locationImg from '../../../static/images/Location.png';
 import { it } from 'date-fns/locale';
 
 export default function List(props) {
@@ -24,7 +23,7 @@ export default function List(props) {
                   <Title>{item.title}</Title>
                   <Comment>{item.comment}</Comment>
                   <Location>
-                    {item.location_name && <Location_icon src={locationImg} />}
+                    {item.location_name && <Location_icon src={'/images/location.png'} />}
                     {item.location_name}
                   </Location>
                 </ContentArea>

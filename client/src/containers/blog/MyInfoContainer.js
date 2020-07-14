@@ -1,16 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
-import defaultImg from '../../../static/images/default_profile.png';
 import { colorLuminance } from '../../utils/common';
 export default function MyInfo() {
-  const userColor = useSelector(state => state.common.enteredColor);
+  const userColor = useSelector(state => state.common.userColor);
   const luminantColor = userColor && colorLuminance(userColor, 0.7);
   const userInfo = useSelector(state => state.common.userInfo);
   return (
     <MyInfoWrap userColor={userColor} luminantColor={luminantColor}>
       <Profile>
-        <Img src={userInfo && userInfo.profile_url ? userInfo.profile_url : defaultImg} />
+        <Img src={userInfo && userInfo.profile_url ? userInfo.profile_url : '/images/default_profile.png'} />
         <NickName>{userInfo && userInfo.nickname}</NickName>
       </Profile>
       <Comment>{userInfo && userInfo.main_title}</Comment>

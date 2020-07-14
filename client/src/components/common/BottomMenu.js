@@ -4,15 +4,8 @@ import Link from 'next/link';
 import Router from 'next/router';
 import { useSelector } from 'react-redux';
 
-// images
-import imgHome from '../../../static/images/home.svg';
-import hamburger from '../../../static/images/hamburger.svg';
-import search from '../../../static/images/search.svg';
-import settings from '../../../static/images/settings.svg';
-import add from '../../../static/images/add.svg';
-
 export default function BottomMenu({ isScrollDown }) {
-  const userColor = useSelector(state => state.common.enteredColor);
+  const userColor = useSelector(state => state.common.userColor);
   return (
     <BottomMenuWrap isScrollDown={isScrollDown}>
       <BottomMenuSize>

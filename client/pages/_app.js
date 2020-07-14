@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
 import { Provider } from 'react-redux';
 import store from '../src/store';
-import * as theme from '../src/utils/theme';
+import { theme } from '../src/utils/theme';
 import 'react-image-crop/dist/ReactCrop.css';
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -18,6 +18,7 @@ const GlobalStyle = createGlobalStyle`
         height:100%;
         position: relative;
         font-family: 'Nanum Myeongjo', serif;
+        font-size:${props => props.theme.mFont}
         /* font-family: 'Noto Sans KR', sans-serif; */
         /* font-family: 'Noto Serif KR', serif; */
         /* font-family: 'Nanum Gothic Coding', monospace; */
@@ -41,21 +42,24 @@ const GlobalStyle = createGlobalStyle`
       list-style:none;
   };
   button{
+    font-family:'Nanum Myeongjo', serif;
     :hover {
-    opacity: 0.7;
+    opacity: 1;
     }
   }
   ::-webkit-input-placeholder {
-  font-family: 'Nanum Myeongjo'H, serif;
+  font-family: 'Nanum Myeongjo', serif;
+}
+input{
+  font-family:'Nanum Myeongjo', serif;
 }
 `;
 
 export default function MyApp({ Component, pageProps }) {
   const [currentColor, setCurrentColor] = useState('#ff254f');
-
   useEffect(() => {
     function handleSubscribe() {
-      const newColor = store.getState().common.enteredColor;
+      const newColor = store.getState().common.userColor;
       if (newColor !== currentColor) {
         setCurrentColor(newColor);
       }
@@ -66,8 +70,8 @@ export default function MyApp({ Component, pageProps }) {
 
   return (
     <Provider store={store}>
-      <GlobalStyle userTheme={currentColor} />
-      <ThemeProvider theme={theme}>
+      <GlobalStyle theme={theme} userTheme={currentColor} />
+      <ThemeProvider theme={theme} userColor={currentColor}>
         <Component {...pageProps} />
       </ThemeProvider>
     </Provider>

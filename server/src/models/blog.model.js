@@ -17,4 +17,32 @@ const selectBlog = (user_id, cate_id) => {
     );
   });
 };
-export { selectBlog };
+const insertBlog = (data, files) => {
+  console.log(files, "files");
+  return new Promise((resolve, reject) => {
+    connection.query(
+      "insert into mydiary.blog (user_id,cate_id,write_date,date,title,comment,location_name,thumnail,first_image,second_image,third_image) VALUES (?,?,?,?,?,?,?,?,?,?,?) ",
+      [
+        7,
+        14,
+        "2020-07-01 01:43:56",
+        "2020-07-01 01:43:56",
+        "하이",
+        "ㅎ~~~",
+        "",
+        files[0],
+        files[0],
+        files[1],
+        files[2]
+      ],
+      function(err, rows) {
+        if (err) {
+          return reject(err);
+        } else {
+          return resolve(rows);
+        }
+      }
+    );
+  });
+};
+export { selectBlog, insertBlog };

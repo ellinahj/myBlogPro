@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled, { css } from 'styled-components';
-import Img_search from '../../../static/images/search.svg';
-import Img_close from '../../../static/images/close.svg';
 
 export default function SearchContainer() {
   const [searchValue, setSearchValue] = useState('');
@@ -69,7 +67,7 @@ export default function SearchContainer() {
           placeholder="검색어를 입력하세요"
           value={searchValue}
         />
-        <Img src={Img_search} width={28} onClick={search} />
+        <Img src={'/images/search.svg'} width={28} onClick={search} />
       </SearchCon>
       <SearchHistoryCon showHistory={showHistory} ref={inputArea}>
         <ul>
@@ -79,7 +77,7 @@ export default function SearchContainer() {
                 <li key={index}>
                   {item}
                   <IconCloseCon onClick={e => removeHistory(index)}>
-                    <IconCloseImg src={Img_close} />
+                    <IconCloseImg src={'/images/close.svg'} />
                   </IconCloseCon>
                 </li>
               );

@@ -9,7 +9,7 @@ import { getCate, getBlog } from '../../api/blog';
 import store from '../../store';
 export default function ListContainer() {
   const dispatch = useDispatch();
-  const userColor = useSelector(state => state.common.enteredColor);
+  const userColor = useSelector(state => state.common.userColor);
   const luminantColor = userColor && colorLuminance(userColor, 0.7);
   const userInfo = useSelector(state => state.common.userInfo);
   const category = useSelector(state => state.common.category);
@@ -89,23 +89,17 @@ export default function ListContainer() {
     // });
   }, [menuIndex]);
 
-  // const [loading, response, error] = useRequest('https://jsonplaceholder.typicode.com/posts');
-  // console.log(loading, response, error);
-  // if (!loading && !response) {
-  //   return null;
-  // }
-
-  const getData = load => {
-    if (load) {
-      fetch('http://localhost:3001/api/hello').then(res => {
-        return !res.ok ? res.json().then(e => Promise.reject(e)) : res.json().then(body => console.log(body, 'body'));
-      });
-      // .then(res => {
-      //   console.log('getData then2');
-      //   props.setState([...props.state, ...res.message]);
-      // });
-    }
-  };
+  // const getData = load => {
+  //   if (load) {
+  //     fetch('http://localhost:3001/api/hello').then(res => {
+  //       return !res.ok ? res.json().then(e => Promise.reject(e)) : res.json().then(body => console.log(body, 'body'));
+  //     });
+  //     // .then(res => {
+  //     //   console.log('getData then2');
+  //     //   props.setState([...props.state, ...res.message]);
+  //     // });
+  //   }
+  // };
   //   useEffect(() => {
   //     if (document.body.scrollHeight <= window.innerHeight && props.state.length > 0) {
   //       console.log(document.body.scrollHeight, window.innerHeight, 'scrollHeight<inner?');
@@ -113,12 +107,12 @@ export default function ListContainer() {
   //     }
   //   }, [state]);
 
-  useEffect(() => {
-    if (loadMore) {
-      getData(loadMore);
-      setLoadMore(false);
-    }
-  }, [getData, loadMore]);
+  // useEffect(() => {
+  //   if (loadMore) {
+  //     getData(loadMore);
+  //     setLoadMore(false);
+  //   }
+  // }, [getData, loadMore]);
 
   useEffect(() => {
     window.addEventListener('scroll', () => {

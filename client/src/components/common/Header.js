@@ -11,7 +11,7 @@ import { Router } from 'next/router';
 
 export default function Header() {
   const dispatch = useDispatch();
-  const userColor = useSelector(state => state.common.enteredColor);
+  const userColor = useSelector(state => state.common.userColor);
   const userInfo = useSelector(state => state.common.userInfo);
   const isLoggedIn = useSelector(state => state.common.isLoggedIn);
   const luminantColor = userColor && colorLuminance(userColor, 0.7);
@@ -20,7 +20,6 @@ export default function Header() {
     const config = {
       access_token: storedToken
     };
-    // console.log(isLoggedIn, 'isLoggedIn');
 
     loginCheck(config).then(res => {
       if (res.status < 300) {
@@ -29,7 +28,7 @@ export default function Header() {
         store.dispatch(setUserInfo(res.data));
       }
     });
-  }, [isLoggedIn]);
+  }, []);
   return (
     <HeadWrap userColor={userColor} luminantColor={luminantColor}>
       <Link href="/blog">

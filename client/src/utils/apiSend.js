@@ -1,10 +1,7 @@
 import axios from 'axios';
 import Router from 'next/router';
-import React from 'react';
-import { useDispatch } from 'react-redux';
 import store from '../store';
 import styled from 'styled-components';
-import spinner from '../../static/images/spinner.svg';
 import { setUserInfo, setLogin, setThemeColor, setLoading, setLoding } from '../actions/base';
 
 const instance = axios.create({
@@ -14,13 +11,10 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
   function(config) {
-    // 요청 바로 직전
-    // axios 설정값에 대해 작성
-    // store.dispatch(setLoding(true));
+    store.dispatch(setLoding(true));
     return config;
   },
   function(error) {
-    // 요청 에러 처리를 작성
     return Promise.reject(error);
   }
 );
@@ -29,6 +23,7 @@ instance.interceptors.response.use(
     // http status가 200인 경우
     // 응답 바로 직전에 대해 작성
     // .then()
+    store.dispatch(setLoding(false));
     store.dispatch(setLogin(true));
     return response;
   },

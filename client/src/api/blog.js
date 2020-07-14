@@ -7,6 +7,14 @@ const getCate = config => {
     headers: config
   });
 };
+const setBlog = (config, data) => {
+  return apiSend({
+    url: `/blog/write/`,
+    method: 'post',
+    headers: config,
+    data: data
+  });
+};
 const getBlog = (config, id) => {
   return apiSend({
     url: `/blog/read/${id}`,
@@ -15,4 +23,4 @@ const getBlog = (config, id) => {
   });
 };
 
-export { getCate, getBlog };
+export { getCate, setBlog, getBlog };
