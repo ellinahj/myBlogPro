@@ -2,19 +2,20 @@ import styled, { css } from 'styled-components';
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import ReactCrop from 'react-image-crop';
+import { theme, BasicTitle } from '../../utils/theme';
 
 export default function Upload(props) {
-  const { imgFormData } = props;
-  const [file, setFile] = useState([null, null, null]);
+  const { imgFormData, prevImg, showEdit } = props;
+  const [file, setFile] = useState([null]);
   const [upImg, setUpImg] = useState([]);
   const [crop, setCrop] = useState({ unit: '%', width: 100, aspect: 1 });
-  const [previewUrl, setPreviewUrl] = useState([null, null, null]);
+  const [previewUrl, setPreviewUrl] = useState([null]);
   const [index, setIndex] = useState(null);
   const [filename, setFilename] = useState('');
   const [fileInfo, setFileInfo] = useState('');
   const imgRef = useRef(null);
   const userColor = useSelector(state => state.common.userColor);
-
+  const userInfo = useSelector(state => state.common.userInfo);
   let inputRefs = useRef([]);
   const controlFileBtn = (e, index) => {
     e.preventDefault();
@@ -73,6 +74,8 @@ export default function Upload(props) {
         const tempPreviewUrl = [...previewUrl];
         tempPreviewUrl.splice(index, 1, window.URL.createObjectURL(blob));
         setPreviewUrl(tempPreviewUrl);
+        prevImg(tempPreviewUrl);
+
         const blobToFile = new File([blob], filename);
         const tempFile = [...file];
         tempFile.splice(index, 1, blobToFile);
@@ -85,32 +88,47 @@ export default function Upload(props) {
   useEffect(() => {
     imgFormData(file);
   }, [file]);
-
   return (
     <Row>
-      <ReactCropDiv
-        userColor={userColor}
-        src={upImg}
-        onImageLoaded={onLoad}
-        crop={crop}
-        onChange={img => setCrop(img)}
-        onComplete={makeClientCrop}
-        uploadImg={upImg}
-      />
-      <ImageRow existImg={previewUrl && previewUrl[0]}>
-        <EditWrap>
-          <EditImg src={'/images/edit.svg'} width={16} onClick={e => controlFileBtn(e, 0)} />
-        </EditWrap>
-        <input
-          name="file"
-          type="file"
-          accept="image/*"
-          ref={ref => (inputRefs.current[0] = ref)}
-          style={{ display: 'none' }}
-          onChange={e => addImg(e, 0)}
+      <TitleCenter>프로필편집</TitleCenter>
+      <ProfileRow>
+        <ProfileCenter>
+          {showEdit && (
+            <EditWrap>
+              <EditImg src={'/images/edit.svg'} width={16} onClick={e => controlFileBtn(e, 0)} />
+            </EditWrap>
+          )}
+
+          <input
+            name="file"
+            type="file"
+            accept="image/*"
+            ref={ref => (inputRefs.current[0] = ref)}
+            style={{ display: 'none' }}
+            onChange={e => addImg(e, 0)}
+          />
+
+          {previewUrl && previewUrl[0] ? (
+            <Img src={previewUrl[0]} width={70} />
+          ) : (
+            <Img
+              src={userInfo && userInfo.profile_url ? userInfo.profile_url : '/images/default_profile.png'}
+              width={70}
+            />
+          )}
+        </ProfileCenter>
+      </ProfileRow>
+      <ProfileRow>
+        <ReactCropDiv
+          userColor={userColor}
+          src={upImg}
+          onImageLoaded={onLoad}
+          crop={crop}
+          onChange={img => setCrop(img)}
+          onComplete={makeClientCrop}
+          uploadImg={upImg}
         />
-        {previewUrl && previewUrl[0] && <PreviewImg src={previewUrl[0]} />}
-      </ImageRow>
+      </ProfileRow>
     </Row>
   );
 }
@@ -125,8 +143,30 @@ const PreviewImg = styled.img`
 const ImageRow = styled.div`
   display: flex;
   flex-direction: column;
-  margin-bottom: ${props => props.existImg && '30px'};
 `;
+const ProfileRow = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  margin: 20px 0 20px;
+`;
+const TitleCenter = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin: 20px 0;
+  ${BasicTitle}
+  font-size: ${props => props.theme.mlFont};
+`;
+
+const ProfileCenter = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+`;
+
 const ReactCropDiv = styled(ReactCrop)`
   margin-bottom: ${props => (props.uploadImg.length > 0 ? '20px' : '0px')};
   width: ${props => props.uploadImg.length && '200px'};
@@ -150,4 +190,11 @@ const EditWrap = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+const Img = styled.img`
+  width: ${props => props.width || '30px'};
+  height: ${props => props.width || '30px'};
+  border-radius: ${props => props.width / 2 || 15}px;
+  margin-right: 0;
+  border: 1px solid #ddd;
 `;

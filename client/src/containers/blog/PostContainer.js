@@ -74,33 +74,12 @@ export default function addContainer() {
   return (
     <Contaniner>
       <Row>
-        <Col className="end" userColor={userColor}>
-          <svg
-            role="img"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24px"
-            height="24px"
-            viewBox="0 0 24 24"
-            aria-labelledby="starIconTitle"
-            stroke="#777"
-            strokeWidth="1"
-            strokeLinecap="square"
-            strokeLinejoin="miter"
-            fill="none"
-            color="#777"
-          >
-            <title id="starIconTitle">Star</title>
-            <polygon points="12 17.844 6.183 20.902 7.294 14.425 2.588 9.838 9.092 8.893 12 3 14.908 8.893 21.412 9.838 16.706 14.425 17.817 20.902" />
-          </svg>
-        </Col>
-      </Row>
-      <Row>
         <Subject>분류</Subject>
         <>
           {category.length > 0 &&
             category.map((item, index) => {
               return (
-                <label className="radio_container" key={index}>
+                <label className="radio_container" key={index} userColor={userColor}>
                   {item.title}
                   <input type="radio" onChange={e => checked(e, index)} checked={radioIndex === index} />
                   <span className="checkmark"></span>
@@ -152,23 +131,26 @@ export default function addContainer() {
 const Contaniner = styled(Con)`
   display: flex;
   flex-direction: column;
+  margin-top: 30px;
 `;
 const Row = styled.div`
   display: flex;
   justify-content: flex-start;
-  padding: 15px;
+  padding: 20px 15px;
   box-sizing: border-box;
+  align-items: center;
   .end {
     margin-left: auto;
   }
   .react-datepicker__input-container input {
-    height: 25px;
+    height: 30px;
     font-size: 15px;
-    line-height: 25px;
+    line-height: 30px;
     padding-left: 5px;
-    background: #efefef;
-    border: 1px solid #777;
-    cursor: pointer;
+    background: #eee;
+    outline: none;
+    border: 0;
+    border-radius: 5px;
     ::placeholder {
       color: #000;
     }
@@ -203,18 +185,18 @@ const Row = styled.div`
     left: 0;
     height: 21px;
     width: 21px;
-    background-color: #eee;
+    background: ${props => props.userColor || '#aaa'};
     border-radius: 50%;
   }
 
   /* On mouse-over, add a grey background color */
   .radio_container:hover input ~ .checkmark {
-    background-color: #ccc;
+    background-color: ${props => props.userColor || '#aaa'};
   }
 
   /* When the radio button is checked, add a blue background */
   .radio_container input:checked ~ .checkmark {
-    background-color: #ff254f;
+    background-color: ${props => props.userColor || '#aaa'};
   }
 
   /* Create the indicator (the dot/circle - hidden when not checked) */
@@ -236,7 +218,7 @@ const Row = styled.div`
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: white;
+    background: ${props => props.userColor || '#fff'};
   }
   /* .check_container {
     display: block;
@@ -266,20 +248,19 @@ const Subject = styled.div`
 `;
 const Input = styled.input`
   flex: 1;
-  height: 25px;
+  height: 30px;
+  border: none;
+  background: #eee;
+  border-radius: 5px;
 `;
 const Textarea = styled.textarea`
   flex: 1;
   min-height: 200px;
 `;
 const SubmitBtn = styled.button`
-  padding: 9px 20px;
-  background: #ff254f;
-  border: none;
-  color: #fff;
+  padding: 5px 10px;
   cursor: pointer;
   font-size: 16px;
-  border-radius: 3px;
 `;
 const RowRight = styled(Row)`
   justify-content: center;

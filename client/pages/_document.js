@@ -22,10 +22,6 @@ export default class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&display=swap"
             rel="stylesheet"
           ></link>
-          <script
-            type="text/javascript"
-            src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=rt8q7p1vkc"
-          ></script>
           <link
             href="https://fonts.googleapis.com/css?family=Nanum+Gothic+Coding|Noto+Sans+KR&display=swap"
             rel="stylesheet"

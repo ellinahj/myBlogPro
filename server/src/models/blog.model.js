@@ -45,4 +45,21 @@ const insertBlog = (data, files) => {
     );
   });
 };
-export { selectBlog, insertBlog };
+const selectSearchedBlog = (user_id, cate_id, value) => {
+  const markedValue = "%" + value + "%";
+  return new Promise((resolve, reject) => {
+    console.log(markedValue, "marked");
+    connection.query(
+      "select * from mydiary.blog where user_id=? and cate_id=? and concat(title,location_name,comment) like ?",
+      [user_id, cate_id, markedValue],
+      function(err, rows) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(rows);
+        }
+      }
+    );
+  });
+};
+export { selectBlog, insertBlog, selectSearchedBlog };

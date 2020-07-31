@@ -1,4 +1,8 @@
-import { selectCateNumber, insertCategory } from "../models/category.model";
+import {
+  selectCateNumber,
+  insertCategory,
+  deleteCategory
+} from "../models/category.model";
 import { authCheck } from "../public/function";
 const getCateNumber = async (req, res, next) => {
   const token = req.headers.access_token;
@@ -72,5 +76,25 @@ const setCategory = async (req, res, next) => {
     next(e);
   }
 };
+const delCategory = async (req, res, next) => {
+  const token = req.headers["access_token"];
+  const result = await authCheck(token);
+  const { id } = req.body;
+  try {
+    if (result) {
+      console.log(result, "result");
+      // deleteCategory(result.id, id)
+      //   .then(data => {})
+      //   .catch(err => console.log(err, "err"));
+    } else {
+      res
+        .status(400)
+        .json({ status: 400, message: " invalid token" })
+        .end();
+    }
+  } catch {
+    next(e);
+  }
+};
 
-export { getCateNumber, setCategory };
+export { getCateNumber, setCategory, delCategory };

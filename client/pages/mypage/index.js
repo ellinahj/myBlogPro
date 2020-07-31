@@ -13,22 +13,16 @@ export default function Mypage() {
     setShowEditPw(false);
   };
   const clickEditPw = e => {
-    setShowEditPw(true);
-    setShowEdit(false);
+    setShowEditPw(!showEditPw);
   };
 
   return (
     <Layout>
       <>
         <TopInfo clickEdit={clickEdit} />
-        {showEditPw ? (
-          <EditPw />
-        ) : (
-          <>
-            <EditBasicInfo showEdit={showEdit} clickEditPw={clickEditPw} />
-            <EditMenu />
-          </>
-        )}
+        <EditBasicInfo showEdit={showEdit} />
+        <EditPw showEditPw={showEditPw} clickEditPw={clickEditPw} />
+        <EditMenu />
       </>
     </Layout>
   );

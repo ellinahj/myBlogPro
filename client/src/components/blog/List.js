@@ -1,56 +1,49 @@
 import styled from 'styled-components';
-import Search from './Search';
 import { it } from 'date-fns/locale';
+import { useSelector } from 'react-redux';
 
 export default function List(props) {
-  const { luminantColor, blogData } = props;
+  const { luminantColor, blogData, sendToListValue } = props;
+  const userColor = useSelector(state => state.common.userColor);
+  console.log(sendToListValue, 'sen');
   return (
     <ListArea>
       <Content>
-        <Search />
         {blogData &&
           blogData.length > 0 &&
-          blogData.map((item, index) => {
-            return (
-              <CardContainer key={index} luminantColor={luminantColor}>
-                {item.first_image && (
-                  <ImageArea>
-                    <Img src={item.first_image} />
-                  </ImageArea>
-                )}
-                <ContentArea>
-                  <Date>2020년 06월 27일 토요일</Date>
-                  <Title>{item.title}</Title>
-                  <Comment>{item.comment}</Comment>
-                  <Location>
-                    {item.location_name && <Location_icon src={'/images/location.png'} />}
-                    {item.location_name}
-                  </Location>
-                </ContentArea>
-              </CardContainer>
-            );
-          })}
+          blogData
+            .filter(some => some === '')
+            .map((item, index) => {
+              return (
+                <CardContainer key={index} luminantColor={luminantColor} userColor={userColor}>
+                  {item.first_image && (
+                    <ImageArea>
+                      <Img src={item.first_image} />
+                    </ImageArea>
+                  )}
+                  <ContentArea>
+                    <Date>2020년 06월 27일 토요일</Date>
+                    <Title>{item.title}</Title>
+                    <Comment>{item.comment}</Comment>
+                    <Location>
+                      {item.location_name && <Location_icon src={'/images/location.png'} />}
+                      {item.location_name}
+                    </Location>
+                  </ContentArea>
+                </CardContainer>
+              );
+            })}
       </Content>
     </ListArea>
-    // {/* {loading && <LoadingState src={spinner} />}
-    // {error && <div>에러발생!</div>} */}
   );
 }
-
-const MyListWrap = styled.section`
-  width: 100%;
-  height: 100%;
-  position: relative;
-`;
-
 const ListArea = styled.div`
   width: 100%;
   height: 100%;
 `;
 const Content = styled.section`
-  padding: 30px;
+  padding: 0 40px 40px;
   box-sizing: border-box;
-  /* overflow: auto; */
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
@@ -59,12 +52,13 @@ const Content = styled.section`
 const CardContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 20px 0 15px 0;
+  margin: 0 0 30px;
   width: 100%;
-  padding: 20px;
+  padding: 30px;
   box-sizing: border-box;
-  border-bottom: 2px dotted #ddd;
+  border-bottom: 2px dotted ${props => (props.userColor ? props.userColor : '#ddd')};
   background: #f5f5f5;
+  border-radius: 5px;
 `;
 const ImageArea = styled.div`
   width: 100%;

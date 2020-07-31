@@ -20,5 +20,5 @@ const ImgWrap = styled.img`
   cursor: pointer;
   background: ${props => (props.bg ? props.bg : '')};
   border-radius: ${props => (props.radius ? `${props.radius}` : '')};
-  padding: ${props => (props.padding ? props.padding : '')};
+  padding: ${props => `${props.padding}px` || ''};
 `;

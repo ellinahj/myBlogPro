@@ -13,9 +13,9 @@ export default function LoginContainer() {
   const pwValue = useRef(null);
   const isLoggedIn = useSelector(state => state.common.isLoggedIn);
 
-  useEffect(() => {
-    isLoggedIn && Router.push('/blog');
-  }, []);
+  // useEffect(() => {
+  //   isLoggedIn && Router.push('/blog');
+  // }, []);
 
   const userLogin = () => {
     const data = { user_id: id, password: pw };
@@ -37,7 +37,7 @@ export default function LoginContainer() {
       userLogin();
     }
   };
-  const showPw = () => {
+  const showPwd = () => {
     if (pwValue.current.type === 'password') {
       pwValue.current.type = 'text';
     } else {
@@ -59,12 +59,12 @@ export default function LoginContainer() {
         ></input>
         <CheckBoxCon>
           비밀번호 표시
-          <CheckBox type="checkbox" onClick={showPw} />
+          <CheckBox type="checkbox" onClick={showPwd} />
         </CheckBoxCon>
         <LoginBtn onClick={userLogin}>로그인</LoginBtn>
         <BottomWrap>
           <PwdCon>비밀번호를 잊으셨나요?</PwdCon>
-          <JoinCon>회원가입</JoinCon>
+          <JoinCon onClick={() => Router.push('/join')}>회원가입</JoinCon>
         </BottomWrap>
       </InputWrap>
     </Container>

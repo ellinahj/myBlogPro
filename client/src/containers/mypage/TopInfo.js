@@ -40,7 +40,7 @@ export default function TopInfo(props) {
 
 const MyInfoWrap = styled.section`
   width: 100%;
-  padding: 50px 30px 40px;
+  padding: 50px 40px 40px;
   box-sizing: border-box;
   background-color: #fafafa;
   background-repeat: no-repeat;

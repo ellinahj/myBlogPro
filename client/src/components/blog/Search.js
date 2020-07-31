@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled, { css } from 'styled-components';
 
-export default function SearchContainer() {
+export default function SearchContainer(props) {
   const [searchValue, setSearchValue] = useState('');
   const [storageValue, setStorageValue] = useState('');
   const [showHistory, setShowHistory] = useState(false);
   const inputArea = useRef(null);
-
+  const bodyArea = useRef(null);
+  const { setSearchedValue, handleClickStorageValue } = props;
   useEffect(() => {
     const replace = searchValue.replace(/^ /gi, '');
     setSearchValue(replace);
@@ -22,7 +23,8 @@ export default function SearchContainer() {
       const combineSearchHistory = [...getSearchHistory, searchValue];
       localStorage.setItem('searchedHistory', JSON.stringify(combineSearchHistory));
     }
-    showSearchHistory();
+    setSearchedValue(searchValue);
+    setShowHistory(false);
   };
 
   const showSearchHistory = () => {
@@ -33,17 +35,17 @@ export default function SearchContainer() {
   };
 
   const removeHistory = index => {
+    console.log(index, 'inde');
     const arr = JSON.parse(localStorage.getItem('searchedHistory')) || [];
     arr.splice(index, 1);
     localStorage.setItem('searchedHistory', JSON.stringify(arr));
-    console.log(arr, '1arr');
     setStorageValue(arr);
     arr.length === 0 && setStorageValue(null);
   };
   useEffect(() => {
     //입력창 밖 선택 시 검색내역창 감추기
     function handleClickOutside(e) {
-      if (inputArea.current && !inputArea.current.contains(e.target)) {
+      if (inputArea.current && !inputArea.current.contains(e.target) && bodyArea.current.contains(e.target)) {
         setShowHistory(false);
         setSearchValue('');
       }
@@ -53,43 +55,61 @@ export default function SearchContainer() {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [inputArea]);
+  const handleChange = e => {
+    setSearchValue(e.target.value);
+  };
+
   return (
-    <Container>
-      <SearchCon>
-        <Input
-          type="text"
-          ref={inputArea}
-          onClick={showSearchHistory}
-          onKeyDown={e => {
-            e.keyCode === 13 && search();
-          }}
-          onChange={e => setSearchValue(e.target.value)}
-          placeholder="검색어를 입력하세요"
-          value={searchValue}
-        />
-        <Img src={'/images/search.svg'} width={28} onClick={search} />
-      </SearchCon>
-      <SearchHistoryCon showHistory={showHistory} ref={inputArea}>
-        <ul>
-          {storageValue ? (
-            storageValue.map((item, index) => {
-              return (
-                <li key={index}>
-                  {item}
-                  <IconCloseCon onClick={e => removeHistory(index)}>
-                    <IconCloseImg src={'/images/close.svg'} />
-                  </IconCloseCon>
-                </li>
-              );
-            })
-          ) : (
-            <HistoryNotexist>최근 검색어가 없습니다.</HistoryNotexist>
-          )}
-        </ul>
-      </SearchHistoryCon>
-    </Container>
+    <ListArea ref={bodyArea}>
+      <Content>
+        <Container>
+          <SearchCon ref={inputArea}>
+            <Input
+              type="text"
+              onClick={showSearchHistory}
+              onKeyDown={e => {
+                e.keyCode === 13 && search();
+              }}
+              onChange={e => handleChange(e)}
+              placeholder="검색어를 입력하세요"
+              value={searchValue}
+            />
+            <Img src={'/images/search.svg'} width={28} onClick={search} />
+          </SearchCon>
+          <SearchHistoryCon showHistory={showHistory} ref={inputArea}>
+            <ul>
+              {storageValue ? (
+                storageValue.map((item, index) => {
+                  return (
+                    <li key={index}>
+                      <Word onClick={() => handleClickStorageValue(storageValue[index])}>{item}</Word>
+                      <IconCloseCon onClick={() => removeHistory(index)}>
+                        <IconCloseImg src={'/images/close.svg'} />
+                      </IconCloseCon>
+                    </li>
+                  );
+                })
+              ) : (
+                <HistoryNotexist>최근 검색어가 없습니다.</HistoryNotexist>
+              )}
+            </ul>
+          </SearchHistoryCon>
+        </Container>
+      </Content>
+    </ListArea>
   );
 }
+const ListArea = styled.div`
+  width: 100%;
+  height: 100%;
+`;
+const Content = styled.section`
+  padding: 40px;
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+`;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -102,7 +122,6 @@ const SearchCon = styled.div`
   background-color: #efefef;
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
 `;
 const Img = styled.img`
   width: ${props => props.width || '32px'};
@@ -114,7 +133,7 @@ const Input = styled.input`
   background-color: transparent;
   width: 100%;
   height: 25px;
-  margin: 0 10px;
+  margin: 0 20px;
   border: none;
   outline: none;
   font-size: 18px;
@@ -122,22 +141,26 @@ const Input = styled.input`
 `;
 const SearchHistoryCon = styled.div`
   display: ${props => !props.showHistory && 'none'};
-  width: 95%;
+  width: 100%;
   ul {
     padding: 0;
     width: 100%;
   }
   li {
     box-sizing: border-box;
-    padding: 5px;
+    padding: 5px 20px;
     width: 100%;
     margin-bottom: 5px;
     display: flex;
     justify-content: space-between;
+    cursor: pointer;
   }
 `;
 const HistoryNotexist = styled.div`
   color: #aaa;
+`;
+const Word = styled.div`
+  width: 100%;
 `;
 const IconCloseCon = styled.div`
   width: 18px;

@@ -18,21 +18,20 @@ const GlobalStyle = createGlobalStyle`
         height:100%;
         position: relative;
         font-family: 'Nanum Myeongjo', serif;
-        font-size:${props => props.theme.mFont}
+        font-size:${props => props.theme.mFont};
+        background:#fcfcfc;
         /* font-family: 'Noto Sans KR', sans-serif; */
         /* font-family: 'Noto Serif KR', serif; */
         /* font-family: 'Nanum Gothic Coding', monospace; */
   };
-  #__next{
+  #__next{  
             max-width:767px;
             min-height:100%;
             box-sizing:border-box;
             margin: 0 auto;
-            /* overflow-y:auto; */
             border-left: 1px solid #dedede;
             border-right: 1px solid #dedede;
-            /* background: #fbfbfb; */
-          /* font-family: 'Nanum Gothic Coding', monospace; */
+            background: #fff;
   };
   a {
       text-decoration:none; 

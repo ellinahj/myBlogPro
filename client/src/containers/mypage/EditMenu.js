@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { setCate } from '../../actions/base';
 import { getCate } from '../../api/blog';
 import Container from '../../components/common/Container';
 import ImgBtn from '../../components/common/ImgBtn';
-import { BasicTitle, BlueEditBtn } from '../../utils/theme';
+import { BasicTitle, BlueEditBtn, BasicButton, theme } from '../../utils/theme';
+import { createGunzip } from 'zlib';
 
 export default function ChangeMenu() {
   const dispatch = useDispatch();
@@ -62,11 +63,13 @@ export default function ChangeMenu() {
     setCateValue(tempCateValue);
     setCateInputCount(cateInputCount - 1);
   };
+  console.log(countCate, 'cateCount');
+  console.log(cateInputCount, 'cateInputCount');
   return (
     <Con>
       <CenterRow>
         <StyledColumn>
-          <TitleRow>
+          <TitleRow edit={edit}>
             <Title>
               메뉴<TitleInfo>(최대 3개) </TitleInfo>
             </Title>
@@ -82,7 +85,7 @@ export default function ChangeMenu() {
             category.length > 0 &&
             category.map((item, index) => {
               return edit ? (
-                <Row>
+                <MenuRow>
                   <NumberFont>{index + 1}.</NumberFont>
                   <Input
                     defaultValue={item.title}
@@ -90,15 +93,25 @@ export default function ChangeMenu() {
                     key={index}
                     onChange={e => handleInput(e)}
                   />
-                </Row>
+
+                  <CloseBtn
+                    src={'/images/close.svg'}
+                    width={17}
+                    height={17}
+                    bg="#ddd"
+                    radius="50%"
+                    padding={2}
+                    onClick={() => handleDelete(index)}
+                  />
+                </MenuRow>
               ) : (
-                <Row>
+                <MenuRow>
                   <NumberFont>{index + 1}.</NumberFont>
                   <MenuFont key={index}>{item.title}</MenuFont>
-                </Row>
+                </MenuRow>
               );
             })}
-          {edit && (
+          {/* {edit && (
             <Column>
               {cateInputCount > 0 &&
                 Array(cateInputCount)
@@ -113,16 +126,17 @@ export default function ChangeMenu() {
                           src={'/images/close.svg'}
                           width={17}
                           height={17}
-                          bg="#ccc"
+                          bg="#aaa"
                           radius="50%"
-                          padding={'2px'}
+                          padding={2}
                           onClick={() => handleDelete(index)}
                         />
                       </CenterLeftRow>
                     );
                   })}
             </Column>
-          )}
+          )} */}
+          <Row>{edit && <SubmitBtn>변경</SubmitBtn>}</Row>
         </StyledColumn>
       </CenterRow>
     </Con>
@@ -131,15 +145,22 @@ export default function ChangeMenu() {
 const Con = styled(Container)`
   display: flex;
 `;
-const Row = styled.span`
+const Row = styled.div`
+  display: flex;
+  width: 100%;
+`;
+const MenuRow = styled.span`
   width: ${props => (props.width ? `${props.width}px` : '')};
   height: ${props => (props.height ? `${props.height}px` : '')};
   margin-bottom: 10px;
+  display: flex;
+  align-items: center;
 `;
 const CenterRow = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
 `;
 const CenterLeftRow = styled.div`
   display: flex;
@@ -152,16 +173,22 @@ const Column = styled.div`
 `;
 const StyledColumn = styled(Column)`
   width: 100%;
-  max-width: 630px;
   background: #fafafa;
   box-sizing: border-box;
   padding: 30px;
 `;
-const TitleRow = styled(Row)``;
+const TitleRow = styled(MenuRow)`
+  margin-bottom: 20px;
+  ${props =>
+    props.edit &&
+    css`
+      margin-bottom: 40px;
+    `}
+`;
 const Title = styled.span`
   ${BasicTitle};
   margin-right: 5px;
-  font-size: ${props => props.theme.mFont};
+  font-size: ${props => props.theme.mlFont};
 `;
 const TitleInfo = styled.span`
   color: #888;
@@ -170,7 +197,7 @@ const MenuFont = styled.span`
   color: ${props => props.userColor};
 `;
 const NumberFont = styled.span`
-  margin-right: 10px;
+  margin-right: 20px;
 `;
 const EditTitle = styled.span`
   ${BlueEditBtn}
@@ -187,9 +214,17 @@ const AddMenuBtn = styled.button`
 `;
 const Input = styled.input`
   width: 100px;
-  height: 25px;
+  height: 20px;
 `;
+
 const CloseBtn = styled(ImgBtn)`
   margin-left: 5px;
 `;
 const max_category_count = 3;
+
+const SubmitBtn = styled.button`
+  ${BasicButton};
+  margin: 30px auto 0;
+  padding: 5px 10px;
+  font-size: ${theme.mFont};
+`;

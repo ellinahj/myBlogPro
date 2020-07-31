@@ -20,7 +20,7 @@ export default function MyInfo() {
 const MyInfoWrap = styled.section`
   width: 100%;
   height: 200px;
-  padding: 60px 30px 0;
+  padding: 60px 40px 0;
   box-sizing: border-box;
   background-image: linear-gradient(90deg, ${props => props.userColor}, ${props => props.luminantColor});
 `;
@@ -30,10 +30,10 @@ const Profile = styled.div`
   justify-content: flex-start;
 `;
 const Img = styled.img`
-  width: ${props => props.width || '30px'};
-  height: ${props => props.width || '30px'};
+  width: ${props => props.width || '50px'};
+  height: ${props => props.width || '50px'};
   cursor: pointer;
-  border-radius: ${props => props.width / 2 || 15}px;
+  border-radius: ${props => props.width / 2 || 25}px;
   margin-right: 15px;
 `;
 const NickName = styled.div`

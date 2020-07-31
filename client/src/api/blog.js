@@ -22,5 +22,12 @@ const getBlog = (config, id) => {
     headers: config
   });
 };
+const getSearchedBlog = (config, cateId, value) => {
+  return apiSend({
+    url: `/blog/read/search/${cateId}/${value}`,
+    method: 'get',
+    headers: config
+  });
+};
 
-export { getCate, setBlog, getBlog };
+export { getCate, setBlog, getBlog, getSearchedBlog };

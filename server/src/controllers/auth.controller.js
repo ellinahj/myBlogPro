@@ -93,7 +93,10 @@ const loginController = (req, res, next) => {
             .end();
         }
       })
-      .catch(err => console.log(err, "login model error"));
+      .catch(err => {
+        console.log(err, "login model error:server");
+        res.status(500).json({ message: "server error" });
+      });
   }
 };
 

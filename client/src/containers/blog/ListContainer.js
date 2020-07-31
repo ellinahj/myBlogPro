@@ -5,7 +5,8 @@ import MyList from '../../components/blog/List';
 import Menu from '../../components/blog/Menu';
 import { colorLuminance } from '../../utils/common';
 import { setCate } from '../../actions/base';
-import { getCate, getBlog } from '../../api/blog';
+import { getCate, getBlog, getSearchedBlog } from '../../api/blog';
+import Search from '../../components/blog/Search';
 import store from '../../store';
 export default function ListContainer() {
   const dispatch = useDispatch();
@@ -18,6 +19,8 @@ export default function ListContainer() {
   const [loadMore, setLoadMore] = useState(true);
   const [selectedCateId, setSelectedCateId] = useState();
   const [blogData, setBlogData] = useState(undefined);
+  const [searchValue, setSearchValue] = useState('');
+  const [sendToListValue, setSendToListValue] = useState('');
 
   const handleScroll = () => {
     if (window.pageYOffset >= 150) {
@@ -42,6 +45,9 @@ export default function ListContainer() {
       };
       getCate(config).then(res => {
         if (res.status === 200 && res.data) {
+          if (category && category.length > 0) {
+            setSelectedCateId(category[0].id);
+          }
           store.dispatch(setCate(res.data.data));
         }
       });
@@ -124,6 +130,32 @@ export default function ListContainer() {
       }
     });
   }, []);
+  const getSearchValue = value => {
+    setSearchValue(value);
+  };
+  useEffect(() => {
+    if (searchValue !== '') {
+      const storedToken = localStorage.getItem('mydiary_token') && localStorage.getItem('mydiary_token');
+      const config = {
+        access_token: storedToken
+      };
+      if (category && category.length > 0) {
+        const cateId = category[0].id;
+        console.log(cateId, 'cateId');
+        console.log('in');
+        getSearchedBlog(config, cateId, searchValue).then(res => {
+          if (res.status < 300) {
+            setBlogData(res.data.data);
+            setSendToListValue(searchValue);
+          }
+        });
+      }
+    }
+  }, [searchValue]);
+  const handleClickStorageValue = value => {
+    //fetch
+    console.log(value);
+  };
   return (
     <ListCon>
       <Menu
@@ -133,7 +165,7 @@ export default function ListContainer() {
         menuIndex={menuIndex}
         userColor={userColor}
       />
-      {/* <SearchBar /> */}
+      <Search setSearchedValue={getSearchValue} handleClickStorageValue={handleClickStorageValue} />
       <MyList
         blogData={blogData}
         // scrollable={true}
@@ -142,6 +174,7 @@ export default function ListContainer() {
         // menuIndex={menuIndex}
         userInfo={userInfo}
         userColor={userColor}
+        sendToListValue={sendToListValue}
       />
     </ListCon>
   );

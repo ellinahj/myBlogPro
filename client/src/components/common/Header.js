@@ -16,18 +16,19 @@ export default function Header() {
   const isLoggedIn = useSelector(state => state.common.isLoggedIn);
   const luminantColor = userColor && colorLuminance(userColor, 0.7);
   useEffect(() => {
-    const storedToken = localStorage.getItem('mydiary_token') && localStorage.getItem('mydiary_token');
-    const config = {
-      access_token: storedToken
-    };
-
-    loginCheck(config).then(res => {
-      if (res.status < 300) {
-        // console.log(res.data, 'header res.data');
-        store.dispatch(setThemeColor(res.data.user_color));
-        store.dispatch(setUserInfo(res.data));
-      }
-    });
+    try {
+      const storedToken = localStorage.getItem('mydiary_token') && localStorage.getItem('mydiary_token');
+      const config = {
+        access_token: storedToken
+      };
+      loginCheck(config).then(res => {
+        if (res.status < 300) {
+          // console.log(res.data, 'header res.data');
+          store.dispatch(setThemeColor(res.data.user_color));
+          store.dispatch(setUserInfo(res.data));
+        }
+      });
+    } catch (e) {}
   }, []);
   return (
     <HeadWrap userColor={userColor} luminantColor={luminantColor}>
