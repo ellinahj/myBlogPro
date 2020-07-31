@@ -13,7 +13,7 @@ export default function ChangePwd(props) {
   const [prevPwdState, setPrevPwdState] = useState('');
   const [newPwdCheckState, setNewPwdCheckState] = useState('');
   const [prevPwdTyping, setPrevPwdTyping] = useState(false);
-  var regex = /^.*(?=^.{6,13}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
+  const regex = /^.*(?=^.{6,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
   const handlePrevPwd = e => {
     const nextValue = { [e.target.name]: e.target.value };
     setValue({ ...value, ...nextValue });
@@ -85,7 +85,6 @@ export default function ChangePwd(props) {
       });
     }
   };
-
   return (
     <Con>
       <Column>
@@ -101,13 +100,15 @@ export default function ChangePwd(props) {
                 <MarginTopRow>
                   <Title>이전비밀번호</Title>
                   <Input type="password" name="prevPwd" value={value.prevPwd} onChange={e => handlePrevPwd(e)} />
-                  {prevPwdTyping && (prevPwdState ? <Match>일치</Match> : <Mismatch>불일치</Mismatch>)}
                 </MarginTopRow>
+
+                {prevPwdTyping && (prevPwdState ? <Match>일치</Match> : <Mismatch>일치하지 않습니다.</Mismatch>)}
                 <MarginRow>
                   <Title>새비밀번호</Title>
                   <Input type="password" name="newPwd" value={value.newPwd} onChange={e => handleNewPwd(e)} />
-                  {!newPwdState ? <Mismatch>영문,숫자,특수문자포함 6~13자리로 입력해주세요.</Mismatch> : ''}
                 </MarginRow>
+                {!newPwdState ? <Mismatch>영문,숫자,특수문자포함 6~15자리로 입력해주세요.</Mismatch> : ''}
+
                 <MarginRow>
                   <Title>새비밀번호 확인</Title>
                   <Input
@@ -116,11 +117,11 @@ export default function ChangePwd(props) {
                     value={value.newPwdCheck}
                     onChange={e => handleNewPwdCheck(e)}
                   />
-                  {newPwdState &&
-                    value.newPwdCheck &&
-                    value.newPwdCheck.length > 0 &&
-                    (newPwdCheckState ? <Match>일치</Match> : <Mismatch>불일치</Mismatch>)}
                 </MarginRow>
+                {newPwdState &&
+                  value.newPwdCheck &&
+                  value.newPwdCheck.length > 0 &&
+                  (newPwdCheckState ? <Match>일치</Match> : <Mismatch>일치하지 않습니다.</Mismatch>)}
                 <Row>
                   <SubmitBtn disabled={!newPwdCheckState} allOk={allOk} onClick={handleSubmit}>
                     변경
@@ -189,14 +190,14 @@ const PwEdit = styled.div`
 `;
 const Match = styled.div`
   color: ${theme.greenFont};
-  margin-left: 10px;
+  margin: 10px 0 0 0;
   font-size: ${theme.sFont};
   display: flex;
   align-items: center;
 `;
 const Mismatch = styled.div`
   color: ${theme.redFont};
-  margin-left: 10px;
+  margin: 10px 0 0 0;
   font-size: ${theme.sFont};
   display: flex;
   align-items: center;

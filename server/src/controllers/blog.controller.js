@@ -72,7 +72,7 @@ const getBlog = async (req, res, next) => {
         console.log(result.id, id, "id cateid");
         const data = [...response];
         for (let i = 0; i < data.length; i++) {
-          if (data[i].first_image) {
+          if (data[i].first_image !== null) {
             const url = "http://127.0.0.1:3001/images/" + data[i].first_image;
             data[i].first_image = url;
           }

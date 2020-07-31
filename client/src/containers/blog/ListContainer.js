@@ -51,9 +51,6 @@ export default function ListContainer() {
           store.dispatch(setCate(res.data.data));
         }
       });
-      // .catch(error => {
-      //   console.log(error, 'error.response.status');
-      // });
     }
   }, []);
 
@@ -79,6 +76,7 @@ export default function ListContainer() {
       // });
     }
   }, [category]);
+
   useEffect(() => {
     const storedToken = localStorage.getItem('mydiary_token') && localStorage.getItem('mydiary_token');
     const config = {
@@ -134,7 +132,8 @@ export default function ListContainer() {
     setSearchValue(value);
   };
   useEffect(() => {
-    if (searchValue !== '') {
+    //엔터쳤을때
+    if (blogData && blogData.length !== 0 && searchValue !== '') {
       const storedToken = localStorage.getItem('mydiary_token') && localStorage.getItem('mydiary_token');
       const config = {
         access_token: storedToken
@@ -165,7 +164,9 @@ export default function ListContainer() {
         menuIndex={menuIndex}
         userColor={userColor}
       />
-      <Search setSearchedValue={getSearchValue} handleClickStorageValue={handleClickStorageValue} />
+      {blogData && blogData.length !== 0 && (
+        <Search setSearchedValue={getSearchValue} handleClickStorageValue={handleClickStorageValue} />
+      )}
       <MyList
         blogData={blogData}
         // scrollable={true}

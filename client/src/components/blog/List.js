@@ -1,38 +1,42 @@
 import styled from 'styled-components';
 import { it } from 'date-fns/locale';
 import { useSelector } from 'react-redux';
+import { theme } from '../../utils/theme';
 
 export default function List(props) {
   const { luminantColor, blogData, sendToListValue } = props;
   const userColor = useSelector(state => state.common.userColor);
-  console.log(sendToListValue, 'sen');
   return (
     <ListArea>
       <Content>
         {blogData &&
           blogData.length > 0 &&
-          blogData
-            .filter(some => some === '')
-            .map((item, index) => {
-              return (
-                <CardContainer key={index} luminantColor={luminantColor} userColor={userColor}>
-                  {item.first_image && (
-                    <ImageArea>
-                      <Img src={item.first_image} />
-                    </ImageArea>
-                  )}
-                  <ContentArea>
-                    <Date>2020년 06월 27일 토요일</Date>
-                    <Title>{item.title}</Title>
-                    <Comment>{item.comment}</Comment>
-                    <Location>
-                      {item.location_name && <Location_icon src={'/images/location.png'} />}
-                      {item.location_name}
-                    </Location>
-                  </ContentArea>
-                </CardContainer>
-              );
-            })}
+          blogData.map((item, index) => {
+            return (
+              <CardContainer key={index} luminantColor={luminantColor} userColor={userColor}>
+                {item.first_image && (
+                  <ImageArea>
+                    <Img src={item.first_image} />
+                  </ImageArea>
+                )}
+                <ContentArea>
+                  <Date>2020년 06월 27일 토요일</Date>
+                  <Title>{item.title}</Title>
+                  <Comment>{item.comment}</Comment>
+                  <Location>
+                    {item.location_name && <Location_icon src={'/images/location.png'} />}
+                    {item.location_name}
+                  </Location>
+                </ContentArea>
+              </CardContainer>
+            );
+          })}
+        {blogData && blogData.length === 0 && (
+          <WriteWrap>
+            <Write>첫번째 글을 작성해보세요.</Write>
+            <WriteImg src={'/images/keyboard.png'} />
+          </WriteWrap>
+        )}
       </Content>
     </ListArea>
   );
@@ -102,6 +106,21 @@ const Location = styled.div`
 const Location_icon = styled.img`
   width: 14px;
   height: 14px;
+`;
+const WriteWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+const Write = styled.div`
+  font-size: ${theme.mFont};
+  color: #ccc;
+  margin: 200px 0 10px;
+`;
+const WriteImg = styled.img`
+  max-width: 80px;
+  max-height: 80px;
 `;
 
 // 이전 이미지 로딩

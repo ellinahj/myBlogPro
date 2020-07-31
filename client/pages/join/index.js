@@ -1,4 +1,9 @@
 import Layout from '../../src/components/common/Layout';
-export default function JoinIndex() {
-  return <Layout>회원가입</Layout>;
+import JoinContainer from '../../src/containers/join';
+export default function JoinIndex(props) {
+  return (
+    <Layout>
+      <JoinContainer>{props.children}</JoinContainer>
+    </Layout>
+  );
 }

@@ -14,4 +14,12 @@ const loginCheck = config => {
     headers: config
   });
 };
-export { login, loginCheck };
+const join = data => {
+  return apiSend({
+    url: '/auth/join',
+    method: 'post',
+    data: data
+  });
+};
+
+export { login, loginCheck, join };

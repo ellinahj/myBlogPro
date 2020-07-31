@@ -11,7 +11,7 @@ import {
   loginController
 } from "../controllers/auth.controller";
 
-router.post("/register", createUser);
+router.post("/join", createUser);
 router.post("/findId", findDuplicatedId);
 router.post("/findNickname", findDuplicatedNickname);
 router.post("/login", loginController);

@@ -8,7 +8,7 @@ import { theme, BlueEditBtn, BasicTitle, BasicButton } from '../../utils/theme';
 import { updateInfo } from '../../api/user';
 
 export default function InfoContainer(props) {
-  const { showEdit, clickEditPw } = props;
+  const { showEdit, clickEditPw, clickEdit } = props;
   const userInfo = useSelector(state => state.common.userInfo);
   const userColor = useSelector(state => state.common.userColor);
   const [changeImgFile, setChangeImgFile] = useState([]);
@@ -59,7 +59,12 @@ export default function InfoContainer(props) {
       <Column>
         <Row>
           <TopCon>
-            <ProfileChange imgFormData={handlePhotoChange} prevImg={setPrevImg} showEdit={showEdit} />
+            <ProfileChange
+              clickEdit={clickEdit}
+              imgFormData={handlePhotoChange}
+              prevImg={setPrevImg}
+              showEdit={showEdit}
+            />
             <MarginRow>
               <Title>닉네임</Title>
               <div>

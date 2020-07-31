@@ -3,15 +3,17 @@ var connection = mysql_dbc.init();
 mysql_dbc.db_open(connection);
 
 const selectCateNumber = id => {
+  console.log(id, "id");
   return new Promise((resolve, reject) => {
     connection.query(
       "select id, title from mydiary.category WHERE user_id = ?",
       [id],
       function(err, rows) {
         if (err) {
-          return reject(err);
+          reject(err);
         } else {
-          return resolve(rows);
+          console.log(rows, "rows");
+          resolve(rows);
         }
       }
     );

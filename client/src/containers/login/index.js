@@ -3,8 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import Router from 'next/router';
 import styled from 'styled-components';
 import store from '../../store';
-import { setUserInfo, setLogin, setThemeColor } from '../../actions/base';
+import { setUserInfo, setThemeColor } from '../../actions/base';
 import { login } from '../../api/auth';
+import { theme } from '../../utils/theme';
 
 export default function LoginContainer() {
   const [id, setId] = useState('');
@@ -48,7 +49,9 @@ export default function LoginContainer() {
     <Container>
       <InputWrap>
         <Title>로그인</Title>
+        <SubTitle>아이디 *</SubTitle>
         <input name="id" value={id} onChange={e => setId(e.target.value)}></input>
+        <SubTitle>비밀번호 *</SubTitle>
         <input
           name="pw"
           type="password"
@@ -114,6 +117,10 @@ const Title = styled.div`
   color: #333;
   font-size: 24px;
   margin-bottom: 30px;
+`;
+const SubTitle = styled.div`
+  font-size: ${theme.mFont};
+  margin-bottom: 10px;
 `;
 const PwdCon = styled.div`
   margin-bottom: 15px;

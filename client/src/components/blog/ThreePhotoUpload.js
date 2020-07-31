@@ -109,6 +109,7 @@ export default function Upload(props) {
           onChange={e => addImg(e, 0)}
         />
         {previewUrl && previewUrl[0] && <PreviewImg src={previewUrl[0]} />}
+        {previewUrl && previewUrl[0] && <PhotoName>사진1</PhotoName>}
       </ImageRow>
       <ImageRow existImg={previewUrl && previewUrl[1]}>
         <AddBtn name="button" onClick={e => controlFileBtn(e, 1)}>
@@ -123,6 +124,7 @@ export default function Upload(props) {
           onChange={e => addImg(e, 1)}
         />
         {previewUrl && previewUrl[1] && <PreviewImg src={previewUrl[1]} />}
+        {previewUrl && previewUrl[1] && <PhotoName>사진2</PhotoName>}
       </ImageRow>
       <ImageRow existImg={previewUrl && previewUrl[2]}>
         <AddBtn type="button" name="file" onClick={e => controlFileBtn(e, 2)}>
@@ -138,6 +140,7 @@ export default function Upload(props) {
         />
 
         {previewUrl && previewUrl[2] && <PreviewImg src={previewUrl[2]} />}
+        {previewUrl && previewUrl[2] && <PhotoName>사진3</PhotoName>}
       </ImageRow>
       {/* <button type="button" onClick={submitImg}>
         사진전송
@@ -167,4 +170,8 @@ const ImageRow = styled.div`
 const ReactCropDiv = styled(ReactCrop)`
   border: ${props => (props.uploadImg.length > 0 ? '2px solid #ff254f' : 'none')};
   margin-bottom: ${props => (props.uploadImg.length > 0 ? '40px' : '0px')};
+`;
+const PhotoName = styled.div`
+  font-size: 15px;
+  margin-top: 5px;
 `;

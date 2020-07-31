@@ -2,10 +2,9 @@ import styled, { css } from 'styled-components';
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import ReactCrop from 'react-image-crop';
-import { theme, BasicTitle } from '../../utils/theme';
 
 export default function Upload(props) {
-  const { imgFormData, prevImg, showEdit } = props;
+  const { imgFormData, prevImg, showEdit, clickEdit } = props;
   const [file, setFile] = useState([null]);
   const [upImg, setUpImg] = useState([]);
   const [crop, setCrop] = useState({ unit: '%', width: 100, aspect: 1 });
@@ -90,7 +89,7 @@ export default function Upload(props) {
   }, [file]);
   return (
     <Row>
-      <TitleCenter>프로필편집</TitleCenter>
+      <TitleCenter onClick={e => clickEdit(e)}>프로필편집</TitleCenter>
       <ProfileRow>
         <ProfileCenter>
           {showEdit && (
@@ -156,8 +155,12 @@ const TitleCenter = styled.div`
   justify-content: center;
   width: 100%;
   margin: 20px 0;
-  ${BasicTitle}
-  font-size: ${props => props.theme.mlFont};
+  color: #6da3f7;
+  font-weight: bold;
+  margin-top: 10px;
+  cursor: pointer;
+
+  font-size: ${props => props.theme.mFont};
 `;
 
 const ProfileCenter = styled.div`

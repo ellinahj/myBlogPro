@@ -2,6 +2,7 @@ import { css } from 'styled-components';
 const theme = {
   white: '#ffffff',
   black: '#000000',
+  ssFont: '12px',
   sFont: '13px',
   mFont: '16px',
   mlFont: '18px',

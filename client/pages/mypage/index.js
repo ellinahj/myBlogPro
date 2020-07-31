@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import Layout from '../../src/components/common/Layout';
 import TopInfo from '../../src/containers/mypage/TopInfo';
@@ -9,6 +9,7 @@ export default function Mypage() {
   const [showEdit, setShowEdit] = useState(false);
   const [showEditPw, setShowEditPw] = useState(false);
   const clickEdit = e => {
+    console.log('click');
     setShowEdit(true);
     setShowEditPw(false);
   };
@@ -19,8 +20,8 @@ export default function Mypage() {
   return (
     <Layout>
       <>
-        <TopInfo clickEdit={clickEdit} />
-        <EditBasicInfo showEdit={showEdit} />
+        <TopInfo />
+        <EditBasicInfo clickEdit={clickEdit} showEdit={showEdit} />
         <EditPw showEditPw={showEditPw} clickEditPw={clickEditPw} />
         <EditMenu />
       </>

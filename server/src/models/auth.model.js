@@ -54,18 +54,33 @@ const findDuplicatedUser = function(user_id, nickname) {
     );
   });
 };
-const insertUser = (user_id, nickname, password) => {
+const insertUser = (user_id, password) => {
   return new Promise((resolve, reject) => {
     bcrypt.hash(password, saltRounds, function(err, hashedPassword) {
       console.log(hashedPassword, "has");
       connection.query(
-        "INSERT INTO mydiary.users (user_id,nickname,password) VALUES (?,?,?) ",
-        [user_id, nickname, hashedPassword],
+        "INSERT INTO mydiary.users (user_id,password) VALUES (?,?) ",
+        [user_id, hashedPassword],
         function(err, result) {
           if (err) {
-            return reject(err);
+            reject(err);
           } else {
-            return resolve(result);
+            console.log(result, "result1");
+            if (result.insertId) {
+              const cateName = "기본1";
+              connection.query(
+                "INSERT INTO mydiary.category (user_id,title) VALUES (?,?) ",
+                [result.insertId, cateName],
+                function(err, lastResult) {
+                  if (err) {
+                    reject(err);
+                  } else {
+                    console.log(lastResult, "result2");
+                    resolve(lastResult);
+                  }
+                }
+              );
+            }
           }
         }
       );

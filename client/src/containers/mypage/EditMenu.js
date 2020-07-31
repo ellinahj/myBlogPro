@@ -63,8 +63,6 @@ export default function ChangeMenu() {
     setCateValue(tempCateValue);
     setCateInputCount(cateInputCount - 1);
   };
-  console.log(countCate, 'cateCount');
-  console.log(cateInputCount, 'cateInputCount');
   return (
     <Con>
       <CenterRow>

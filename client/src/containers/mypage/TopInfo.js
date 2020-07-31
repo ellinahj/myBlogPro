@@ -6,7 +6,6 @@ import store from '../../store';
 import { setLogin, setThemeColor, setUserInfo } from '../../actions/base';
 
 export default function TopInfo(props) {
-  const { clickEdit } = props;
   const dispatch = useDispatch();
   const userInfo = useSelector(state => state.common.userInfo);
   const logout = () => {
@@ -26,7 +25,6 @@ export default function TopInfo(props) {
           />
           <Column>
             <NickName>{userInfo && userInfo.nickname}</NickName>
-            <ProfileEdit onClick={e => clickEdit(e)}>프로필편집</ProfileEdit>
           </Column>
         </Profile>
         <Comment>{userInfo && userInfo.main_title}</Comment>
@@ -65,13 +63,6 @@ const Img = styled.img`
   border-radius: ${props => props.width / 2 || 15}px;
   margin-right: 15px;
 `;
-const ProfileEdit = styled.div`
-  color: #6da3f7;
-  font-weight: bold;
-  margin-top: 10px;
-  cursor: pointer;
-`;
-
 const NickName = styled.div`
   font-size: 18px;
   font-weight: bold;

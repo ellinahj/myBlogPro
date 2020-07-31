@@ -5,7 +5,8 @@ import {
   SET_LOGIN,
   SET_USER_INFO,
   SET_CATE,
-  SET_LOADING
+  SET_LOADING,
+  SET_TOOLTIP
 } from './actionTypes';
 
 const increment = payload => {
@@ -50,4 +51,10 @@ const setLoding = payload => {
     payload
   };
 };
-export { increment, setThemeColor, setThemeRGBA, setLogin, setUserInfo, setCate, setLoding };
+const setToolTip = payload => {
+  return {
+    type: SET_TOOLTIP,
+    payload
+  };
+};
+export { increment, setThemeColor, setThemeRGBA, setLogin, setUserInfo, setCate, setLoding, setToolTip };

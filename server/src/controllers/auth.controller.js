@@ -33,25 +33,25 @@ const findDuplicatedNickname = (req, res, next) => {
 };
 const createUser = (req, res, next) => {
   //회원 등록
-  const { user_id, nickname, password } = req.body;
-  findDuplicatedUser(user_id, nickname)
-    .then(count => {
-      console.log(count, "count");
-      if (count >= 1) {
-        res.status(400).send({
-          status: 400,
-          message: "one of user_id,nickname is duplicated"
-        });
-      } else {
-        console.log(user_id, nickname, password, "inini");
-        insertUser(user_id, nickname, password)
-          .then(data =>
-            res.status(200).send({ status: 200, message: "register success" })
-          )
-          .catch(e => console.log(e, "e"));
-      }
-    })
-    .catch(err => console.log(err, "err"));
+  const { user_id, password } = req.body;
+  // findDuplicatedUser(user_id, password)
+  //   .then(count => {
+  //     console.log(count, "count");
+  //     if (count >= 1) {
+  //       res.status(400).send({
+  //         status: 400,
+  //         message: "one of user_id,nickname is duplicated"
+  //       });
+  //     } else {
+  //       console.log(user_id, nickname, password, "inini");
+  insertUser(user_id, password)
+    .then(data =>
+      res.status(200).send({ status: 200, message: "join success" })
+    )
+    .catch(e => console.log(e, "e"));
+  //   }
+  // })
+  // .catch(err => console.log(err, "err"));
 };
 const loginController = (req, res, next) => {
   const { user_id, password } = req.body;

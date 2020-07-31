@@ -18,9 +18,12 @@ const getUserInfo = async (req, res, next) => {
   if (result) {
     selectUser(result.userId)
       .then(data => {
+        let profile_url = null;
         console.log(data, "data");
-        const profile_url =
-          "http://127.0.0.1:3001/images/" + data.profile_photo;
+        if (data.profile_photo !== null) {
+          profile_url = "http://127.0.0.1:3001/images/" + data.profile_photo;
+        }
+
         delete data.profile_photo;
         delete data.id;
         delete data.access_token;

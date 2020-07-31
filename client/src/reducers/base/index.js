@@ -5,7 +5,8 @@ import {
   SET_LOGIN,
   SET_USER_INFO,
   SET_CATE,
-  SET_LOADING
+  SET_LOADING,
+  SET_TOOLTIP
 } from '../../actions/base/actionTypes';
 
 export const initialState = {
@@ -15,7 +16,8 @@ export const initialState = {
   isLoggedIn: false,
   userInfo: undefined,
   category: undefined,
-  loading: false
+  loading: false,
+  showToolTip: true
 };
 
 const commonReducer = (state = initialState, action) => {
@@ -53,6 +55,11 @@ const commonReducer = (state = initialState, action) => {
     return {
       ...state,
       loading: action.payload
+    };
+  } else if (action.type === SET_TOOLTIP) {
+    return {
+      ...state,
+      showToolTip: action.payload
     };
   }
 
