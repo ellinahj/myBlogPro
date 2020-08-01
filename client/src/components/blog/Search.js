@@ -7,7 +7,7 @@ export default function SearchContainer(props) {
   const [showHistory, setShowHistory] = useState(false);
   const inputArea = useRef(null);
   const bodyArea = useRef(null);
-  const { getSearch, handleClickStorageValue } = props;
+  const { getSearch } = props;
   useEffect(() => {
     const replace = searchValue.replace(/^ /gi, '');
     setSearchValue(replace);

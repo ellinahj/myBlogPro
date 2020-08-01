@@ -70,9 +70,6 @@ export default function ListContainer() {
           setBlogData(res.data.data);
         }
       });
-      // .catch(err => {
-      //   console.log(err.response.status, '1error.response.status');
-      // });
     }
   }, [category]);
 
@@ -87,50 +84,8 @@ export default function ListContainer() {
         setBlogData(res.data.data);
       }
     });
-    // .catch(error => {
-    //   console.log(error, '2error.response.status');
-    // });
   }, [menuIndex]);
 
-  // const getData = load => {
-  //   if (load) {
-  //     fetch('http://localhost:3001/api/hello').then(res => {
-  //       return !res.ok ? res.json().then(e => Promise.reject(e)) : res.json().then(body => console.log(body, 'body'));
-  //     });
-  //     // .then(res => {
-  //     //   console.log('getData then2');
-  //     //   props.setState([...props.state, ...res.message]);
-  //     // });
-  //   }
-  // };
-  //   useEffect(() => {
-  //     if (document.body.scrollHeight <= window.innerHeight && props.state.length > 0) {
-  //       console.log(document.body.scrollHeight, window.innerHeight, 'scrollHeight<inner?');
-  //       setLoadMore(true);
-  //     }
-  //   }, [state]);
-
-  // useEffect(() => {
-  //   if (loadMore) {
-  //     getData(loadMore);
-  //     setLoadMore(false);
-  //   }
-  // }, [getData, loadMore]);
-
-  useEffect(() => {
-    window.addEventListener('scroll', () => {
-      if (window.scrollY + window.innerHeight === document.body.scrollHeight) {
-        // console.log('-->bottom');
-        // console.log(window.scrollY, '*window.scrollY');
-        // console.log(document.body.scrollHeight, '*document.body.scrollHeight');
-        setLoadMore(true);
-      }
-    });
-  }, []);
-  // const getSearchValue = value => {
-  //   setSearchValue(value);
-  //   console.log(value, 'value');
-  // };
   const getSearch = value => {
     if (blogData && blogData.length !== 0 && value !== '') {
       const storedToken = localStorage.getItem('mydiary_token') && localStorage.getItem('mydiary_token');
@@ -139,8 +94,6 @@ export default function ListContainer() {
       };
       if (category && category.length > 0) {
         const cateId = category[0].id;
-        console.log(cateId, 'cateId');
-        console.log('in');
         getSearchedBlog(config, cateId, value).then(res => {
           if (res.status < 300) {
             setBlogData(res.data.data);
@@ -150,10 +103,6 @@ export default function ListContainer() {
       }
     }
   };
-  // const handleClickStorageValue = value => {
-  //   //fetch
-  //   console.log(value);
-  // };
   return (
     <ListCon>
       <Menu
@@ -163,9 +112,7 @@ export default function ListContainer() {
         menuIndex={menuIndex}
         userColor={userColor}
       />
-      {blogData && blogData.length !== 0 && (
-        <Search getSearch={getSearch} handleClickStorageValue={handleClickStorageValue} />
-      )}
+      {blogData && blogData.length !== 0 && <Search getSearch={getSearch} />}
       <MyList
         blogData={blogData}
         // scrollable={true}
