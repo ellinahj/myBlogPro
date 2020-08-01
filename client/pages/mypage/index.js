@@ -22,8 +22,8 @@ export default function Mypage() {
       <>
         <TopInfo />
         <EditBasicInfo clickEdit={clickEdit} showEdit={showEdit} />
-        <EditPw showEditPw={showEditPw} clickEditPw={clickEditPw} />
         <EditMenu />
+        <EditPw showEditPw={showEditPw} clickEditPw={clickEditPw} />
       </>
     </Layout>
   );

@@ -7,7 +7,7 @@ export default function SearchContainer(props) {
   const [showHistory, setShowHistory] = useState(false);
   const inputArea = useRef(null);
   const bodyArea = useRef(null);
-  const { setSearchedValue, handleClickStorageValue } = props;
+  const { getSearch, handleClickStorageValue } = props;
   useEffect(() => {
     const replace = searchValue.replace(/^ /gi, '');
     setSearchValue(replace);
@@ -23,7 +23,7 @@ export default function SearchContainer(props) {
       const combineSearchHistory = [...getSearchHistory, searchValue];
       localStorage.setItem('searchedHistory', JSON.stringify(combineSearchHistory));
     }
-    setSearchedValue(searchValue);
+    getSearch(searchValue);
     setShowHistory(false);
   };
 
@@ -82,7 +82,14 @@ export default function SearchContainer(props) {
                 storageValue.map((item, index) => {
                   return (
                     <li key={index}>
-                      <Word onClick={() => handleClickStorageValue(storageValue[index])}>{item}</Word>
+                      <Word
+                        onClick={() => {
+                          getSearch(storageValue[index]);
+                          setShowHistory(false);
+                        }}
+                      >
+                        {item}
+                      </Word>
                       <IconCloseCon onClick={() => removeHistory(index)}>
                         <IconCloseImg src={'/images/close.svg'} />
                       </IconCloseCon>

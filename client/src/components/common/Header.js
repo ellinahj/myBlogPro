@@ -32,7 +32,6 @@ export default function Header() {
       };
       loginCheck(config).then(res => {
         if (res.status < 300) {
-          console.log(res.data, 'header res.data');
           store.dispatch(setThemeColor(res.data.user_color));
           store.dispatch(setUserInfo(res.data));
         }

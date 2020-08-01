@@ -9,9 +9,9 @@ export default function JoinContainer() {
   const [id, setId] = useState('');
   const [pwd, setPwd] = useState('');
   const [pwdCheck, setPwdCheck] = useState('');
-  const [idState, setIdState] = useState('');
-  const [pwdState, setPwdState] = useState('');
-  const [pwdCheckState, setPwdCheckState] = useState('');
+  // const [idState, setIdState] = useState('');
+  // const [pwdState, setPwdState] = useState('');
+  // const [pwdCheckState, setPwdCheckState] = useState('');
   const [allState, setAllState] = useState('');
 
   const enterKey = () => {
@@ -19,49 +19,47 @@ export default function JoinContainer() {
       userJoin();
     }
   };
-  const idRegex = /^[A-Za-z0-9+]{6,13}$/;
-  const pwdRegex = /^.*(?=^.{6,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
 
   const idConfirm = value => {
     setId(value);
-    if (value !== '' && !idRegex.test(value)) {
-      console.log('?');
-      setIdState(false);
-      return;
-    }
-    setIdState(true);
+    // if (value !== '' && !idRegex.test(value)) {
+    //   console.log('?');
+    //   setIdState(false);
+    //   return;
+    // }
+    // setIdState(true);
   };
   const pwdConfirm = value => {
     setPwd(value);
-    if (value !== '' && !pwdRegex.test(value)) {
-      setPwdState(false);
-      return;
-    }
-    //
-    if (value !== '' && pwdCheckState && value !== pwdCheck) {
-      setPwdCheckState(false);
-      return;
-    } else if (value !== '' && pwdCheckState && value === pwdCheck) {
-      setPwdCheckState(true);
-    }
-    setPwdState(true);
+    // if (value !== '' && !pwdRegex.test(value)) {
+    //   setPwdState(false);
+    //   return;
+    // }
+    // //
+    // if (value !== '' && pwdCheckState && value !== pwdCheck) {
+    //   setPwdCheckState(false);
+    //   return;
+    // } else if (value !== '' && pwdCheckState && value === pwdCheck) {
+    //   setPwdCheckState(true);
+    // }
+    // setPwdState(true);
   };
   const pwdCheckConfirm = value => {
     setPwdCheck(value);
-    if (value !== '' && pwd !== value) {
-      setPwdCheckState(false);
-      return;
-    }
-    setPwdCheckState(true);
+    // if (value !== '' && pwd !== value) {
+    //   setPwdCheckState(false);
+    //   return;
+    // }
+    // setPwdCheckState(true);
   };
 
-  useEffect(() => {
-    if (idState && pwdState && pwdCheckState) {
-      setAllState(true);
-    } else {
-      setAllState(false);
-    }
-  }, [idState, pwdState, pwdCheckState]);
+  // useEffect(() => {
+  //   if (idState && pwdState && pwdCheckState) {
+  //     setAllState(true);
+  //   } else {
+  //     setAllState(false);
+  //   }
+  // }, [idState, pwdState, pwdCheckState]);
 
   const userJoin = () => {
     const data = { user_id: id, password: pwd };
@@ -75,14 +73,14 @@ export default function JoinContainer() {
       }
     });
   };
-  console.log(idState, pwdState, pwdCheckState, allState, 's2');
+
   return (
     <Container>
       <InputWrap>
         <Title>회원가입</Title>
         <SubTitle>아이디 *</SubTitle>
         <input name="id" value={id} onChange={e => idConfirm(e.target.value)}></input>
-        {id.length > 0 && !idState && (
+        {id.length > 0 && !idRegCheck(id) && (
           <WarningWrap>
             <Warning>영문,숫자조합 6~13자리로 입력해주세요.</Warning>
           </WarningWrap>
@@ -90,7 +88,7 @@ export default function JoinContainer() {
 
         <SubTitle>비밀번호 *</SubTitle>
         <input name="pwd" value={pwd} onChange={e => pwdConfirm(e.target.value)}></input>
-        {pwd.length > 0 && !pwdState && (
+        {pwd.length > 0 && !pwRegCheck(pwd) && (
           <WarningWrap>
             <Warning>영문,숫자,특수문자 조합 6~13자리로 입력해주세요.</Warning>
           </WarningWrap>
@@ -103,12 +101,17 @@ export default function JoinContainer() {
           value={pwdCheck}
           onChange={e => pwdCheckConfirm(e.target.value)}
         ></input>
-        {pwdCheck.length > 0 && !pwdCheckState && (
+        {pwdCheck.length > 0 && pwdCheck !== pwd && (
           <WarningWrap>
             <Warning>비밀번호가 일치하지 않습니다.</Warning>
           </WarningWrap>
         )}
-        <JoinBtn disabled={!allState} onClick={userJoin} onKeyUp={enterKey} allOk={allState}>
+        <JoinBtn
+          disabled={!idRegCheck(id) || !pwRegCheck(pwd) || pwdCheck !== pwd}
+          onClick={userJoin}
+          onKeyUp={enterKey}
+          allOk={idRegCheck(id) && pwRegCheck(pwd) && pwdCheck === pwd}
+        >
           회원가입
         </JoinBtn>
       </InputWrap>
@@ -188,3 +191,15 @@ const BottomWrap = styled.div`
   display: flex;
   justify-content: space-between;
 `;
+
+const idRegex = /^[A-Za-z0-9+]{6,13}$/;
+
+function idRegCheck(value) {
+  return idRegex.test(value);
+}
+
+const pwdRegex = /^.*(?=^.{6,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
+
+function pwRegCheck(value) {
+  return pwdRegex.test(value);
+}

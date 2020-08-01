@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import MyList from '../../components/blog/List';
 import Menu from '../../components/blog/Menu';
@@ -19,7 +19,6 @@ export default function ListContainer() {
   const [loadMore, setLoadMore] = useState(true);
   const [selectedCateId, setSelectedCateId] = useState();
   const [blogData, setBlogData] = useState(undefined);
-  const [searchValue, setSearchValue] = useState('');
   const [sendToListValue, setSendToListValue] = useState('');
 
   const handleScroll = () => {
@@ -128,12 +127,12 @@ export default function ListContainer() {
       }
     });
   }, []);
-  const getSearchValue = value => {
-    setSearchValue(value);
-  };
-  useEffect(() => {
-    //엔터쳤을때
-    if (blogData && blogData.length !== 0 && searchValue !== '') {
+  // const getSearchValue = value => {
+  //   setSearchValue(value);
+  //   console.log(value, 'value');
+  // };
+  const getSearch = value => {
+    if (blogData && blogData.length !== 0 && value !== '') {
       const storedToken = localStorage.getItem('mydiary_token') && localStorage.getItem('mydiary_token');
       const config = {
         access_token: storedToken
@@ -142,19 +141,19 @@ export default function ListContainer() {
         const cateId = category[0].id;
         console.log(cateId, 'cateId');
         console.log('in');
-        getSearchedBlog(config, cateId, searchValue).then(res => {
+        getSearchedBlog(config, cateId, value).then(res => {
           if (res.status < 300) {
             setBlogData(res.data.data);
-            setSendToListValue(searchValue);
+            setSendToListValue(value);
           }
         });
       }
     }
-  }, [searchValue]);
-  const handleClickStorageValue = value => {
-    //fetch
-    console.log(value);
   };
+  // const handleClickStorageValue = value => {
+  //   //fetch
+  //   console.log(value);
+  // };
   return (
     <ListCon>
       <Menu
@@ -165,7 +164,7 @@ export default function ListContainer() {
         userColor={userColor}
       />
       {blogData && blogData.length !== 0 && (
-        <Search setSearchedValue={getSearchValue} handleClickStorageValue={handleClickStorageValue} />
+        <Search getSearch={getSearch} handleClickStorageValue={handleClickStorageValue} />
       )}
       <MyList
         blogData={blogData}

@@ -17,8 +17,8 @@ export default function TopInfo(props) {
   };
   return (
     <MyInfoWrap>
-      <div>
-        <Profile>
+      <Profile>
+        <div>
           <Img
             src={userInfo && userInfo.profile_url ? userInfo.profile_url : '/images/default_profile.png'}
             width={70}
@@ -26,12 +26,12 @@ export default function TopInfo(props) {
           <Column>
             <NickName>{userInfo && userInfo.nickname}</NickName>
           </Column>
-        </Profile>
-        <Comment>{userInfo && userInfo.main_title}</Comment>
-      </div>
-      <LogoutContainer>
-        <Logout onClick={logout}>로그아웃</Logout>
-      </LogoutContainer>
+        </div>
+        <LogoutContainer>
+          <Logout onClick={logout}>로그아웃</Logout>
+        </LogoutContainer>
+      </Profile>
+      <Comment>{userInfo && userInfo.main_title}</Comment>
     </MyInfoWrap>
   );
 }
@@ -43,7 +43,7 @@ const MyInfoWrap = styled.section`
   background-color: #fafafa;
   background-repeat: no-repeat;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
   border-bottom: 1px solid #dedede;
 `;
@@ -55,13 +55,14 @@ const Profile = styled.div`
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
 `;
 const Img = styled.img`
   width: ${props => props.width || '30px'};
   height: ${props => props.width || '30px'};
   border-radius: ${props => props.width / 2 || 15}px;
   margin-right: 15px;
+  border: 1px solid #ddd;
 `;
 const NickName = styled.div`
   font-size: 18px;

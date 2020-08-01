@@ -6,7 +6,6 @@ import { getCate } from '../../api/blog';
 import Container from '../../components/common/Container';
 import ImgBtn from '../../components/common/ImgBtn';
 import { BasicTitle, BlueEditBtn, BasicButton, theme } from '../../utils/theme';
-import { createGunzip } from 'zlib';
 
 export default function ChangeMenu() {
   const dispatch = useDispatch();
@@ -69,7 +68,7 @@ export default function ChangeMenu() {
         <StyledColumn>
           <TitleRow edit={edit}>
             <Title>
-              메뉴<TitleInfo>(최대 3개) </TitleInfo>
+              메뉴<TitleInfo>(최대 3개, 15글자 이하 권장) </TitleInfo>
             </Title>
             {/* 메뉴생성버튼 */}
             {edit && countCate + cateInputCount < max_category_count && (
@@ -91,7 +90,6 @@ export default function ChangeMenu() {
                     key={index}
                     onChange={e => handleInput(e)}
                   />
-
                   <CloseBtn
                     src={'/images/close.svg'}
                     width={17}
@@ -109,7 +107,7 @@ export default function ChangeMenu() {
                 </MenuRow>
               );
             })}
-          {/* {edit && (
+          {edit && (
             <Column>
               {cateInputCount > 0 &&
                 Array(cateInputCount)
@@ -124,7 +122,7 @@ export default function ChangeMenu() {
                           src={'/images/close.svg'}
                           width={17}
                           height={17}
-                          bg="#aaa"
+                          bg="#ddd"
                           radius="50%"
                           padding={2}
                           onClick={() => handleDelete(index)}
@@ -133,7 +131,7 @@ export default function ChangeMenu() {
                     );
                   })}
             </Column>
-          )} */}
+          )}
           <Row>{edit && <SubmitBtn>변경</SubmitBtn>}</Row>
         </StyledColumn>
       </CenterRow>
@@ -185,7 +183,7 @@ const TitleRow = styled(MenuRow)`
 `;
 const Title = styled.span`
   ${BasicTitle};
-  margin-right: 5px;
+  margin-right: 20px;
   font-size: ${props => props.theme.mlFont};
 `;
 const TitleInfo = styled.span`
