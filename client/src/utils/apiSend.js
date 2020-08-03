@@ -32,13 +32,11 @@ instance.interceptors.response.use(
     /*
         http status가 200이 아닌 경우
         응답 에러 처리
-        .catch()a
+        .catch()
     */
-
     if (error.response) {
       if (error.response.status === 401) {
-        console.log(error.response, 'message');
-        if (!error.response.data.message === 'Mismatched pwd') {
+        if (!(error.response.data.message === 'Mismatched pwd')) {
           alert('아이디나 비밀번호를 확인해주세요.');
         }
       } else if (error.response.status === 400) {
@@ -47,8 +45,7 @@ instance.interceptors.response.use(
         store.dispatch(setThemeColor(''));
         Router.push('/login');
       } else if (error.response.status === 404) {
-        alert('404 누락된 요청');
-        Router.push('/login');
+        alert('누락된 요청');
       } else if (error.response.status >= 500) {
         alert('서버 에러가 발생했습니다.관리자에게 문의해주세요.');
       }

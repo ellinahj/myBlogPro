@@ -130,7 +130,10 @@ const checkAndInsertPwd = (user_id, password, newPassword) => {
                     console.log(res, "res");
                     lastResolve(res);
                   })
-                  .catch(e => console.log(e, "pwdCheckResult err"));
+                  .catch(e => {
+                    console.log(e, "pwdCheckResult err");
+                    throw new Error("비번변경 에러");
+                  });
               } else {
                 console.log("불일치");
                 const sendResult = "pwError";

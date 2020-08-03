@@ -1,100 +1,92 @@
 import {
   selectCateNumber,
-  insertCategory,
-  deleteCategory
+  deleteCategory,
+  updateCategory
 } from "../models/category.model";
 import { authCheck } from "../public/function";
 const getCateNumber = async (req, res, next) => {
-  const token = req.headers.access_token;
-  const result = await authCheck(token);
-  // if (result === "empty token") {
-  //   console.log("EMPTY ?");
-  //   res
-  //     .status(400)
-  //     .json({ status: 400, message: " invalid token" })
-  //     .end();
-  // } else {
-  if (result && result.id) {
-    selectCateNumber(result.id)
-      .then(data => {
-        if (data) {
-          res
-            .status(200)
-            .json({ status: 200, message: "ok", data: [...data] })
-            .end();
-        }
-      })
-      .catch(err => console.log(err, "cateNum err"));
-  } else {
-    res
-      .status(400)
-      .json({ status: 400 })
-      .end();
+  try {
+    const token = req.headers.access_token;
+    const result = await authCheck(token);
+    // if (result === "empty token") {
+    //   console.log("EMPTY ?");
+    //   res
+    //     .status(400)
+    //     .json({ status: 400, message: " invalid token" })
+    // } else {
+    if (result && result.id) {
+      selectCateNumber(result.id)
+        .then(data => {
+          if (data) {
+            res
+              .status(200)
+              .json({ status: 200, message: "ok", data: [...data] });
+          }
+        })
+        .catch(err => {
+          console.log(err, "cateNum err");
+          next(err);
+        });
+    } else {
+      res.status(400).json({ status: 400 });
+    }
+  } catch (e) {
+    next(e);
   }
 };
 // };
-const setCategory = async (req, res, next) => {
-  const token = req.headers["access_token"];
-  const result = await authCheck(token);
-  const { title } = req.body;
+const updateCate = async (req, res, next) => {
   try {
-    if (result) {
-      insertCategory(result.id, title)
+    const token = req.headers["access_token"];
+    const result = await authCheck(token);
+    if (result && result.id) {
+      updateCategory(result.id, req.body)
         .then(data => {
-          if (data === 1) {
+          console.log(data, "update data");
+          if (data) {
             res
               .status(200)
-              .json({ status: 200, message: "success" })
-              .end();
-          } else {
-            res
-              .status(400)
-              .json({ status: 400, message: "fail" })
-              .end();
+              .json({ status: 200, message: "ok", data: [...data] });
           }
-
-          //   if (data.length < 3) {
-          //     res
-          //       .status(200)
-          //       .json({ status: 200, message: "ok", data })
-          //       .end();
-          //   } else {
-          //     res
-          //       .status(400)
-          //       .json({ status: 400, message: "notOk", data })
-          //       .end();
-          //   }
         })
-        .catch(err => console.log(err, "err"));
+        .catch(err => {
+          console.log(err, "updateCategory err");
+          next(err);
+        });
     } else {
-      res
-        .status(400)
-        .json({ status: 400, message: " invalid token" })
-        .end();
+      res.status(400).json({ status: 400, message: " invalid token" });
     }
-  } catch {
+  } catch (e) {
     next(e);
   }
 };
 const delCategory = async (req, res, next) => {
-  const token = req.headers["access_token"];
-  const result = await authCheck(token);
-  const { id } = req.body;
   try {
-    if (result) {
+    const token = req.headers["access_token"];
+    const result = await authCheck(token);
+    const { id } = req.body;
+    console.log(id, result, "id,result");
+    if (result && result.id) {
       console.log(result, "result");
-      // deleteCategory(result.id, id)
-      //   .then(data => {})
-      //   .catch(err => console.log(err, "err"));
+      deleteCategory(result.id, id)
+        .then(data => {
+          console.log(data, "delete cate res");
+          if (data) {
+            res
+              .status(200)
+              .json({ status: 200, message: "ok", data: [...data] });
+          }
+        })
+        .catch(err => {
+          console.log(err, "deleteCategory err");
+          next(err);
+        });
     } else {
-      res
-        .status(400)
-        .json({ status: 400, message: " invalid token" })
-        .end();
+      res.status(400).json({ status: 400, message: " invalid token" });
     }
-  } catch {
+  } catch (e) {
     next(e);
   }
 };
 
-export { getCateNumber, setCategory, delCategory };
+export { getCateNumber, delCategory, updateCate };

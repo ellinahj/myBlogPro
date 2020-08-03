@@ -9,9 +9,9 @@ const selectBlog = (user_id, cate_id) => {
       [user_id, cate_id],
       function(err, rows) {
         if (err) {
-          return reject(err);
+          reject(err);
         } else {
-          return resolve(rows);
+          resolve(rows);
         }
       }
     );
@@ -37,9 +37,9 @@ const insertBlog = (data, files) => {
       ],
       function(err, rows) {
         if (err) {
-          return reject(err);
+          reject(err);
         } else {
-          return resolve(rows);
+          resolve(rows);
         }
       }
     );

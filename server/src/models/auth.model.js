@@ -14,10 +14,10 @@ const findId = function(user_id) {
       [user_id],
       function(err, rows) {
         if (err) {
-          return reject(err);
+          reject(err);
         } else {
           console.log(rows[0].count, "rows[0].count");
-          return resolve(rows[0].count);
+          resolve(rows[0].count);
         }
       }
     );
@@ -30,10 +30,10 @@ const findNickname = function(nickname) {
       [nickname],
       function(err, rows) {
         if (err) {
-          return reject(err);
+          reject(err);
         } else {
           console.log(rows[0].count, "rows[0].count");
-          return resolve(rows[0].count);
+          resolve(rows[0].count);
         }
       }
     );
@@ -46,9 +46,9 @@ const findDuplicatedUser = function(user_id, nickname) {
       [user_id, nickname],
       function(err, rows) {
         if (err) {
-          return reject(err);
+          reject(err);
         } else {
-          return resolve(rows[0].count);
+          resolve(rows[0].count);
         }
       }
     );
@@ -94,13 +94,13 @@ const login = (user_id, password) => {
       [user_id],
       function(err, storedPassword) {
         if (err) {
-          return reject(err);
+          reject(err);
         } else {
           if (storedPassword.length >= 1) {
             const hash = storedPassword[0].password;
             bcrypt.compare(password, hash, function(error, result) {
               if (error) {
-                return reject(error);
+                reject(error);
               } else {
                 if (result === true) {
                   connection.query(
@@ -108,6 +108,7 @@ const login = (user_id, password) => {
                     [user_id],
                     function(err, result) {
                       if (err) {
+                        reject(err);
                       } else if (result) {
                         const {
                           id,
@@ -132,9 +133,7 @@ const login = (user_id, password) => {
                           main_title,
                           loginState: "success"
                         };
-                        return resolve(sendResult); // 로그인성공
-                      } else {
-                        throw err;
+                        resolve(sendResult); // 로그인성공
                       }
                     }
                   );
@@ -142,7 +141,7 @@ const login = (user_id, password) => {
                   const sendResult = {
                     loginState: "pwError"
                   };
-                  return resolve(sendResult); // 비번오류
+                  resolve(sendResult); // 비번오류
                 }
               }
             });
@@ -151,7 +150,7 @@ const login = (user_id, password) => {
             const sendResult = {
               loginState: "idError"
             };
-            return resolve(sendResult);
+            resolve(sendResult);
           }
         }
       }

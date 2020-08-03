@@ -100,7 +100,6 @@ const getSearchedBlog = async (req, res, next) => {
         console.log(result.id, cateId, value, "id cateid");
         console.log(response, "responese");
         const data = [...response];
-        console.log(data, "data");
         for (let i = 0; i < data.length; i++) {
           if (data[i].first_image) {
             const url = "http://127.0.0.1:3001/images/" + data[i].first_image;
