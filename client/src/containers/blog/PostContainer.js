@@ -37,7 +37,7 @@ export default function addContainer() {
         }
       };
       axios
-        .get('http://127.0.0.1:3001/api/category', config)
+        .get('http://127.0.0.1:3000/api/category', config)
         .then(res => {
           if (res.status === 200 && res.data) {
             setCategory(res.data.data);

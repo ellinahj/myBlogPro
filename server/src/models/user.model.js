@@ -27,10 +27,10 @@ const selectProfilePhoto = user_id => {
       [user_id],
       function(err, rows) {
         if (err) {
-          return reject(err);
+          reject(err);
         } else {
           const data = rows[0];
-          return resolve(data);
+          resolve(data);
         }
       }
     );
@@ -50,10 +50,10 @@ const updateUser = (user_id, data) => {
       ],
       function(err, rows) {
         if (err) {
-          return reject(err);
+          reject(err);
         } else {
           const data = rows[0];
-          return resolve(data);
+          resolve(data);
         }
       }
     );

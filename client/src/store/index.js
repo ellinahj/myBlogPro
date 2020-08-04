@@ -2,7 +2,7 @@ import { createStore, combineReducers } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import commonReducer, { initialState as commonState } from '../reducers/base';
 
-const composeEnhancers = composeWithDevTools({ realtime: true, port: 3000 });
+const composeEnhancers = composeWithDevTools({ realtime: true, port: 3003 });
 const reducer = combineReducers({
   common: commonReducer
 });

@@ -8,6 +8,7 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import path from "path";
 import { stream, logger } from "./config/winston";
+import moment from "moment";
 import * as Sentry from "@sentry/node";
 
 import authRoute from "./routes/auth";
@@ -16,7 +17,7 @@ import cateRoute from "./routes/category";
 import blogRoute from "./routes/blog";
 
 const app = express();
-app.use(morgan("combined", { stream }));
+app.use(morgan("dev")); //combined,dev
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -35,41 +36,43 @@ app.use("/api/category", cateRoute);
 app.use("/api/blog", blogRoute);
 
 if (process.env.NODE_ENV === "pro") {
-  //Sentry 캡쳐
-  const Sentry = require("@sentry/node");
-  Sentry.init({ dsn: process.env.SENTRY_DSN });
-  app.use(Sentry.Handlers.errorHandler());
+  app.use((err, req, res, next) => {
+    let apiError = err;
 
-  app.use(function onError(err, req, res, next) {
-    res.statusCode = 500;
-    res.end(res.sentry + "\n");
-  });
-  app.use(
-    Sentry.Handlers.requestHandler({
-      request: true,
-      serverName: true,
-      transaction: true,
-      user: true,
-      ip: true
-    })
-  );
-  app.use(
-    Sentry.Handlers.errorHandler({
-      shouldHandleError(error) {
-        // Capture all 404 and 500 errors
-        if (error.status === 404 || error.status === 500) {
-          return true;
+    if (!err.status) {
+      apiError = createError(err);
+    }
+    //Sentry 캡쳐
+    const Sentry = require("@sentry/node");
+    Sentry.init({ dsn: process.env.SENTRY_DSN });
+    app.use(Sentry.Handlers.errorHandler());
+    const { IncomingWebhook } = require("@slack/client");
+    const webhook = new IncomingWebhook(process.env.SLACK_WEBHOOK);
+    webhook.send(
+      {
+        attachments: [
+          {
+            color: "#303bfa",
+            text: "err",
+            fields: [
+              {
+                title: err.message,
+                value: err.stack,
+                short: false
+              }
+            ],
+            ts: moment().unix()
+          }
+        ]
+      },
+      (err, res) => {
+        if (err) {
+          Sentry.captureException(err);
         }
-        return false;
       }
-    })
-  );
-} else {
-  // catch 404 and forward to error handler
-  app.use((req, res, next) => {
-    next(createError(404));
+    );
   });
-
+} else {
   // error handler
   app.use((err, req, res, next) => {
     let apiError = err;
@@ -78,29 +81,14 @@ if (process.env.NODE_ENV === "pro") {
       apiError = createError(err);
     }
 
-    if (process.env.NODE_ENV === "dev") {
-      const errObj = {
-        req: {
-          headers: req.headers,
-          query: req.query,
-          body: req.body,
-          route: req.route
-        },
-        error: {
-          message: apiError.message,
-          stack: apiError.stack,
-          status: apiError.status
-        },
-        user: req.user
-      };
-      const today = new Date();
-      logger.error(`${today}`, errObj);
-    } else {
-      res.locals.message = apiError.message;
-      res.locals.error = apiError;
-    }
+    // set locals, only providing error in development
+    res.locals.message = apiError.message;
+    res.locals.error = process.env.NODE_ENV === "dev" ? apiError : {};
+
     // render the error page
-    return res.status(apiError.status).json({ message: apiError.message });
+    return res.status(apiError.status).json({
+      message: apiError.message
+    });
   });
 }
 

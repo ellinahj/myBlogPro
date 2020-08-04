@@ -12,7 +12,7 @@ const selectCateNumber = id => {
         if (err) {
           reject(err);
         } else {
-          console.log(rows, "rows");
+          // console.log(rows, "rows");
           resolve(rows);
         }
       }

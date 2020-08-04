@@ -95,7 +95,7 @@ const loginController = (req, res, next) => {
               user_color,
               main_title
             } = result;
-            const profile_url = "http://127.0.0.1:3001/images/" + profile_photo;
+            const profile_url = "http://127.0.0.1:3000/images/" + profile_photo;
             res.status(200).json({
               message: "ok",
               access_token: token,
