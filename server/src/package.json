@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www --exec babel-node --presets @babel/preset-env"
+    "start": "babel-node ./bin/www --exec babel-node --presets @babel/preset-env"
   },
   "dependencies": {
     "@babel/polyfill": "^7.8.7",
@@ -29,6 +29,7 @@
     "@babel/node": "^7.8.7",
     "@babel/preset-env": "^7.9.5",
     "cors": "^2.8.5",
+    "node-pre-gyp": "^0.12.0",
     "nodemon": "^2.0.3"
   }
 }
