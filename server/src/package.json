@@ -1,11 +1,11 @@
 {
+  "type": "module",
   "name": "restapi",
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www --exec babel-node --presets @babel/preset-env"
+    "start": "babel-node ./bin/www --presets @babel/preset-env"
   },
-  "type": "module",
   "dependencies": {
     "@babel/polyfill": "^7.8.7",
     "@sentry/node": "5.20.1",
