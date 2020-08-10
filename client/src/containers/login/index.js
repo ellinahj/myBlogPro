@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Router from 'next/router';
 import styled from 'styled-components';
 import { setUserInfo, setThemeColor, setFont } from '../../actions/base';
@@ -11,6 +11,7 @@ export default function LoginContainer() {
   const [pw, setPw] = useState('');
   const dispatch = useDispatch();
   const pwValue = useRef(null);
+  const userColor = useSelector(state => state.common.userColor);
 
   const userLogin = () => {
     const data = { user_id: id, password: pw };
@@ -63,7 +64,9 @@ export default function LoginContainer() {
           비밀번호 표시
           <CheckBox type="checkbox" onClick={showPwd} />
         </CheckBoxCon>
-        <LoginBtn onClick={userLogin}>로그인</LoginBtn>
+        <LoginBtn onClick={userLogin} userColor={userColor}>
+          로그인
+        </LoginBtn>
         <BottomWrap>
           <JoinCon onClick={() => Router.push('/join')}>회원가입</JoinCon>
         </BottomWrap>
@@ -101,14 +104,13 @@ const LoginBtn = styled.button`
   height: 45px;
   box-sizing: border-box;
   font-size: 15px;
-  background: #ddd;
+  background: ${props => props.userColor};
   text-align: center;
   line-height: 45px;
   margin-top: 20px;
   margin-bottom: 20px;
   color: #fff;
   border: none;
-  font-family: 'Nanum Myeongjo', serif;
 `;
 const Title = styled.div`
   text-align: center;

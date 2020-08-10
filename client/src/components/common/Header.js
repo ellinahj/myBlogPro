@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
-import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { colorLuminance } from '../../utils/common';
 import { loginCheck } from '../../api/auth';
@@ -17,9 +16,8 @@ export default function Header() {
   const userInfo = useSelector(state => state.common.userInfo);
   const isLoggedIn = useSelector(state => state.common.isLoggedIn);
   const tooltip = useSelector(state => state.common.showToolTip);
-  const selectFont = useSelector(state => state.common.selectFont);
   const luminantColor = userColor && colorLuminance(userColor, 0.5);
-  console.log(userInfo, 'userColor');
+
   useEffect(() => {
     if (Router.asPath !== '/join') {
       const showTool = JSON.parse(localStorage.getItem('showTool'));
@@ -32,7 +30,6 @@ export default function Header() {
       };
       loginCheck(config).then(res => {
         if (res.status === 200 && res.data) {
-          console.log(res.data, 'loginCh');
           dispatch(setThemeColor(res.data.user_color));
           dispatch(setUserInfo(res.data));
           dispatch(setFont(res.data.user_color));

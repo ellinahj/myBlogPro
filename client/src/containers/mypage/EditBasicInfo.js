@@ -101,7 +101,6 @@ export default function InfoContainer(props) {
       }
     });
   };
-
   return (
     <Con>
       <Column>
@@ -137,7 +136,9 @@ export default function InfoContainer(props) {
                   )}
                 </InputRow>
                 {showEdit && !!nickname && nicknameAvailable === true && <Match>사용가능</Match>}
-                {showEdit && !!nickname && nicknameAvailable === false && <Mismatch>이미사용중입니다.</Mismatch>}
+                {showEdit && userInfo.nickname !== nickname && nicknameAvailable === false && (
+                  <Mismatch>이미사용중입니다.</Mismatch>
+                )}
               </InputCol>
             </MarginRow>
             <MarginRow>
@@ -189,7 +190,7 @@ export default function InfoContainer(props) {
             <Row>
               {showEdit && (
                 <SubmitBtn
-                  disabled={nickname === '' || nicknameAvailable === false}
+                  disabled={userInfo.nickname !== nickname && nicknameAvailable !== true}
                   available={nicknameAvailable === true}
                   onClick={handleSubmit}
                   userColor={userColor}
