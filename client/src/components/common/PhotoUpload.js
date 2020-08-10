@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components';
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import ReactCrop from 'react-image-crop';
+import { BlueEditBtn } from '../../utils/theme';
 
 export default function Upload(props) {
   const { imgFormData, prevImg, showEdit, clickEdit } = props;
@@ -87,9 +88,14 @@ export default function Upload(props) {
   useEffect(() => {
     imgFormData(file);
   }, [file]);
+
+  useEffect(() => {
+    setUpImg([]);
+  }, [showEdit]);
+
   return (
     <Row>
-      <TitleCenter onClick={e => clickEdit(e)}>프로필편집</TitleCenter>
+      <TitleCenter onClick={e => clickEdit(e)}>프로필변경</TitleCenter>
       <ProfileRow>
         <ProfileCenter>
           {showEdit && (
@@ -107,7 +113,7 @@ export default function Upload(props) {
             onChange={e => addImg(e, 0)}
           />
 
-          {previewUrl && previewUrl[0] ? (
+          {showEdit && previewUrl && previewUrl[0] ? (
             <Img src={previewUrl[0]} width={70} />
           ) : (
             <Img
@@ -117,17 +123,19 @@ export default function Upload(props) {
           )}
         </ProfileCenter>
       </ProfileRow>
-      <ProfileRow>
-        <ReactCropDiv
-          userColor={userColor}
-          src={upImg}
-          onImageLoaded={onLoad}
-          crop={crop}
-          onChange={img => setCrop(img)}
-          onComplete={makeClientCrop}
-          uploadImg={upImg}
-        />
-      </ProfileRow>
+      {showEdit && (
+        <ProfileRow>
+          <ReactCropDiv
+            userColor={userColor}
+            src={upImg}
+            onImageLoaded={onLoad}
+            crop={crop}
+            onChange={img => setCrop(img)}
+            onComplete={makeClientCrop}
+            uploadImg={upImg}
+          />
+        </ProfileRow>
+      )}
     </Row>
   );
 }
@@ -155,10 +163,7 @@ const TitleCenter = styled.div`
   justify-content: center;
   width: 100%;
   margin: 20px 0;
-  color: #6da3f7;
-  font-weight: bold;
-  margin-top: 10px;
-  cursor: pointer;
+${BlueEditBtn}
 
   font-size: ${props => props.theme.mFont};
 `;

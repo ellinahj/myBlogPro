@@ -1,17 +1,17 @@
 import axios from 'axios';
 import Router from 'next/router';
 import store from '../store';
-import styled from 'styled-components';
 import { setUserInfo, setLogin, setThemeColor, setLoading, setLoding } from '../actions/base';
-
+const localURL = 'http://127.0.0.1:3000';
+const proURL = '';
 const instance = axios.create({
-  baseURL: 'http://127.0.0.1:3000/api',
-  timeout: 3000
+  baseURL: `${localURL}/api`,
+  timeout: 5000
 });
 
 instance.interceptors.request.use(
   function(config) {
-    store.dispatch(setLoding(true));
+    // store.dispatch(setLoding(true));
     return config;
   },
   function(error) {
@@ -40,10 +40,10 @@ instance.interceptors.response.use(
           alert('아이디나 비밀번호를 확인해주세요.');
         }
       } else if (error.response.status === 400) {
+        Router.push('/login');
         store.dispatch(setLogin(false));
         store.dispatch(setUserInfo(undefined));
-        store.dispatch(setThemeColor(''));
-        Router.push('/login');
+        store.dispatch(setThemeColor('#7c7cec'));
       } else if (error.response.status === 404) {
         alert('누락된 요청');
       } else if (error.response.status >= 500) {
@@ -54,11 +54,3 @@ instance.interceptors.response.use(
   }
 );
 export default instance;
-const Loading = styled.img`
-  position: absolute;
-  z-index: 101;
-  width: 64px;
-  height: 64px;
-  top: 50%;
-  left: 50%;
-`;

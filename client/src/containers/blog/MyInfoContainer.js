@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { colorLuminance } from '../../utils/common';
 export default function MyInfo() {
   const userColor = useSelector(state => state.common.userColor);
-  const luminantColor = userColor && colorLuminance(userColor, 0.7);
+  const luminantColor = userColor && colorLuminance(userColor, 0.5);
   const userInfo = useSelector(state => state.common.userInfo);
   return (
     <MyInfoWrap userColor={userColor} luminantColor={luminantColor}>
@@ -19,8 +19,8 @@ export default function MyInfo() {
 
 const MyInfoWrap = styled.section`
   width: 100%;
-  height: 200px;
-  padding: 60px 40px 0;
+  height: 185px;
+  padding: 40px 40px 0;
   box-sizing: border-box;
   background-image: linear-gradient(90deg, ${props => props.userColor}, ${props => props.luminantColor});
 `;
@@ -32,7 +32,6 @@ const Profile = styled.div`
 const Img = styled.img`
   width: ${props => props.width || '50px'};
   height: ${props => props.width || '50px'};
-  cursor: pointer;
   border-radius: ${props => props.width / 2 || 25}px;
   margin-right: 15px;
 `;

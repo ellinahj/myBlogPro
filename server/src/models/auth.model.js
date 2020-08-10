@@ -4,9 +4,9 @@ const bcrypt = require("bcrypt");
 const saltRounds = 10;
 import jwt from "jsonwebtoken";
 import config from "../config/config";
-
 mysql_dbc.db_open(connection);
-const findId = function(user_id) {
+
+const selectId = function(user_id) {
   return new Promise((resolve, reject) => {
     console.log(user_id, "user id");
     connection.query(
@@ -23,41 +23,25 @@ const findId = function(user_id) {
     );
   }).catch(err, console.log("find id return err ")); //*에러처리 필요;
 };
-const findNickname = function(nickname) {
-  return new Promise((resolve, reject) => {
-    connection.query(
-      "SELECT count(*) as count FROM mydiary.users WHERE nickname = ?",
-      [nickname],
-      function(err, rows) {
-        if (err) {
-          reject(err);
-        } else {
-          console.log(rows[0].count, "rows[0].count");
-          resolve(rows[0].count);
-        }
-      }
-    );
-  });
-};
-const findDuplicatedUser = function(user_id, nickname) {
-  return new Promise((resolve, reject) => {
-    connection.query(
-      "SELECT count(*) as count FROM mydiary.users WHERE user_id = ? or nickname=?",
-      [user_id, nickname],
-      function(err, rows) {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(rows[0].count);
-        }
-      }
-    );
-  });
-};
+// const findDuplicatedUser = function(nickname) {
+//   return new Promise((resolve, reject) => {
+//     connection.query(
+//       "SELECT count(*) as count FROM mydiary.users WHERE nickname=?",
+//       [nickname],
+//       function(err, rows) {
+//         if (err) {
+//           reject(err);
+//         } else {
+//           resolve(rows[0].count);
+//         }
+//       }
+//     );
+//   });
+// };
 const insertUser = (user_id, password) => {
   return new Promise((resolve, reject) => {
     bcrypt.hash(password, saltRounds, function(err, hashedPassword) {
-      console.log(hashedPassword, "has");
+      console.log(user_id, hashedPassword, "has");
       connection.query(
         "INSERT INTO mydiary.users (user_id,password) VALUES (?,?) ",
         [user_id, hashedPassword],
@@ -157,4 +141,4 @@ const login = (user_id, password) => {
     );
   });
 };
-export { findDuplicatedUser, insertUser, findId, findNickname, login };
+export { insertUser, selectId, login };

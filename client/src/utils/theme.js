@@ -8,11 +8,10 @@ const theme = {
   mlFont: '18px',
   lFont: '20px',
   xlFont: '23px',
-  greenFont: '#00b711',
+  greenFont: '#2fae00',
   redFont: '#b30000'
 };
 const BasicButton = css`
-  color: #111;
   cursor: pointer;
 `;
 

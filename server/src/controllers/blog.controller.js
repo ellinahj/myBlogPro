@@ -6,13 +6,20 @@ import {
 } from "../models/blog.model";
 import fs from "fs";
 import multer from "multer";
+import multerS3 from "multer-s3";
+import AWS from "aws-sdk";
+import dotenv from "dotenv";
+import moment from "moment";
 
+dotenv.config();
 //파일 업로드 관련
 fs.readdir("uploads/images", error => {
   if (error) {
     fs.mkdirSync("uploads/images");
   }
 });
+
+const upload = multer({ storage: storage }).any();
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
     cb(null, "./uploads/images");
@@ -21,55 +28,73 @@ const storage = multer.diskStorage({
     cb(null, Date.now() + "_" + file.originalname);
   }
 });
-const upload = multer({ storage: storage }).any();
+
+//s3
+
+const s3 = new AWS.S3();
+AWS.config.loadFromPath(__dirname + "/../config/aws.json");
+
+export const storageS3 = multerS3({
+  s3: s3,
+  bucket: "myblogs3",
+  metadata: function(req, file, cb) {
+    cb(null, { fieldName: file.fieldname });
+  },
+  key: function(req, file, cb) {
+    cb(null, "images" + "/" + Date.now().toString() + file.originalname);
+    //cb(null, Date.now().toString() );
+  },
+  acl: "public-read"
+});
 
 const setBlog = async (req, res, next) => {
-  console.log(req.body, "body");
-  const token = req.headers["access_token"];
-  const result = await authCheck(token);
-  if (result && result.id) {
-    const fileResult = new Promise((resolve, reject) => {
-      //파일업로드
-      upload(req, res, function(err) {
-        if (err) {
-          console.log(err, "upload err");
-          return reject;
+  try {
+    const token = req.headers["access_token"];
+    const result = await authCheck(token);
+    if (result && result.id) {
+      if (req) {
+        const fileNameArr = [];
+        const imgFile = req.files;
+
+        console.log(imgFile, "imgRile");
+        if (imgFile && imgFile.length > 0) {
+          imgFile.forEach(item => {
+            console.log(item, "item");
+            fileNameArr.push(item.key);
+          });
         }
-        return resolve(req);
-      });
-    });
-    fileResult
-      .then(res => {
-        //파일이름 추출
-        if (res) {
-          const fileNameArr = [];
-          const imgFile = req.files;
-          if (imgFile && imgFile.length > 0) {
-            imgFile.forEach(item => {
-              fileNameArr.push(item.filename);
-            });
-          }
-          const { data } = res.body;
-          console.log(fileNameArr, "filenameArr");
-          insertBlog(data, fileNameArr)
-            .then(res => {
-              console.log(res, "file upload성공");
-            })
-            .catch(err => console.log(err));
-        }
-      })
-      .catch(e => console.log(e, "fileUpload err"));
+        let { data } = req.body;
+        console.log(data, "data1");
+        data = JSON.parse(data);
+        console.log(fileNameArr, "filenameArr");
+        const transDate = moment(data.date).format("YYYY-MM-DD HH:mm");
+        data.date = transDate;
+        data.files = fileNameArr;
+        console.log(data, "data2");
+        insertBlog(result.id, data)
+          .then(data => {
+            console.log(data, "data");
+            res.status(200).json({ status: 200 });
+          })
+          .catch(err => console.log(err, "file upload err"));
+      } else {
+        res.status(400).json({ status: 400 });
+      }
+    } else {
+      res.status(400).json({ status: 400 });
+    }
+  } catch (e) {
+    next(e);
   }
 };
 const getBlog = async (req, res, next) => {
   const token = req.headers["access_token"];
   const result = await authCheck(token);
   const { id } = req.params;
-
   if (result) {
     selectBlog(result.id, id)
       .then(response => {
-        console.log(result.id, id, "id cateid");
+        // console.log(result.id, id, "id cateid");
         const data = [...response];
         for (let i = 0; i < data.length; i++) {
           if (data[i].first_image !== null) {
@@ -97,7 +122,6 @@ const getSearchedBlog = async (req, res, next) => {
   if (result) {
     selectSearchedBlog(result.id, cateId, value)
       .then(response => {
-        console.log(result.id, cateId, value, "id cateid");
         console.log(response, "responese");
         const data = [...response];
         for (let i = 0; i < data.length; i++) {

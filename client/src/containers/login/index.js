@@ -1,9 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useState, useRef } from 'react';
+import { useDispatch } from 'react-redux';
 import Router from 'next/router';
 import styled from 'styled-components';
-import store from '../../store';
-import { setUserInfo, setThemeColor } from '../../actions/base';
+import { setUserInfo, setThemeColor, setFont } from '../../actions/base';
 import { login } from '../../api/auth';
 import { theme } from '../../utils/theme';
 
@@ -12,21 +11,18 @@ export default function LoginContainer() {
   const [pw, setPw] = useState('');
   const dispatch = useDispatch();
   const pwValue = useRef(null);
-  const isLoggedIn = useSelector(state => state.common.isLoggedIn);
-
-  // useEffect(() => {
-  //   isLoggedIn && Router.push('/blog');
-  // }, []);
 
   const userLogin = () => {
     const data = { user_id: id, password: pw };
     login(data).then(res => {
       console.log(res, 'login res login');
-      if (res.status < 300) {
+      if (res.status === 200) {
         const token = res.data.access_token;
         localStorage.setItem('mydiary_token', token);
-        store.dispatch(setUserInfo(res.data));
-        store.dispatch(setThemeColor(res.data.user_color));
+        dispatch(setUserInfo(res.data));
+        console.log(res.data, 'res.dat head');
+        dispatch(setThemeColor(res.data.user_color));
+        dispatch(setFont(res.data.user_font));
         alert(' 로그인되었습니다.');
         Router.push('/blog');
       }
@@ -38,6 +34,7 @@ export default function LoginContainer() {
       userLogin();
     }
   };
+
   const showPwd = () => {
     if (pwValue.current.type === 'password') {
       pwValue.current.type = 'text';
@@ -45,12 +42,13 @@ export default function LoginContainer() {
       pwValue.current.type = 'password';
     }
   };
+
   return (
     <Container>
       <InputWrap>
         <Title>로그인</Title>
         <SubTitle>아이디 *</SubTitle>
-        <input name="id" value={id} onChange={e => setId(e.target.value)}></input>
+        <input name="id" value={id} onChange={e => setId(e.target.value)} autoComplete="off" />
         <SubTitle>비밀번호 *</SubTitle>
         <input
           name="pw"
@@ -59,14 +57,14 @@ export default function LoginContainer() {
           onKeyUp={enterKey}
           value={pw}
           onChange={e => setPw(e.target.value)}
-        ></input>
+          autoComplete="off"
+        />
         <CheckBoxCon>
           비밀번호 표시
           <CheckBox type="checkbox" onClick={showPwd} />
         </CheckBoxCon>
         <LoginBtn onClick={userLogin}>로그인</LoginBtn>
         <BottomWrap>
-          <PwdCon>비밀번호를 잊으셨나요?</PwdCon>
           <JoinCon onClick={() => Router.push('/join')}>회원가입</JoinCon>
         </BottomWrap>
       </InputWrap>

@@ -10,7 +10,7 @@ export default function Layout({ children }) {
 
   const handle = () => {
     const currentScroll = window.pageYOffset;
-    if (currentScroll === 0 || currentScroll > prevScroll.current) {
+    if (currentScroll === 0 || currentScroll < prevScroll.current) {
       setScollDown(true);
     } else {
       setScollDown(false);
@@ -25,13 +25,12 @@ export default function Layout({ children }) {
     };
   }, []);
 
-  const rgbaColor = useSelector(state => state.common.rgbaColor);
   const loading = useSelector(state => state.common.loading);
   return (
     <LayoutWrap>
       {/* {loading ? <Loading>loading...</Loading> : null} */}
       <Header />
-      <Container rgbaColor={rgbaColor}>
+      <Container>
         <Main>{children}</Main>
       </Container>
       <BottomMenu isScrollDown={isScrollDown} />
@@ -48,7 +47,6 @@ const LayoutWrap = styled.div`
 
 const Container = styled.div`
   padding-bottom: 30px;
-  /* background: ${props => props.rgbaColor}; */
 `;
 const Main = styled.div`
   position: relative;

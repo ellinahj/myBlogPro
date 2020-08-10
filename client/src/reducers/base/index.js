@@ -1,23 +1,25 @@
 import {
   INCREMENT,
   SET_THEME_COLOR,
-  SET_THEME_RGBA,
   SET_LOGIN,
   SET_USER_INFO,
   SET_CATE,
   SET_LOADING,
-  SET_TOOLTIP
+  SET_TOOLTIP,
+  SET_CLICKMENU,
+  SET_FONT
 } from '../../actions/base/actionTypes';
 
 export const initialState = {
   number: 0,
-  userColor: '#ff254f',
-  rgbaColor: '#fbfbfb',
+  userColor: '#7c7cec',
   isLoggedIn: false,
   userInfo: undefined,
   category: undefined,
   loading: false,
-  showToolTip: true
+  showToolTip: true,
+  clickMenu: 0,
+  selectFont: `'Noto Sans KR', sans-serifo'`
 };
 
 const commonReducer = (state = initialState, action) => {
@@ -30,11 +32,6 @@ const commonReducer = (state = initialState, action) => {
     return {
       ...state,
       userColor: action.payload
-    };
-  } else if (action.type === SET_THEME_RGBA) {
-    return {
-      ...state,
-      rgbaColor: action.payload
     };
   } else if (action.type === SET_LOGIN) {
     return {
@@ -60,6 +57,16 @@ const commonReducer = (state = initialState, action) => {
     return {
       ...state,
       showToolTip: action.payload
+    };
+  } else if (action.type === SET_CLICKMENU) {
+    return {
+      ...state,
+      clickMenu: action.payload
+    };
+  } else if (action.type === SET_FONT) {
+    return {
+      ...state,
+      selectFont: action.payload
     };
   }
 

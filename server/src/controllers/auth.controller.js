@@ -1,17 +1,11 @@
-import {
-  findDuplicatedUser,
-  insertUser,
-  findId,
-  findNickname,
-  login
-} from "../models/auth.model";
+import { insertUser, selectId, login } from "../models/auth.model";
 
 //회원가입
 const findDuplicatedId = (req, res, next) => {
   try {
     //아이디 중복확인
     const { user_id } = req.body;
-    findId(user_id)
+    selectId(user_id)
       .then(count => {
         if (count >= 1) {
           // t.프론트 처리..
@@ -27,29 +21,12 @@ const findDuplicatedId = (req, res, next) => {
     next(e);
   }
 };
-const findDuplicatedNickname = (req, res, next) => {
-  try {
-    //닉네임 중복확인
-    const { nickname } = req.body;
-    findNickname(nickname)
-      .then(count => {
-        if (count >= 1) {
-          res.status(400).send({ status: 400, message: "dupilicated" });
-        } else {
-          res.status(200).send({ status: 200, message: "available" });
-        }
-      })
-      .catch(e => {
-        next(e);
-      });
-  } catch (e) {
-    next(e);
-  }
-};
-const createUser = (req, res, next) => {
+
+const createUser = async (req, res, next) => {
   try {
     //회원 등록
     const { user_id, password } = req.body;
+    console.log(user_id, password, "usr pas");
     // findDuplicatedUser(user_id, password)
     //   .then(count => {
     //     console.log(count, "count");
@@ -75,8 +52,10 @@ const createUser = (req, res, next) => {
   }
 };
 const loginController = (req, res, next) => {
+  console.log(req, "req");
   try {
     const { user_id, password } = req.body;
+    console.log(req.body, "req.body");
     if (user_id && password) {
       login(user_id, password)
         .then(result => {
@@ -116,9 +95,4 @@ const loginController = (req, res, next) => {
   }
 };
 
-export {
-  createUser,
-  findDuplicatedId,
-  findDuplicatedNickname,
-  loginController
-};
+export { createUser, findDuplicatedId, loginController };

@@ -87,7 +87,18 @@ const deleteCategory = (userId, cateId) => {
         if (err) {
           reject(err);
         } else {
-          resolve(rows);
+          connection.query(
+            "select id, title from mydiary.category WHERE user_id = ?",
+            [userId],
+            function(err, rows) {
+              if (err) {
+                reject(err);
+              } else {
+                console.log(rows, "slect rows");
+                resolve(rows);
+              }
+            }
+          );
         }
       }
     );

@@ -1,4 +1,12 @@
 import apiSend from '../utils/apiSend';
+
+const findNickname = data => {
+  return apiSend({
+    url: `/user/nickname`,
+    method: 'post',
+    data: data
+  });
+};
 const updateInfo = (config, data) => {
   return apiSend({
     url: `/user/update/info`,
@@ -24,4 +32,4 @@ const updatePwd = (config, data) => {
   });
 };
 
-export { updateInfo, checkPwd, updatePwd };
+export { findNickname, updateInfo, checkPwd, updatePwd };

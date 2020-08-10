@@ -3,6 +3,7 @@ import multer from "multer";
 import path from "path";
 import {
   selectUser,
+  selectNickname,
   updateUser,
   selectProfilePhoto,
   checkAndInsertPwd,
@@ -10,6 +11,25 @@ import {
 } from "../models/user.model";
 import { authCheck } from "../public/function";
 
+const findNickname = async (req, res, next) => {
+  try {
+    //닉네임 중복확인
+    const { nickname } = req.body;
+    selectNickname(nickname)
+      .then(count => {
+        if (count >= 1) {
+          res.status(200).send({ status: 200, message: "dupilicated" });
+        } else if (count === 0) {
+          res.status(200).send({ status: 200, message: "available" });
+        }
+      })
+      .catch(e => {
+        next(e);
+      });
+  } catch (e) {
+    next(e);
+  }
+};
 const getUserInfo = async (req, res, next) => {
   try {
     const token = req.headers["access_token"];
@@ -67,50 +87,57 @@ const updateInfo = async (req, res, next) => {
         upload(req, res, function(err) {
           if (err) {
             console.log(err, "upload err");
-            reject;
+            reject(err);
           }
           resolve(req);
         });
       });
       fileResult
-        .then(res => {
-          if (res.files.length === 0) {
-            selectProfilePhoto(result.userId).then(name => {
-              let { data } = res.body;
-              data = JSON.parse(data);
-              const { profile_photo } = name;
-              data["profile_photo"] = profile_photo;
-              console.log(data, "data");
-              updateUser(result.userId, data).then(res2 =>
-                console.log(res2, "res2")
-              );
-            });
+        .then(fileRes => {
+          if (fileRes.files.length === 0) {
+            selectProfilePhoto(result.userId)
+              .then(name => {
+                let { data } = fileRes.body;
+                data = JSON.parse(data);
+                const { profile_photo } = name;
+                data["profile_photo"] = profile_photo;
+                console.log(data, "data");
+                updateUser(result.userId, data).then(data => {
+                  let profile_url = null;
+                  if (data.profile_photo !== null) {
+                    profile_url =
+                      "http://127.0.0.1:3000/images/" + data.profile_photo;
+                  }
+                  delete data.profile_photo;
+                  delete data.id;
+                  delete data.access_token;
+                  data = { ...data, profile_url };
+                  res.status(200).json({ ...data });
+                });
+              })
+              .catch(e => console.log(e, "updateUser e"));
           } else {
-            let { data } = res.body;
+            let { data } = fileRes.body;
             data = JSON.parse(data);
-            data["profile_photo"] = res.files[0].filename;
-            // console.log(data, "  data");
-            updateUser(result.userId, data).then(res2 =>
-              console.log(res2, "res2")
-            );
+            data["profile_photo"] = fileRes.files[0].filename;
+            updateUser(result.userId, data)
+              .then(data => {
+                let profile_url = null;
+                if (data.profile_photo !== null) {
+                  profile_url =
+                    "http://127.0.0.1:3000/images/" + data.profile_photo;
+                }
+                delete data.profile_photo;
+                delete data.id;
+                delete data.access_token;
+                data = { ...data, profile_url };
+                console.log(data, "dataaaa");
+                res.status(200).json({ ...data });
+              })
+              .catch(e => console.log(e, "updateUser e"));
           }
         })
         .catch(e => next(e));
-      // if (data.profile_photo[0] === null) {
-      //   selectProfilePhoto(result.userId).then(res => {
-      //     const { profile_photo } = res;
-      //     data.profile_photo = profile_photo;
-      //     console.log(data, "dataaa");
-      //     updateUser(result.userId, data).then(res2 => console.log(res2, "res2"));
-      //   });
-      // }
-
-      // const profilePath = `/images/${body.profile}`;
-      // fs.unlinkSync(dirPath + profilePath);
-
-      // updateUser(body)
-      //   .then(data => {console.log(data,'data');})
-      //   .catch(err => console.log(err, "updateUser errr"));
     } else {
       res.status(400).json({ status: 400 });
     }
@@ -163,4 +190,4 @@ const updatePwd = async (req, res, next) => {
     next(e);
   }
 };
-export { getUserInfo, updateInfo, updatePwd, getPwd };
+export { findNickname, updateInfo, getUserInfo, getPwd, updatePwd };

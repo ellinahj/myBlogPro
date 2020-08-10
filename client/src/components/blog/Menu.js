@@ -20,6 +20,11 @@ export default function MenuCo(props) {
 }
 const MenuWrap = styled.div`
   width: 100%;
+  white-space: nowrap;
+  overflow: auto;
+    ::-webkit-scrollbar {
+    display: none;
+}
   max-width: 765px;
   height: 60px;
   background-color: #fff;

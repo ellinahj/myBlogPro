@@ -1,12 +1,13 @@
 import {
   INCREMENT,
   SET_THEME_COLOR,
-  SET_THEME_RGBA,
   SET_LOGIN,
   SET_USER_INFO,
   SET_CATE,
   SET_LOADING,
-  SET_TOOLTIP
+  SET_TOOLTIP,
+  SET_CLICKMENU,
+  SET_FONT
 } from './actionTypes';
 
 const increment = payload => {
@@ -21,12 +22,7 @@ const setThemeColor = payload => {
     payload
   };
 };
-const setThemeRGBA = payload => {
-  return {
-    type: SET_THEME_RGBA,
-    payload
-  };
-};
+
 const setLogin = payload => {
   return {
     type: SET_LOGIN,
@@ -57,4 +53,16 @@ const setToolTip = payload => {
     payload
   };
 };
-export { increment, setThemeColor, setThemeRGBA, setLogin, setUserInfo, setCate, setLoding, setToolTip };
+const setClickMenu = payload => {
+  return {
+    type: SET_CLICKMENU,
+    payload
+  };
+};
+const setFont = payload => {
+  return {
+    type: SET_FONT,
+    payload
+  };
+};
+export { increment, setThemeColor, setLogin, setUserInfo, setCate, setLoding, setToolTip, setClickMenu, setFont };

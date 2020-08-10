@@ -1,15 +1,15 @@
 {
-  "name": "mydiary",
+  "name": "myblog",
   "version": "1.0.0",
-  "author": "Hyeonjeong Park <ellinahj@gmail.com>",
+  "author": "Hyunjung Park <flyhyunjungd@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "client": "cd client && yarn dev",
-    "server": "cd server && cd src && yarn start"
+    "client": "cd client && npm run dev",
+    "server": "cd server && cd src && npm start",
+    "clientInstall": "cd client && npm install ",
+    "serverInstall": "cd server && cd src && npm install",
+    "clientBuild": "cd client && npm run build",
+    "serverStart": "cd server && cd src && babel-node ./bin/www --exec babel-node --presets @babel/preset-env"
   },
-  "dependencies": {},
-  "devDependencies": {
-    "concurrently": "^5.1.0",
-    "nodemon": "^2.0.3"
-  }
+  "dependencies": {}
 }

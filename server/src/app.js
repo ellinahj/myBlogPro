@@ -1,5 +1,4 @@
-require("dotenv").config();
-
+import dotenv from "dotenv";
 import createError from "http-errors";
 import express from "express";
 import cookieParser from "cookie-parser";
@@ -7,9 +6,10 @@ import morgan from "morgan";
 import cors from "cors";
 import bodyParser from "body-parser";
 import path from "path";
-import { stream, logger } from "./config/winston";
 import moment from "moment";
 import * as Sentry from "@sentry/node";
+import AWS from "aws-sdk";
+import multerS3 from "multer-s3";
 
 import authRoute from "./routes/auth";
 import userRoute from "./routes/user";
@@ -17,15 +17,16 @@ import cateRoute from "./routes/category";
 import blogRoute from "./routes/blog";
 
 const app = express();
+dotenv.config();
 app.use(morgan("dev")); //combined,dev
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(cors());
 app.use(express.static(path.join(__dirname, "./uploads")));
 var options = {
   inflate: true,
-  limit: "1000kb",
+  limit: "1000mb",
   type: "application/octet-stream"
 };
 app.use(bodyParser.raw(options));

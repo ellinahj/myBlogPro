@@ -3,23 +3,23 @@ import Container from '../../components/common/Container';
 import { useState, useEffect } from 'react';
 import { updatePwd, checkPwd } from '../../api/user';
 import { theme, BlueEditBtn, BasicTitle, BasicButton } from '../../utils/theme';
+
 export default function ChangePwd(props) {
   const { clickEditPw, showEditPw } = props;
   const [value, setValue] = useState({ prevPwd: '', newPwd: '', newPwdCheck: '' });
   const [prevPwdTimeout, setPrevPwdTimeout] = useState(0);
-  const [newPwdTimeout, setNewPwdTimeout] = useState(0);
   const [allOk, setAllOk] = useState(false);
-  const [newPwdState, setNewPwdState] = useState('');
-  const [prevPwdState, setPrevPwdState] = useState('');
-  const [newPwdCheckState, setNewPwdCheckState] = useState('');
+  const [newPwdState, setNewPwdState] = useState(false);
+  const [prevPwdState, setPrevPwdState] = useState(false);
+  const [newPwdCheckState, setNewPwdCheckState] = useState(false);
   const [prevPwdTyping, setPrevPwdTyping] = useState(false);
   const regex = /^.*(?=^.{6,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
+
   const handlePrevPwd = e => {
     const nextValue = { [e.target.name]: e.target.value };
     setValue({ ...value, ...nextValue });
     prevPwdTimeout && clearTimeout(prevPwdTimeout);
     const timer = setTimeout(() => {
-      console.log('e');
       const getToken = localStorage.getItem('mydiary_token');
       if (getToken) {
         const config = {
@@ -28,9 +28,7 @@ export default function ChangePwd(props) {
         const data = { pwd: nextValue.prevPwd };
         checkPwd(config, data)
           .then(res => {
-            console.log(res, 'res');
             if (res.status === 200) {
-              console.log('in');
               setPrevPwdTyping(true);
               setPrevPwdState(true);
             }
@@ -42,20 +40,19 @@ export default function ChangePwd(props) {
             }
           });
       }
-    }, 2500);
+    }, 1000);
     setPrevPwdTimeout(timer);
   };
 
   const handleNewPwd = e => {
     setValue({ ...value, newPwd: e.target.value });
     if (!regex.test(e.target.value)) {
-      console.log('false');
       setNewPwdState(false);
     } else {
-      console.log('true');
       setNewPwdState(true);
     }
   };
+
   const handleNewPwdCheck = e => {
     setValue({ ...value, newPwdCheck: e.target.value });
     if (newPwdState && value.newPwd === e.target.value) {
@@ -64,11 +61,13 @@ export default function ChangePwd(props) {
       setNewPwdCheckState(false);
     }
   };
+
   useEffect(() => {
     if (prevPwdState && newPwdCheckState) {
       setAllOk(true);
     }
   }, [newPwdCheckState]);
+
   const handleSubmit = () => {
     //최종 변경
     const getToken = localStorage.getItem('mydiary_token');
@@ -77,14 +76,15 @@ export default function ChangePwd(props) {
         access_token: getToken
       };
       const data = value;
-      console.log(value, 'last value');
       updatePwd(config, data).then(res => {
         if (res.status === 200 && res.data) {
-          alert('비밀번호 변경이 완료되었습니다.');
+          alert('변경되었습니다.');
+          showclickEditPwEditPw(false);
         }
       });
     }
   };
+
   return (
     <Con>
       <Column>
@@ -123,7 +123,11 @@ export default function ChangePwd(props) {
                   value.newPwdCheck.length > 0 &&
                   (newPwdCheckState ? <Match>일치</Match> : <Mismatch>일치하지 않습니다.</Mismatch>)}
                 <Row>
-                  <SubmitBtn disabled={!newPwdCheckState} allOk={allOk} onClick={handleSubmit}>
+                  <SubmitBtn
+                    disabled={prevPwdState === false || newPwdState === false || newPwdCheckState === false}
+                    allOk={allOk}
+                    onClick={handleSubmit}
+                  >
                     변경
                   </SubmitBtn>
                 </Row>
@@ -169,7 +173,6 @@ const TopCon = styled.div`
   padding: 30px;
 `;
 const SubmitBtn = styled.button`
-  color: #aaa;
   margin: 30px auto 0;
   padding: 5px 10px;
   font-size: ${theme.mFont};

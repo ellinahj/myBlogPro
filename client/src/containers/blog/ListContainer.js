@@ -4,16 +4,18 @@ import styled from 'styled-components';
 import MyList from '../../components/blog/List';
 import Menu from '../../components/blog/Menu';
 import { colorLuminance } from '../../utils/common';
-import { setCate } from '../../actions/base';
+import { setCate, setClickMenu } from '../../actions/base';
 import { getCate, getBlog, getSearchedBlog } from '../../api/blog';
 import Search from '../../components/blog/Search';
-import store from '../../store';
+
 export default function ListContainer() {
   const dispatch = useDispatch();
   const userColor = useSelector(state => state.common.userColor);
-  const luminantColor = userColor && colorLuminance(userColor, 0.7);
+  const luminantColor = userColor && colorLuminance(userColor, 0.5);
   const userInfo = useSelector(state => state.common.userInfo);
   const category = useSelector(state => state.common.category);
+  const clickMenu = useSelector(state => state.common.clickmenu);
+
   const [menuIndex, setMenuIndex] = useState(0);
   const [isSticky, setSticky] = useState(false);
   const [loadMore, setLoadMore] = useState(true);
@@ -46,8 +48,15 @@ export default function ListContainer() {
         if (res.status === 200 && res.data) {
           if (category && category.length > 0) {
             setSelectedCateId(category[0].id);
+
+            // if (category[0].id !== clickMenu) {
+            //   console.log(clickMenu, 'cliclclclclclclcllc');
+            //   dispatch(setClickMenu(clickMenu));
+            // } else {
+            //   setSelectedCateId(category[0].id);
+            // }
           }
-          store.dispatch(setCate(res.data.data));
+          dispatch(setCate(res.data.data));
         }
       });
     }
@@ -66,7 +75,7 @@ export default function ListContainer() {
     if (category && category.length > 0) {
       const cateId = category[0].id;
       getBlog(config, cateId).then(res => {
-        if (res.status < 300) {
+        if (res.status === 200) {
           setBlogData(res.data.data);
         }
       });
@@ -80,11 +89,24 @@ export default function ListContainer() {
     };
     const cateId = selectedCateId;
     getBlog(config, cateId).then(res => {
-      if (res.status < 300) {
+      if (res.status === 200) {
         setBlogData(res.data.data);
       }
     });
   }, [menuIndex]);
+
+  // useEffect(() => {
+  //   const storedToken = localStorage.getItem('mydiary_token') && localStorage.getItem('mydiary_token');
+  //   const config = {
+  //     access_token: storedToken
+  //   };
+
+  //   getBlog(config, clickMenu).then(res => {
+  //     if (res.status === 200) {
+  //       setBlogData(res.data.data);
+  //     }
+  //   });
+  // }, [clickMenu]);
 
   const getSearch = value => {
     if (blogData && blogData.length !== 0 && value !== '') {
@@ -95,7 +117,7 @@ export default function ListContainer() {
       if (category && category.length > 0) {
         const cateId = category[0].id;
         getSearchedBlog(config, cateId, value).then(res => {
-          if (res.status < 300) {
+          if (res.status === 200) {
             setBlogData(res.data.data);
             setSendToListValue(value);
           }

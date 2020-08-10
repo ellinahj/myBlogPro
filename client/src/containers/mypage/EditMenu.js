@@ -29,7 +29,7 @@ export default function ChangeMenu() {
       getCate(config).then(res => {
         if (res.status === 200 && res.data) {
           dispatch(setCate(res.data.data));
-          console.log(res.data.data, 'res getCate');
+          // console.log(res.data.data, 'res getCate');
           const result = {};
           res.data.data
             ? res.data.data.forEach((item, idx) => {
@@ -41,6 +41,7 @@ export default function ChangeMenu() {
       });
     }
   }, []);
+
   const handleEditMenu = () => {
     setEdit(!edit);
   };
@@ -115,6 +116,7 @@ export default function ChangeMenu() {
       console.log('in3');
     });
   };
+
   const deleteMenu = () => {
     if (window.confirm('메뉴에 저장된 글도 함께 삭제됩니다. 정말 삭제하시겠습니까?')) {
       return true;
@@ -122,6 +124,7 @@ export default function ChangeMenu() {
       return false;
     }
   };
+
   const handleMenuUpdate = () => {
     // const hasIdObj = Object.values(cateValue).filter(value => !!value?.id);
     const hasIdArr = Object.values(cateValue).filter(obj => {
@@ -132,6 +135,7 @@ export default function ChangeMenu() {
     } else {
       console.log(cateValue, 'arr');
       const data = cateValue;
+      console.log(data, 'data');
       const getToken = localStorage.getItem('mydiary_token');
       if (getToken) {
         const config = {
@@ -149,6 +153,7 @@ export default function ChangeMenu() {
               : [];
             setCateValue(result);
             setEdit(false);
+            alert('변경되었습니다.');
           }
         });
       }
@@ -171,14 +176,9 @@ export default function ChangeMenu() {
             category.length > 0 &&
             category.map((item, index) => {
               return edit ? (
-                <MenuRow>
+                <MenuRow key={index}>
                   <NumberFont>{index + 1}.</NumberFont>
-                  <Input
-                    defaultValue={item.title}
-                    name={category.length - 1}
-                    key={index}
-                    onChange={e => handleInput(e)}
-                  />
+                  <Input defaultValue={item.title} name={category.length - 1} onChange={e => handleInput(e)} />
                   {/* {showDeleteBtn && (
                     <CloseBtn
                       src={'/images/close.svg'}
@@ -193,14 +193,15 @@ export default function ChangeMenu() {
                 </MenuRow>
               ) : (
                 <>
-                  <MenuRow>
+                  <MenuRow key={index}>
                     <NumberFont>{index + 1}.</NumberFont>
-                    <MenuFont key={index}>{item.title}</MenuFont>
+                    <MenuFont>{item.title}</MenuFont>
                     {showDeleteBtn && (
                       <CloseBtn
+                        key={index + 3}
                         src={'/images/close.svg'}
-                        width={17}
-                        height={17}
+                        width={15}
+                        height={15}
                         bg="#ddd"
                         radius="50%"
                         padding={2}
@@ -220,18 +221,17 @@ export default function ChangeMenu() {
                   .map((i, idx) => {
                     const index = idx + category.length;
                     return (
-                      <CenterLeftRow>
+                      <CenterLeftRow key={index}>
                         <NumberFont>{index + 1}.</NumberFont>
                         <Input
                           name={index}
-                          key={index}
                           value={cateValue[index] ? cateValue[index].title : ''}
                           onChange={e => handleInput(e)}
                         />
                         <CloseBtn
                           src={'/images/close.svg'}
-                          width={17}
-                          height={17}
+                          width={15}
+                          height={15}
                           bg="#ddd"
                           radius="50%"
                           padding={2}
@@ -336,7 +336,7 @@ const Input = styled.input`
   height: 20px;
 `;
 const CloseBtn = styled(ImgBtn)`
-  margin-left: 5px;
+  margin-left: 10px;
 `;
 const max_category_count = 3;
 

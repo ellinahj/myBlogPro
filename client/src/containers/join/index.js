@@ -64,10 +64,9 @@ export default function JoinContainer() {
   const userJoin = () => {
     const data = { user_id: id, password: pwd };
     console.log(data, 'data');
-
     join(data).then(res => {
       console.log(res, 'login res login');
-      if (res.status < 300) {
+      if (res.status === 200) {
         alert(' 회원가입이 완료되었습니다.');
         Router.push('/login');
       }
@@ -79,7 +78,7 @@ export default function JoinContainer() {
       <InputWrap>
         <Title>회원가입</Title>
         <SubTitle>아이디 *</SubTitle>
-        <input name="id" value={id} onChange={e => idConfirm(e.target.value)}></input>
+        <input name="id" value={id} onChange={e => idConfirm(e.target.value)} autoComplete="off" />
         {id.length > 0 && !idRegCheck(id) && (
           <WarningWrap>
             <Warning>영문,숫자조합 6~13자리로 입력해주세요.</Warning>
@@ -87,7 +86,7 @@ export default function JoinContainer() {
         )}
 
         <SubTitle>비밀번호 *</SubTitle>
-        <input name="pwd" value={pwd} onChange={e => pwdConfirm(e.target.value)}></input>
+        <input name="pwd" value={pwd} onChange={e => pwdConfirm(e.target.value)} autoComplete="off" />
         {pwd.length > 0 && !pwRegCheck(pwd) && (
           <WarningWrap>
             <Warning>영문,숫자,특수문자 조합 6~13자리로 입력해주세요.</Warning>
@@ -100,6 +99,7 @@ export default function JoinContainer() {
           onKeyUp={enterKey}
           value={pwdCheck}
           onChange={e => pwdCheckConfirm(e.target.value)}
+          autoComplete="off"
         ></input>
         {pwdCheck.length > 0 && pwdCheck !== pwd && (
           <WarningWrap>

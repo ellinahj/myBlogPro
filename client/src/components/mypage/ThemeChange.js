@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setThemeColor, setThemeRGBA } from '../../actions/base';
+import { setThemeColor } from '../../actions/base';
 import ChromePicker from 'react-color';
 export default function ThemeChange(props) {
   const { handleThemeChange } = props;
@@ -9,7 +9,6 @@ export default function ThemeChange(props) {
   const [openPicker, setOpenPicker] = useState(false);
   const themeButton = useRef(null);
   const userColor = useSelector(state => state.common.userColor);
-  const rgbaColor = useSelector(state => state.common.rgbaColor);
 
   const popover = {
     position: 'absolute',
@@ -25,7 +24,6 @@ export default function ThemeChange(props) {
   const handlePickComplete = color => {
     color.rgb.a = 0.2;
     const changeRgb = color.rgb;
-    dispatch(setThemeRGBA(changeRgb));
     dispatch(setThemeColor(color.hex));
   };
   const handleClick = () => {

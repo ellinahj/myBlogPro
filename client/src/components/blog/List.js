@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { it } from 'date-fns/locale';
 import { useSelector } from 'react-redux';
 import { theme } from '../../utils/theme';
+import moment from 'moment';
 
 export default function List(props) {
   const { luminantColor, blogData, sendToListValue } = props;
@@ -12,6 +13,12 @@ export default function List(props) {
         {blogData &&
           blogData.length > 0 &&
           blogData.map((item, index) => {
+            // console.log(blogData, 'blog');
+            const date = item.now_date ? item.now_date : '';
+            // console.log(date, 'date');
+            var stillUtc = moment.utc(date).format();
+            // const stillUtc = momentz
+            const convertedDate = moment(stillUtc).format('YYYY월 M월 D일');
             return (
               <CardContainer key={index} luminantColor={luminantColor} userColor={userColor}>
                 {item.first_image && (
@@ -20,7 +27,7 @@ export default function List(props) {
                   </ImageArea>
                 )}
                 <ContentArea>
-                  <Date>2020년 06월 27일 토요일</Date>
+                  <Date>{item.now_date ? `작성일 ${convertedDate}` : ''}</Date>
                   <Title>{item.title}</Title>
                   <Comment>{item.comment}</Comment>
                   <Location>
@@ -61,7 +68,7 @@ const CardContainer = styled.div`
   padding: 30px;
   box-sizing: border-box;
   border-bottom: 2px dotted ${props => (props.userColor ? props.userColor : '#ddd')};
-  background: #f5f5f5;
+  background: #f6f6f6;
   border-radius: 5px;
 `;
 const ImageArea = styled.div`
@@ -88,18 +95,17 @@ const Date = styled.div`
 const Title = styled.div`
   font-size: 21px; //theme big
   font-weight: bold;
-  margin-top: 10px; //
+  margin-top: 10px;
 `;
 const Comment = styled.div`
   font-size: 15px;
-  margin-top: 10px; //
+  margin-top: 10px;
   line-height: 1.4;
 `;
 const Location = styled.div`
-  cursor: pointer;
   color: #6da3f7;
   font-size: 13px;
-  margin-top: 15px; //
+  margin-top: 15px;
   display: flex;
   align-items: center;
 `;
@@ -122,101 +128,3 @@ const WriteImg = styled.img`
   max-width: 80px;
   max-height: 80px;
 `;
-
-// 이전 이미지 로딩
-// const CardWrap = styled.div`
-//   float: left;
-//   width: calc(50% - 10px);
-//   min-height: auto;
-//   margin-bottom: 20px;
-//   @media (min-width: 320px) and (max-width: 480px) {
-//     width: 100%;
-//   }
-//   /* box-sizing: border-box; */
-//   :nth-child(2n) {
-//     margin-left: 20px;
-//   }
-// `;
-// const CardContainer = styled.div`
-//   li {
-//     display: inline-block;
-//     width: 100%;
-//     height: 200px;
-//     background-size: cover;
-//   }
-
-//   #block {
-//     width: 100%;
-//     height: 700px;
-//   }
-
-//   #list {
-//     width: 100%;
-//     display: grid;
-//     grid-gap: 10px;
-//     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-//     /* height: 600px;
-//   overflow: scroll; */
-//   }
-// `;
-
-//이미지 슬라이더 위에 텍스트
-// const LoadingState = styled.img`
-//   position: absolute;
-//   z-index: 101;
-//   width: 64px;
-//   height: 64px;
-//   top: 50%;
-//   left: 50%;
-// `;
-// const ImageWrap = styled.div`
-//   /* display: inline-block;
-//   position: relative; */
-//   width: 100px;
-//   height: 200px;
-// `;
-// const Image = styled.img`
-//   width: 100%;
-//   height: 100%;
-// `;
-// const ImageCover = styled.div`
-//   width: 100%;
-//   height: 100%;
-//   opacity: 0.3;
-//   position: absolute;
-//   top: 0;
-//   left: 0;
-//   background-image: linear-gradient(#fff, #000);
-// `;
-// const OnTextWrap = styled.div`
-//   color: #000;
-//   position: absolute;
-//   bottom: 0;
-//   left: 0;
-//   padding: 13px;
-//   display: flex;
-//   flex-direction: column;
-// `;
-// const Date = styled.div``;
-// const Title = styled.div`
-//   font-size: ${props => props.theme.lFont};
-//   overflow: hidden;
-//   text-overflow: ellipsis;
-//   display: -webkit-box;
-//   -webkit-line-clamp: 1;
-//   -webkit-box-orient: vertical;
-//   word-wrap: break-word;
-//   height: 2em;
-//   line-height: 2em;
-// `;
-// const CardContent = styled.div`
-//   font-size: ${props => props.theme.mFont};
-//   overflow: hidden;
-//   text-overflow: ellipsis;
-//   display: -webkit-box;
-//   -webkit-line-clamp: 2;
-//   -webkit-box-orient: vertical;
-//   word-wrap: break-word;
-//   line-height: 1.6em;
-//   height: 3.2em;
-// `;

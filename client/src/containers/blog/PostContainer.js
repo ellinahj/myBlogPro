@@ -1,102 +1,135 @@
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import ko from 'date-fns/locale/ko';
-import Router from 'next/router';
+registerLocale('ko', ko);
 
 import styled from 'styled-components';
 import Con from '../../components/common/Container';
-import Button from '../../components/common/Button';
 import UploadComponent from '../../components/blog/ThreePhotoUpload';
-import { setBlog } from '../../../src/api/blog';
+import { setBlog, getCate } from '../../../src/api/blog';
+import { BasicTitle, theme } from '../../utils/theme';
+import Router from 'next/router';
+import { setClickMenu } from '../../actions/base';
+import { set } from 'date-fns';
 
-export default function addContainer() {
-  const [startDate, setStartDate] = useState('');
+export default function addContainer(props) {
+  const dispatch = useDispatch();
+  const [startDate, setStartDate] = useState(new Date());
   const [category, setCategory] = useState([]);
   const [radioIndex, setRadioIndex] = useState(0);
   const [imgFile, setImgFile] = useState('');
+  const [value, setValue] = useState({
+    cate: 0,
+    title: '',
+    location: '',
+    comment: ''
+  });
   const userColor = useSelector(state => state.common.userColor);
+  const clickMenu = useSelector(state => state.common.clickMenu);
 
-  const handleChange = date => {
-    setStartDate(date);
+  const handleData = e => {
+    console.log(e, 'e');
+    setValue({ ...value, [e.target.name]: e.target.value });
   };
-  registerLocale('ko', ko);
-  const checked = (e, index) => {
+
+  // const handleDateChange = date => {
+  //   setStartDate(date);
+  // };
+
+  const checked = (id, index) => {
     setRadioIndex(index);
+    dispatch(setClickMenu(id));
+    setValue({ ...value, cate: id });
   };
+
   const imgFormData = file => {
     setImgFile(file);
   };
+  console.log(value, 'value');
+
   useEffect(() => {
-    const getToken = localStorage.getItem('mydiary_token');
-    if (getToken) {
-      const config = {
-        headers: {
-          access_token: getToken
-        }
-      };
-      axios
-        .get('http://127.0.0.1:3000/api/category', config)
-        .then(res => {
-          if (res.status === 200 && res.data) {
-            setCategory(res.data.data);
-          }
-        })
-        .catch(err => {
-          Router.push('/login');
-        });
-    }
-  }, []);
-  const upload = () => {
-    const formData = new FormData();
-    imgFile && imgFile.forEach((item, index) => formData.append(`file`, item));
-    console.log(imgFile, 'file');
-    console.log(formData, 'formData');
-    const data = {
-      id: 1,
-      id2: 'id2'
-    };
-    formData.append('data', JSON.stringify(data));
     const getToken = localStorage.getItem('mydiary_token');
     if (getToken) {
       const config = {
         access_token: getToken
       };
-      // console.log(data, 'in data');
-      setBlog(config, formData).then(res => {
+      getCate(config).then(res => {
         if (res.status === 200 && res.data) {
-          console.log(res.data, 'post data');
+          setCategory(res.data.data);
+          console.log(res.data.data, 'rerere');
+          dispatch(setClickMenu(res.data.data[0].id));
         }
       });
     }
+  }, []);
+
+  const submit = () => {
+    if (value.title.length > 0 && value.comment.length > 0) {
+      const existFileItems = imgFile.filter(item => item !== null);
+      const formData = new FormData();
+
+      existFileItems && existFileItems.forEach(item => formData.append(`file`, item));
+      const data = value;
+      const numDate = Date.parse(startDate);
+      data.date = numDate;
+      data.cate = category && category[radioIndex].id;
+      formData.append('data', JSON.stringify(data));
+      console.log(formData, 'formdata');
+      console.log(startDate, 'start');
+
+      const getToken = localStorage.getItem('mydiary_token');
+      if (getToken) {
+        const config = {
+          access_token: getToken
+        };
+        setBlog(config, formData).then(res => {
+          console.log(res, 'res');
+          if (res.status === 200) {
+            alert('등록되었습니다.');
+            Router.push('/blog');
+            dispatch(setClickMenu(clickMenu));
+          }
+        });
+      }
+    } else {
+      alert('제목과 내용은 필수항목입니다.');
+    }
   };
+  console.log(value, 'value');
   return (
     <Contaniner>
       <Row>
         <Subject>분류</Subject>
-        <>
-          {category.length > 0 &&
-            category.map((item, index) => {
-              return (
+        {category &&
+          category.length > 0 &&
+          category.map((item, index) => {
+            return (
+              <CateWrap>
                 <label className="radio_container" key={index} userColor={userColor}>
                   {item.title}
-                  <input type="radio" onChange={e => checked(e, index)} checked={radioIndex === index} />
-                  <span className="checkmark"></span>
+                  <input
+                    type="radio"
+                    onChange={e => checked(item.id, index)}
+                    checked={radioIndex === index}
+                    autoComplete="off"
+                  />
+                  <span className="checkmark" />
                 </label>
-              );
-            })}
-        </>
+              </CateWrap>
+            );
+          })}
       </Row>
       <Row>
         <Subject>제목</Subject>
-        <Input type="text" name="title"></Input>
+        <Input type="text" name="title" value={value.title} onChange={handleData} autoComplete="off" />
       </Row>
-      <Row>
+      {/* <Row>
         <Subject>날짜</Subject>
         <DatePicker
+          name="date"
           selected={startDate}
-          onChange={handleChange}
+          onChange={handleDateChange}
           dateFormat="Pp"
           locale="ko"
           showTimeSelect
@@ -107,14 +140,37 @@ export default function addContainer() {
           dateFormat="yyyy/MM/dd aa hh:mm"
           placeholderText="날짜 선택"
         />
-      </Row>
+      </Row> */}
       <Row>
         <Subject>장소</Subject>
-        <Button type="button">장소추가</Button>
+        <Input
+          type="text"
+          name="location"
+          value={value.location}
+          width={150}
+          onChange={handleData}
+          autoComplete="off"
+        />
       </Row>
       <Row>
-        <Subject name="content">내용</Subject>
-        <Textarea type="text" maxLength="200"></Textarea>
+        <div>
+          <Subject>내용</Subject>
+          <CountRow>
+            <CountComment>
+              {value.comment && value.comment.length <= MAX_COMMENT ? value.comment.length : 0}
+            </CountComment>
+            <Slush>/</Slush>
+            <Maxcount>{MAX_COMMENT}</Maxcount>
+          </CountRow>
+        </div>
+        <Textarea
+          type="text"
+          maxLength="200"
+          name="comment"
+          value={value.comment}
+          onChange={handleData}
+          autoComplete="off"
+        />
       </Row>
       <Row>
         <Subject>사진첨부</Subject>
@@ -122,7 +178,7 @@ export default function addContainer() {
       </Row>
       <RowRight>
         <Col>
-          <SubmitBtn onClick={e => upload(e)}>저장</SubmitBtn>
+          <SubmitBtn onClick={e => submit(e)}>저장</SubmitBtn>
         </Col>
       </RowRight>
     </Contaniner>
@@ -131,7 +187,11 @@ export default function addContainer() {
 const Contaniner = styled(Con)`
   display: flex;
   flex-direction: column;
-  margin-top: 30px;
+`;
+const CateWrap = styled.div`
+  @media (max-width: 768px) {
+    margin-top: 15px;
+  }
 `;
 const Row = styled.div`
   display: flex;
@@ -139,6 +199,9 @@ const Row = styled.div`
   padding: 20px 15px;
   box-sizing: border-box;
   align-items: center;
+  @media (max-width: 768px) {
+    display: block;
+  }
   .end {
     margin-left: auto;
   }
@@ -155,7 +218,6 @@ const Row = styled.div`
       color: #000;
     }
   }
-  /* Customize the label (the container) */
   .radio_container {
     display: block;
     position: relative;
@@ -168,8 +230,6 @@ const Row = styled.div`
     -ms-user-select: none;
     user-select: none;
   }
-
-  /* Hide the browser's default radio button */
   .radio_container input {
     position: absolute;
     opacity: 0;
@@ -177,41 +237,29 @@ const Row = styled.div`
     height: 0;
     width: 0;
   }
-
-  /* Create a custom radio button */
   .checkmark {
     position: absolute;
-    top: 3px;
+    top: 0px;
     left: 0;
     height: 21px;
     width: 21px;
     background: ${props => props.userColor || '#aaa'};
     border-radius: 50%;
   }
-
-  /* On mouse-over, add a grey background color */
   .radio_container:hover input ~ .checkmark {
     background-color: ${props => props.userColor || '#aaa'};
   }
-
-  /* When the radio button is checked, add a blue background */
   .radio_container input:checked ~ .checkmark {
     background-color: ${props => props.userColor || '#aaa'};
   }
-
-  /* Create the indicator (the dot/circle - hidden when not checked) */
   .checkmark:after {
     content: '';
     position: absolute;
     display: none;
   }
-
-  /* Show the indicator (dot/circle) when checked */
   .radio_container input:checked ~ .checkmark:after {
     display: block;
   }
-
-  /* Style the indicator (dot/circle) */
   .radio_container .checkmark:after {
     top: 7px;
     left: 7px;
@@ -220,20 +268,6 @@ const Row = styled.div`
     border-radius: 50%;
     background: ${props => props.userColor || '#fff'};
   }
-  /* .check_container {
-    display: block;
-    position: relative;
-    padding-left: 25px;
-    margin-right: 15px;
-    cursor: pointer;
-    font-size: 16px;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-  }
-  //check box
-  /* Hide the browser's default checkbox */
 `;
 const Col = styled.div`
   display: inline-flex;
@@ -245,17 +279,28 @@ const Col = styled.div`
 const Subject = styled.div`
   margin-right: 20px;
   white-space: pre;
+  ${BasicTitle}
 `;
 const Input = styled.input`
-  flex: 1;
+  /* flex: 1; */
   height: 30px;
   border: none;
   background: #eee;
   border-radius: 5px;
+  width: ${props => props.width}px;
+  flex: ${props => !props.width && 1};
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    margin-top: 20px;
+  }
 `;
 const Textarea = styled.textarea`
   flex: 1;
   min-height: 200px;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    margin-top: 20px;
+  }
 `;
 const SubmitBtn = styled.button`
   padding: 5px 10px;
@@ -265,3 +310,21 @@ const SubmitBtn = styled.button`
 const RowRight = styled(Row)`
   justify-content: center;
 `;
+const CountRow = styled.div`
+  display: flex;
+  margin: 10px 20px 0 0;
+`;
+const CountComment = styled.div`
+  color: #aaa;
+  font-size: ${theme.sFont};
+`;
+const Slush = styled.div`
+  color: #aaa;
+  margin: 0 2px 0;
+  font-size: ${theme.sFont};
+`;
+const Maxcount = styled.span`
+  color: #aaa;
+  font-size: ${theme.sFont};
+`;
+const MAX_COMMENT = 200;

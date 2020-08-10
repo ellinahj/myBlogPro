@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
 import { useState, useRef, useCallback, useEffect } from 'react';
 import ReactCrop from 'react-image-crop';
+import { BasicTitle } from '../../utils/theme';
 
 export default function Upload(props) {
   const { imgFormData } = props;
@@ -86,7 +87,9 @@ export default function Upload(props) {
 
   return (
     <Row>
-      <>
+      <Row>
+        {upImg.length > 0 && <EditFont>미리보기</EditFont>}
+
         <ReactCropDiv
           src={upImg}
           onImageLoaded={onLoad}
@@ -95,10 +98,10 @@ export default function Upload(props) {
           onComplete={makeClientCrop}
           uploadImg={upImg}
         />
-      </>
+      </Row>
       <ImageRow existImg={previewUrl && previewUrl[0]}>
         <AddBtn name="button" onClick={e => controlFileBtn(e, 0)}>
-          사진1
+          +사진1
         </AddBtn>
         <input
           name="file"
@@ -113,7 +116,7 @@ export default function Upload(props) {
       </ImageRow>
       <ImageRow existImg={previewUrl && previewUrl[1]}>
         <AddBtn name="button" onClick={e => controlFileBtn(e, 1)}>
-          사진2
+          +사진2
         </AddBtn>
         <input
           name="file"
@@ -128,7 +131,7 @@ export default function Upload(props) {
       </ImageRow>
       <ImageRow existImg={previewUrl && previewUrl[2]}>
         <AddBtn type="button" name="file" onClick={e => controlFileBtn(e, 2)}>
-          사진3
+          +사진3
         </AddBtn>
         <input
           name="file"
@@ -138,7 +141,6 @@ export default function Upload(props) {
           style={{ display: 'none' }}
           onChange={e => addImg(e, 2)}
         />
-
         {previewUrl && previewUrl[2] && <PreviewImg src={previewUrl[2]} />}
         {previewUrl && previewUrl[2] && <PhotoName>사진3</PhotoName>}
       </ImageRow>
@@ -158,6 +160,10 @@ const Row = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+
+  @media screen and (max-width: 768px) {
+    margin-top: 10px;
+  }
 `;
 const PreviewImg = styled.img`
   width: 100%;
@@ -174,4 +180,8 @@ const ReactCropDiv = styled(ReactCrop)`
 const PhotoName = styled.div`
   font-size: 15px;
   margin-top: 5px;
+`;
+const EditFont = styled.div`
+  ${BasicTitle};
+  margin-bottom: 5px;
 `;

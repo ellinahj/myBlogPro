@@ -4,16 +4,11 @@ import {
   updateCategory
 } from "../models/category.model";
 import { authCheck } from "../public/function";
+
 const getCateNumber = async (req, res, next) => {
   try {
-    const token = req.headers.access_token;
+    const token = req.headers["access_token"];
     const result = await authCheck(token);
-    // if (result === "empty token") {
-    //   console.log("EMPTY ?");
-    //   res
-    //     .status(400)
-    //     .json({ status: 400, message: " invalid token" })
-    // } else {
     if (result && result.id) {
       selectCateNumber(result.id)
         .then(data => {

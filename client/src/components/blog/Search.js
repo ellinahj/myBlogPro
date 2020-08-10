@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useSelector } from 'react-redux';
 import styled, { css } from 'styled-components';
 
 export default function SearchContainer(props) {
@@ -8,6 +9,7 @@ export default function SearchContainer(props) {
   const inputArea = useRef(null);
   const bodyArea = useRef(null);
   const { getSearch } = props;
+  const selectFont = useSelector(state => state.common.selectFont);
   useEffect(() => {
     const replace = searchValue.replace(/^ /gi, '');
     setSearchValue(replace);
@@ -126,7 +128,7 @@ const SearchCon = styled.div`
   width: 100%;
   height: 45px;
   border-radius: 5px;
-  background-color: #efefef;
+  background-color: #f4f4f4;
   display: flex;
   align-items: center;
 `;
@@ -144,7 +146,7 @@ const Input = styled.input`
   border: none;
   outline: none;
   font-size: 18px;
-  font-family: 'Nanum Myeongjo', serif !important ; //사용자
+  font-family: ${props => props.selectFont};
 `;
 const SearchHistoryCon = styled.div`
   display: ${props => !props.showHistory && 'none'};

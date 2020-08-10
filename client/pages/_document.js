@@ -30,6 +30,10 @@ export default class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500&display=swap"
             rel="stylesheet"
           ></link>
+          <link
+            href="https://fonts.googleapis.com/css2?family=Hi+Melody&family=Nanum+Pen+Script&display=swap"
+            rel="stylesheet"
+          />
           {this.styleTags}
         </Head>
         <body>

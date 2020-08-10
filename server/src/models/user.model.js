@@ -3,6 +3,24 @@ var connection = mysql_dbc.init();
 mysql_dbc.db_open(connection);
 import bcrypt from "bcrypt";
 const saltRounds = 10;
+
+const selectNickname = nickname => {
+  return new Promise((resolve, reject) => {
+    connection.query(
+      "SELECT count(*) as count FROM mydiary.users WHERE nickname = ?",
+      [nickname],
+      function(err, rows) {
+        if (err) {
+          reject(err);
+        } else {
+          console.log(rows[0].count, "rows[0].count");
+          resolve(rows[0].count);
+        }
+      }
+    );
+  });
+};
+
 const selectUser = user_id => {
   return new Promise((resolve, reject) => {
     connection.query(
@@ -12,6 +30,7 @@ const selectUser = user_id => {
         if (err) {
           return reject(err);
         } else {
+          console.log(rows, "rows");
           const data = rows[0];
           delete data.password;
           return resolve(data);
@@ -40,20 +59,34 @@ const updateUser = (user_id, data) => {
   console.log(data, "data");
   return new Promise((resolve, reject) => {
     connection.query(
-      "update mydiary.users set nickname=?,main_title=?,user_color=?,profile_photo=? where user_id = ?",
+      "update mydiary.users set nickname=?,main_title=?,user_color=?,profile_photo=?,user_font=? where user_id = ?",
       [
         data.nickname,
         data.main_title,
         data.user_color,
         data.profile_photo,
+        data.user_font,
         user_id
       ],
-      function(err, rows) {
+      function(err, row) {
         if (err) {
           reject(err);
         } else {
-          const data = rows[0];
-          resolve(data);
+          console.log(row, "row");
+          connection.query(
+            "select * from mydiary.users WHERE user_id = ?",
+            [user_id],
+            function(err, rows) {
+              if (err) {
+                reject(err);
+              } else {
+                console.log(rows, "rows");
+                const data = rows[0];
+                delete data.password;
+                resolve(data);
+              }
+            }
+          );
         }
       }
     );
@@ -147,6 +180,7 @@ const checkAndInsertPwd = (user_id, password, newPassword) => {
   });
 };
 export {
+  selectNickname,
   selectUser,
   selectProfilePhoto,
   updateUser,

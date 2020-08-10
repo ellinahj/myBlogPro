@@ -4,9 +4,8 @@ import Link from 'next/link';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { colorLuminance } from '../../utils/common';
-import store from '../../store';
 import { loginCheck } from '../../api/auth';
-import { setUserInfo, setThemeColor, setToolTip } from '../../actions/base';
+import { setUserInfo, setThemeColor, setToolTip, setFont } from '../../actions/base';
 import { useRouter } from 'next/router';
 import { theme } from '../../utils/theme';
 import ImgBtn from '../../components/common/ImgBtn';
@@ -18,30 +17,34 @@ export default function Header() {
   const userInfo = useSelector(state => state.common.userInfo);
   const isLoggedIn = useSelector(state => state.common.isLoggedIn);
   const tooltip = useSelector(state => state.common.showToolTip);
-  const luminantColor = userColor && colorLuminance(userColor, 0.7);
-
+  const selectFont = useSelector(state => state.common.selectFont);
+  const luminantColor = userColor && colorLuminance(userColor, 0.5);
+  console.log(userInfo, 'userColor');
   useEffect(() => {
     if (Router.asPath !== '/join') {
       const showTool = JSON.parse(localStorage.getItem('showTool'));
       if (showTool === false) {
-        store.dispatch(setToolTip(false));
+        dispatch(setToolTip(false));
       }
       const storedToken = localStorage.getItem('mydiary_token') && localStorage.getItem('mydiary_token');
       const config = {
         access_token: storedToken
       };
       loginCheck(config).then(res => {
-        if (res.status < 300) {
-          store.dispatch(setThemeColor(res.data.user_color));
-          store.dispatch(setUserInfo(res.data));
+        if (res.status === 200 && res.data) {
+          console.log(res.data, 'loginCh');
+          dispatch(setThemeColor(res.data.user_color));
+          dispatch(setUserInfo(res.data));
+          dispatch(setFont(res.data.user_color));
         }
       });
     }
   }, []);
   const handleToolTip = () => {
     localStorage.setItem('showTool', JSON.stringify(false));
-    store.dispatch(setToolTip(false));
+    dispatch(setToolTip(false));
   };
+
   return (
     <HeadWrap userColor={userColor} luminantColor={luminantColor}>
       <Link href="/blog">
@@ -83,11 +86,7 @@ const HeadWrap = styled.header`
   margin: 0 auto;
   display: flex;
   align-items: center;
-  background-image: linear-gradient(
-    90deg,
-    ${props => props.userColor || '#ff254f'},
-    ${props => props.luminantColor || '#ff3f86'}
-  );
+  background-image: linear-gradient(90deg, ${props => props.userColor}, ${props => props.luminantColor});
   z-index: 101;
   justify-content: space-between;
 `;

@@ -7,6 +7,7 @@ import 'react-image-crop/dist/ReactCrop.css';
 import 'react-datepicker/dist/react-datepicker.css';
 
 const GlobalStyle = createGlobalStyle`
+
   html{
         width:100%;
         height:100%;
@@ -17,12 +18,9 @@ const GlobalStyle = createGlobalStyle`
         width:100%;
         height:100%;
         position: relative;
-        font-family: 'Nanum Myeongjo', serif;
+        font-family: ${props => props.currentValue};
         font-size:${props => props.theme.mFont};
         background:#fcfcfc;
-        /* font-family: 'Noto Sans KR', sans-serif; */
-        /* font-family: 'Noto Serif KR', serif; */
-        /* font-family: 'Nanum Gothic Coding', monospace; */
   };
   #__next{  
             max-width:767px;
@@ -41,21 +39,28 @@ const GlobalStyle = createGlobalStyle`
       list-style:none;
   };
   button{
-    font-family:'Nanum Myeongjo', serif;
+    font-family: ${props => props.currentValue};
     :hover {
     opacity: 1;
     }
   }
   ::-webkit-input-placeholder {
-  font-family: 'Nanum Myeongjo', serif;
+    font-family: ${props => props.currentValue};
 }
 input{
-  font-family:'Nanum Myeongjo', serif;
+  font-family: ${props => props.currentValue};
+  font-size:${props => props.theme.mFont};
+}
+textarea{
+  font-family: ${props => props.currentValue};
+  font-size:${props => props.theme.mFont};
 }
 `;
 
 export default function MyApp({ Component, pageProps }) {
-  const [currentColor, setCurrentColor] = useState('#ff254f');
+  const [currentColor, setCurrentColor] = useState('#7c7cec');
+  const [currentValue, setCurrentValue] = useState(`'Noto Sans KR', sans-serifo'`);
+
   useEffect(() => {
     function handleSubscribe() {
       const newColor = store.getState().common.userColor;
@@ -67,9 +72,22 @@ export default function MyApp({ Component, pageProps }) {
     return () => subscribeStore();
   }, [currentColor]);
 
+  useEffect(() => {
+    function handleChange() {
+      const newValue = store.getState().common.selectFont;
+
+      if (newValue !== currentValue) {
+        setCurrentValue(newValue);
+      }
+    }
+
+    const unsubscribe = store.subscribe(handleChange);
+    return () => unsubscribe();
+  }, [currentValue]);
+
   return (
     <Provider store={store}>
-      <GlobalStyle theme={theme} userTheme={currentColor} />
+      <GlobalStyle theme={theme} userTheme={currentColor} currentValue={currentValue} />
       <ThemeProvider theme={theme} userColor={currentColor}>
         <Component {...pageProps} />
       </ThemeProvider>

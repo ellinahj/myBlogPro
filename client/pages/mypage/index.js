@@ -10,8 +10,7 @@ export default function Mypage() {
   const [showEditPw, setShowEditPw] = useState(false);
   const clickEdit = e => {
     console.log('click');
-    setShowEdit(true);
-    setShowEditPw(false);
+    setShowEdit(!showEdit);
   };
   const clickEditPw = e => {
     setShowEditPw(!showEditPw);
@@ -21,7 +20,7 @@ export default function Mypage() {
     <Layout>
       <>
         <TopInfo />
-        <EditBasicInfo clickEdit={clickEdit} showEdit={showEdit} />
+        <EditBasicInfo clickEdit={clickEdit} showEdit={showEdit} setShowEdit={setShowEdit} />
         <EditMenu />
         <EditPw showEditPw={showEditPw} clickEditPw={clickEditPw} />
       </>

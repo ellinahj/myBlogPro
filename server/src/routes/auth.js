@@ -7,13 +7,11 @@ router.use(bodyParser.urlencoded({ extended: true }));
 import {
   createUser,
   findDuplicatedId,
-  findDuplicatedNickname,
   loginController
 } from "../controllers/auth.controller";
 
 router.post("/join", createUser);
 router.post("/findId", findDuplicatedId);
-router.post("/findNickname", findDuplicatedNickname);
 router.post("/login", loginController);
 
 module.exports = router;
