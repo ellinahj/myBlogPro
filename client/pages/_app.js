@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
 import { Provider } from 'react-redux';
 import store from '../src/store';
-import { theme } from '../src/utils/theme';
+import * as theme from '../src/utils/theme';
 import 'react-image-crop/dist/ReactCrop.css';
 import 'react-datepicker/dist/react-datepicker.css';
 

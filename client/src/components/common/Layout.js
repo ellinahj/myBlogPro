@@ -43,6 +43,7 @@ const LayoutWrap = styled.div`
   height: 100%;
   padding-top: 60px;
   position: relative;
+  /* max-width: 765px; */
 `;
 
 const Container = styled.div`

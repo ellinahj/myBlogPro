@@ -10,7 +10,7 @@ import { updateInfo, findNickname } from '../../api/user';
 import { setUserInfo, setFont } from '../../actions/base';
 
 export default function InfoContainer(props) {
-  const { setShowEdit, showEdit, clickEditPw, clickEdit } = props;
+  const { setShowEdit, showEdit, clickEdit } = props;
   const userInfo = useSelector(state => state.common.userInfo);
   const userColor = useSelector(state => state.common.userColor);
   const [changeImgFile, setChangeImgFile] = useState([]);
@@ -164,21 +164,21 @@ export default function InfoContainer(props) {
               {showEdit && (
                 <>
                   <NanumMyeongjo>
-                    <label className="radio_container" userColor={userColor}>
+                    <label className="radio_container" usercolor={userColor}>
                       폰트1
                       <input type="radio" onChange={e => checked(0)} checked={radioIndex === 0} />
                       <span className="checkmark" />
                     </label>
                   </NanumMyeongjo>
                   <NotoSansKR>
-                    <label className="radio_container center" userColor={userColor}>
+                    <label className="radio_container center" usercolor={userColor}>
                       폰트2
                       <input type="radio" onChange={e => checked(1)} checked={radioIndex === 1} />
                       <span className="checkmark" />
                     </label>
                   </NotoSansKR>
                   <NanumPen>
-                    <label className="radio_container" userColor={userColor}>
+                    <label className="radio_container" usercolor={userColor}>
                       폰트3
                       <input type="radio" onChange={e => checked(2)} checked={radioIndex === 2} />
                       <span className="checkmark" />
@@ -191,9 +191,9 @@ export default function InfoContainer(props) {
               {showEdit && (
                 <SubmitBtn
                   disabled={userInfo.nickname !== nickname && nicknameAvailable !== true}
-                  available={nicknameAvailable === true}
+                  available={userInfo.nickname === nickname || nicknameAvailable === true}
                   onClick={handleSubmit}
-                  userColor={userColor}
+                  usercolor={userColor}
                 >
                   변경
                 </SubmitBtn>
@@ -343,14 +343,14 @@ const MarginFontRow = styled(Row)`
     left: 0;
     height: 18px;
     width: 18px;
-    background: ${props => props.userColor || '#aaa'};
+    background: ${props => props.usercolor || '#aaa'};
     border-radius: 50%;
   }
   .radio_container:hover input ~ .checkmark {
-    background-color: ${props => props.userColor || '#aaa'};
+    background-color: ${props => props.usercolor || '#aaa'};
   }
   .radio_container input:checked ~ .checkmark {
-    background-color: ${props => props.userColor || '#aaa'};
+    background-color: ${props => props.usercolor || '#aaa'};
   }
   .checkmark:after {
     content: '';
@@ -366,7 +366,7 @@ const MarginFontRow = styled(Row)`
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: ${props => props.userColor || '#fff'};
+    background: ${props => props.usercolor || '#fff'};
   }
 `;
 const NanumMyeongjo = styled.div`

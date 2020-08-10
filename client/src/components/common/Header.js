@@ -32,7 +32,7 @@ export default function Header() {
         if (res.status === 200 && res.data) {
           dispatch(setThemeColor(res.data.user_color));
           dispatch(setUserInfo(res.data));
-          dispatch(setFont(res.data.user_color));
+          dispatch(setFont(res.data.user_font));
         }
       });
     }

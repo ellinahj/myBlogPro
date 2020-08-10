@@ -20,6 +20,7 @@ const selectCateNumber = id => {
   });
 };
 const updateCategory = async (userId, cate) => {
+  console.log(cate, "ㅊㅁㅅㄷ");
   const cateArr = Object.values(cate);
   console.log(userId, cateArr, "cate");
   return Promise.all(

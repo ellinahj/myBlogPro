@@ -6,9 +6,9 @@ import { getCate } from '../../api/blog';
 import { deleteCate, updateCate } from '../../api/category';
 import Container from '../../components/common/Container';
 import ImgBtn from '../../components/common/ImgBtn';
-import { BasicTitle, BlueEditBtn, BasicButton, theme } from '../../utils/theme';
+import { BasicTitle, BlueEditBtn, BasicButton } from '../../utils/theme';
 
-export default function ChangeMenu() {
+export default function ChangeMenu(props) {
   const dispatch = useDispatch();
   const category = useSelector(state => state.common.category);
   const userColor = useSelector(state => state.common.userColor);
@@ -20,6 +20,7 @@ export default function ChangeMenu() {
   });
   const [cateInputCount, setCateInputCount] = useState(0);
   const countCate = category ? category.length : 0;
+
   useEffect(() => {
     const getToken = localStorage.getItem('mydiary_token');
     if (getToken) {
@@ -29,7 +30,6 @@ export default function ChangeMenu() {
       getCate(config).then(res => {
         if (res.status === 200 && res.data) {
           dispatch(setCate(res.data.data));
-          // console.log(res.data.data, 'res getCate');
           const result = {};
           res.data.data
             ? res.data.data.forEach((item, idx) => {
@@ -37,84 +37,22 @@ export default function ChangeMenu() {
               })
             : [];
           setCateValue(result);
+          setCateInputCount(0);
         }
       });
     }
   }, []);
-
   const handleEditMenu = () => {
     setEdit(!edit);
   };
-  const handleInput = e => {
-    const { name, value } = e.target;
+  const handleInput = (index, value) => {
     setCateValue({
       ...cateValue,
-      [name]: { ...cateValue[name], title: value }
+      [index]: { ...cateValue[index], title: value }
     });
   };
   const increaseCateValue = () => {
     if (countCate + cateInputCount < max_category_count) setCateInputCount(cateInputCount + 1);
-  };
-
-  const handleDelete = idx => {
-    const tempCateValue = { ...cateValue };
-    console.log(tempCateValue, 'temp');
-    if (tempCateValue[idx]?.id !== undefined) {
-      const hasIdLength = Object.values(tempCateValue).filter(value => !!value?.id).length;
-      if (hasIdLength <= 1) {
-        alert('메뉴는 최소 1개 이여야 합니다.');
-        return;
-      }
-      const confirmDelete = deleteMenu();
-      if (!confirmDelete) {
-        return;
-      }
-      console.log(tempCateValue[idx], 'ii');
-      console.log('tt');
-      const getToken = localStorage.getItem('mydiary_token');
-      if (getToken) {
-        const config = {
-          access_token: getToken
-        };
-        const cateId = tempCateValue[idx].id;
-        console.log(cateId, 'cateId');
-        const data = { id: cateId };
-        deleteCate(config, data).then(res => {
-          if (res.status === 200 && res.data) {
-            console.log(res.data, 'delete res.data');
-            dispatch(setCate(res.data.data));
-            console.log(res.data.data, 'res getCate');
-            const result = {};
-            res.data.data
-              ? res.data.data.forEach((item, idx) => {
-                  result[idx] = { title: item.title, id: item.id };
-                })
-              : [];
-            setCateValue(result);
-          }
-        });
-      }
-    } else {
-      console.log('vv');
-    }
-    Object.keys(cateValue).forEach(key => {
-      if (Number(key) === idx) {
-        tempCateValue[key] = undefined;
-        // const tempCategory = { ...category };
-        // console.log(tempCategory[key], 'tempCategory');
-        // delete tempCategory[key];
-        console.log('in1');
-      } else if (Number(key) > idx) {
-        //0 1 2   i
-        tempCateValue[Number(key) - 1] = cateValue[key];
-        tempCateValue[key] = undefined;
-
-        console.log('in2');
-      }
-      setCateValue(tempCateValue);
-      setCateInputCount(cateInputCount - 1);
-      console.log('in3');
-    });
   };
 
   const deleteMenu = () => {
@@ -125,6 +63,58 @@ export default function ChangeMenu() {
     }
   };
 
+  const handleDelete = idx => {
+    const tempCateValue = { ...cateValue };
+    if (tempCateValue[idx]?.id !== undefined) {
+      const hasIdLength = Object.values(tempCateValue).filter(value => !!value?.id).length;
+      if (hasIdLength <= 1) {
+        alert('메뉴는 최소 1개 이여야 합니다.');
+        return;
+      }
+      const confirmDelete = deleteMenu();
+      if (!confirmDelete) {
+        return;
+      }
+      const getToken = localStorage.getItem('mydiary_token');
+      if (getToken) {
+        const config = {
+          access_token: getToken
+        };
+        const cateId = tempCateValue[idx].id;
+        console.log(cateId, 'cateId');
+        const data = { id: cateId };
+        deleteCate(config, data).then(res => {
+          if (res.status === 200 && res.data) {
+            dispatch(setCate(res.data.data));
+            const result = {};
+            res.data.data
+              ? res.data.data.forEach((item, idx) => {
+                  result[idx] = { title: item.title, id: item.id };
+                })
+              : [];
+            setCateValue(result);
+            setCateInputCount(0);
+          }
+        });
+      }
+    } else {
+      console.log('??');
+    }
+    Object.keys(cateValue).forEach(key => {
+      if (Number(key) === idx) {
+        tempCateValue[key] = undefined;
+        // console.log('in1');
+      } else if (Number(key) > idx) {
+        tempCateValue[Number(key) - 1] = cateValue[key];
+        tempCateValue[key] = undefined;
+        // console.log('in2');
+      }
+      setCateValue(tempCateValue);
+      setCateInputCount(cateInputCount - 1);
+      // console.log('in3');
+    });
+  };
+
   const handleMenuUpdate = () => {
     // const hasIdObj = Object.values(cateValue).filter(value => !!value?.id);
     const hasIdArr = Object.values(cateValue).filter(obj => {
@@ -133,9 +123,9 @@ export default function ChangeMenu() {
     if (hasIdArr.length > 0) {
       alert('메뉴이름을 입력해주세요.');
     } else {
-      console.log(cateValue, 'arr');
+      // console.log(cateValue, 'arr');
       const data = cateValue;
-      console.log(data, 'data');
+      // console.log(data, 'data');
       const getToken = localStorage.getItem('mydiary_token');
       if (getToken) {
         const config = {
@@ -144,7 +134,7 @@ export default function ChangeMenu() {
         updateCate(config, data).then(res => {
           if (res.status === 200 && res.data) {
             dispatch(setCate(res.data.data));
-            console.log(res.data.data, ' all res');
+            console.log(res.data.data, ' 변경 후');
             const result = {};
             res.data.data
               ? res.data.data.forEach((item, idx) => {
@@ -153,12 +143,15 @@ export default function ChangeMenu() {
               : [];
             setCateValue(result);
             setEdit(false);
+            setCateInputCount(0);
             alert('변경되었습니다.');
+            console.log('변경====');
           }
         });
       }
     }
   };
+
   const showDeleteBtn = Object.values(cateValue).filter(value => !!value?.id).length > 1;
 
   return (
@@ -178,18 +171,12 @@ export default function ChangeMenu() {
               return edit ? (
                 <MenuRow key={index}>
                   <NumberFont>{index + 1}.</NumberFont>
-                  <Input defaultValue={item.title} name={category.length - 1} onChange={e => handleInput(e)} />
-                  {/* {showDeleteBtn && (
-                    <CloseBtn
-                      src={'/images/close.svg'}
-                      width={17}
-                      height={17}
-                      bg="#ddd"
-                      radius="50%"
-                      padding={2}
-                      onClick={() => handleDelete(index)}
-                    />
-                  )} */}
+                  <Input
+                    defaultValue={item.title}
+                    name={category.length - 1}
+                    onChange={e => handleInput(index, e.target.value)}
+                    autoComplete="off"
+                  />
                 </MenuRow>
               ) : (
                 <>
@@ -227,6 +214,7 @@ export default function ChangeMenu() {
                           name={index}
                           value={cateValue[index] ? cateValue[index].title : ''}
                           onChange={e => handleInput(e)}
+                          autoComplete="off"
                         />
                         <CloseBtn
                           src={'/images/close.svg'}
@@ -297,12 +285,7 @@ const StyledColumn = styled(Column)`
   padding: 30px;
 `;
 const TitleRow = styled(MenuRow)`
-  margin-bottom: 20px;
-  ${props =>
-    props.edit &&
-    css`
-      margin-bottom: 40px;
-    `}
+  margin-bottom: 30px;
 `;
 const Title = styled.span`
   ${BasicTitle};
@@ -316,7 +299,7 @@ const MenuFont = styled.span`
   color: ${props => props.userColor};
 `;
 const NumberFont = styled.span`
-  margin-right: 20px;
+  width: 33px;
 `;
 const EditTitle = styled.span`
   ${BlueEditBtn}
@@ -344,5 +327,5 @@ const SubmitBtn = styled.button`
   ${BasicButton};
   margin: 30px auto 0;
   padding: 5px 10px;
-  font-size: ${theme.mFont};
+  font-size: ${props => props.theme.mFont};
 `;

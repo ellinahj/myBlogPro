@@ -67,7 +67,7 @@ const CardContainer = styled.div`
   width: 100%;
   padding: 30px;
   box-sizing: border-box;
-  border-bottom: 2px dotted ${props => (props.userColor ? props.userColor : '#ddd')};
+  border-top: 2px dotted ${props => (props.userColor ? props.userColor : '#ddd')};
   background: #f6f6f6;
   border-radius: 5px;
 `;
