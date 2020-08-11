@@ -179,24 +179,22 @@ export default function ChangeMenu(props) {
                   />
                 </MenuRow>
               ) : (
-                <>
-                  <MenuRow key={index}>
-                    <NumberFont>{index + 1}.</NumberFont>
-                    <MenuFont>{item.title}</MenuFont>
-                    {showDeleteBtn && (
-                      <CloseBtn
-                        key={index + 3}
-                        src={'/images/close.svg'}
-                        width={15}
-                        height={15}
-                        bg="#ddd"
-                        radius="50%"
-                        padding={2}
-                        onClick={() => handleDelete(index)}
-                      />
-                    )}
-                  </MenuRow>
-                </>
+                <MenuRow key={index}>
+                  <NumberFont>{index + 1}.</NumberFont>
+                  <MenuFont>{item.title}</MenuFont>
+                  {showDeleteBtn && (
+                    <CloseBtn
+                      key={index + 3}
+                      src={'/images/close.svg'}
+                      width={15}
+                      height={15}
+                      bg="#ddd"
+                      radius="50%"
+                      padding={2}
+                      onClick={() => handleDelete(index)}
+                    />
+                  )}
+                </MenuRow>
               );
             })}
 
@@ -315,7 +313,7 @@ const AddMenuBtn = styled.button`
   margin: 20px 20px 0 33px;
 `;
 const Input = styled.input`
-  width: 100px;
+  width: 210px;
   height: 20px;
 `;
 const CloseBtn = styled(ImgBtn)`

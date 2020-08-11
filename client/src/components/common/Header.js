@@ -154,7 +154,7 @@ const ToolTipWrap = styled.div`
 const ToolTip = styled.div`
   color: #000;
   font-size: ${theme.ssFont};
-  line-height: 16px;
+  line-height: 18px;
 `;
 const Img = styled.img`
   cursor: pointer;

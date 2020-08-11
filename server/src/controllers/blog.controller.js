@@ -94,14 +94,17 @@ const getBlog = async (req, res, next) => {
   if (result) {
     selectBlog(result.id, id)
       .then(response => {
-        // console.log(result.id, id, "id cateid");
         const data = [...response];
-        for (let i = 0; i < data.length; i++) {
-          if (data[i].first_image !== null) {
-            const url = "http://127.0.0.1:3000/images/" + data[i].first_image;
-            data[i].first_image = url;
-          }
-        }
+
+        console.log(data, "data");
+        const newData = data.map(item => {
+          item.image_url = [
+            "http://127.0.0.1:3000/images/" + item.first_image,
+            "http://127.0.0.1:3000/images/" + item.second_image,
+            "http://127.0.0.1:3000/images/" + item.third_image
+          ];
+          return item;
+        });
         res
           .status(200)
           .json({ data })
@@ -123,12 +126,25 @@ const getSearchedBlog = async (req, res, next) => {
     selectSearchedBlog(result.id, cateId, value)
       .then(response => {
         console.log(response, "responese");
-        const data = [...response];
+
+        let image_url = [];
         for (let i = 0; i < data.length; i++) {
           if (data[i].first_image) {
             const url = "http://127.0.0.1:3000/images/" + data[i].first_image;
-            data[i].first_image = url;
+
+            data[i].image_url = url;
           }
+          if (data[i].second_image) {
+            const url = "http://127.0.0.1:3000/images/" + data[i].second_image;
+
+            data[i].image_url = url;
+          }
+          if (data[i].third_image) {
+            const url = "http://127.0.0.1:3000/images/" + data[i].third_image;
+            data[i].image_url = url;
+          }
+          const data = [...response, url];
+          console.log(data, "data");
         }
         res
           .status(200)

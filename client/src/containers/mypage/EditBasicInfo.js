@@ -19,7 +19,8 @@ export default function InfoContainer(props) {
   const [nickname, setNickname] = useState(undefined);
   const [mainTitle, setMainTitle] = useState('');
   const [nicknameAvailable, setNicknameAvailable] = useState(null);
-  const [radioIndex, setRadioIndex] = useState(0);
+  const [radioIndex, setRadioIndex] = useState(userInfo && userInfo.user_font === `'Gothic A1', sans-serif` ? 0 : 1);
+
   const dispatch = useDispatch();
 
   const checked = index => {
@@ -73,13 +74,10 @@ export default function InfoContainer(props) {
     changeImgFile && changeImgFile.forEach((item, index) => formData.append(`file`, item));
     let font = radioIndex;
     if (radioIndex === 0) {
-      font = `'Nanum Myeongjo', serif`;
+      font = `'Gothic A1', sans-serif`;
     } else if (radioIndex === 1) {
-      font = `'Noto Sans KR', sans-serif`;
-    } else if (radioIndex === 2) {
-      font = `'Hi Melody', cursive`;
+      font = `'Nanum Myeongjo', serif`;
     }
-    console.log(font, 'setF');
     const data = {
       nickname: nickname,
       main_title: mainTitle,
@@ -159,32 +157,27 @@ export default function InfoContainer(props) {
             <MarginRow>
               <ThemeChange />
             </MarginRow>
-            <MarginFontRow>
-              <Title>폰트변경</Title>
-              {showEdit && (
+            <MarginFontRow usercolor={userColor}>
+              {showEdit ? <Title>폰트변경</Title> : <Title>폰트</Title>}
+              {showEdit ? (
                 <>
-                  <NanumMyeongjo>
-                    <label className="radio_container" usercolor={userColor}>
+                  <Gothic>
+                    <label className="radio_container center">
                       폰트1
                       <input type="radio" onChange={e => checked(0)} checked={radioIndex === 0} />
                       <span className="checkmark" />
                     </label>
-                  </NanumMyeongjo>
-                  <NotoSansKR>
-                    <label className="radio_container center" usercolor={userColor}>
+                  </Gothic>
+                  <NanumMyeongjo>
+                    <label className="radio_container">
                       폰트2
                       <input type="radio" onChange={e => checked(1)} checked={radioIndex === 1} />
                       <span className="checkmark" />
                     </label>
-                  </NotoSansKR>
-                  <NanumPen>
-                    <label className="radio_container" usercolor={userColor}>
-                      폰트3
-                      <input type="radio" onChange={e => checked(2)} checked={radioIndex === 2} />
-                      <span className="checkmark" />
-                    </label>
-                  </NanumPen>
+                  </NanumMyeongjo>
                 </>
+              ) : (
+                <div>{radioIndex === 0 ? '폰트1' : '폰트2'}</div>
               )}
             </MarginFontRow>
             <Row>
@@ -239,7 +232,7 @@ const TopCon = styled.div`
   padding: 20px 30px;
 `;
 const Input = styled.input`
-  width: 120px;
+  width: 170px;
   height: 20px;
 `;
 const SubmitBtn = styled.button`
@@ -310,7 +303,7 @@ const MarginFontRow = styled(Row)`
     font-size: 15px;
     line-height: 30px;
     padding-left: 5px;
-    background: #eee;
+    background: ${props => props.usercolor};
     outline: none;
     border: 0;
     border-radius: 5px;
@@ -343,7 +336,7 @@ const MarginFontRow = styled(Row)`
     left: 0;
     height: 18px;
     width: 18px;
-    background: ${props => props.usercolor || '#aaa'};
+    background: #ddd;
     border-radius: 50%;
   }
   .radio_container:hover input ~ .checkmark {
@@ -376,8 +369,8 @@ const NanumMyeongjo = styled.div`
     margin-top: 15px;
   }
 `;
-const NotoSansKR = styled.div`
-  font-family: 'Noto Sans KR', sans-serif;
+const Gothic = styled.div`
+  font-family: 'Gothic A1', sans-serif;
   margin-right: 15px;
   display: flex;
   align-items: center;
@@ -386,10 +379,4 @@ const NotoSansKR = styled.div`
   }
 `;
 
-const NanumPen = styled.div`
-  font-family: 'Hi Melody', cursive;
-  @media screen and (max-width: 780px) {
-    margin-top: 15px;
-  }
-`;
 const MAX_NICKNAME = 10;

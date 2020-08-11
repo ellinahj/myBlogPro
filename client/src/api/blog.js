@@ -30,4 +30,13 @@ const getSearchedBlog = (config, cateId, value) => {
   });
 };
 
-export { getCate, setBlog, getBlog, getSearchedBlog };
+const deleteBlog = (config, data) => {
+  return apiSend({
+    url: `/blog/delete/`,
+    method: 'post',
+    headers: config,
+    data: data
+  });
+};
+
+export { getCate, setBlog, getBlog, getSearchedBlog, deleteBlog };

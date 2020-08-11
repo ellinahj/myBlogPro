@@ -19,7 +19,7 @@ const GlobalStyle = createGlobalStyle`
         height:100%;
         position: relative;
         font-family: ${props => props.currentValue};
-        font-size:${props => props.theme.mFont};
+        font-size:${theme.theme.mFont};
         background:#fcfcfc;
   };
   #__next{  
@@ -40,26 +40,28 @@ const GlobalStyle = createGlobalStyle`
   };
   button{
     font-family: ${props => props.currentValue};
+    font-size:${theme.theme.sFont};
     :hover {
     opacity: 1;
     }
   }
   ::-webkit-input-placeholder {
     font-family: ${props => props.currentValue};
+    font-size:${theme.theme.mFont};
 }
 input{
   font-family: ${props => props.currentValue};
-  font-size:${props => props.theme.mFont};
+  font-size:${theme.theme.mFont};
 }
 textarea{
   font-family: ${props => props.currentValue};
-  font-size:${props => props.theme.mFont};
+  font-size:${theme.theme.mFont};
 }
 `;
 
 export default function MyApp({ Component, pageProps }) {
   const [currentColor, setCurrentColor] = useState('#7c7cec');
-  const [currentValue, setCurrentValue] = useState(`'Noto Sans KR', sans-serifo'`);
+  const [currentValue, setCurrentValue] = useState(`'Gothic A1', sans-serif`);
 
   useEffect(() => {
     function handleSubscribe() {

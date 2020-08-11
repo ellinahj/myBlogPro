@@ -163,8 +163,7 @@ const TitleCenter = styled.div`
   justify-content: center;
   width: 100%;
   margin: 20px 0;
-${BlueEditBtn}
-
+  ${BlueEditBtn};
   font-size: ${props => props.theme.mFont};
 `;
 

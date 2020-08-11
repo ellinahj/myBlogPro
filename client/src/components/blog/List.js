@@ -3,6 +3,7 @@ import { it } from 'date-fns/locale';
 import { useSelector } from 'react-redux';
 import { theme } from '../../utils/theme';
 import moment from 'moment';
+import Carousel from 'nuka-carousel';
 
 export default function List(props) {
   const { luminantColor, blogData, sendToListValue } = props;
@@ -21,11 +22,14 @@ export default function List(props) {
             const convertedDate = moment(stillUtc).format('YYYY월 M월 D일');
             return (
               <CardContainer key={index} luminantColor={luminantColor} userColor={userColor}>
-                {item.first_image && (
-                  <ImageArea>
-                    <Img src={item.first_image} />
-                  </ImageArea>
-                )}
+                <ImageArea>
+                  <Carousel>
+                    {item &&
+                      item.image_url.map(item => {
+                        return <Img src={item} />;
+                      })}
+                  </Carousel>
+                </ImageArea>
                 <ContentArea>
                   <Date>{item.now_date ? `작성일 ${convertedDate}` : ''}</Date>
                   <Title>{item.title}</Title>
@@ -67,14 +71,14 @@ const CardContainer = styled.div`
   width: 100%;
   padding: 30px;
   box-sizing: border-box;
-  border-top: 2px dotted ${props => (props.userColor ? props.userColor : '#ddd')};
+  border-: 2px dotted ${props => (props.userColor ? props.userColor : '#ddd')};
   background: #f6f6f6;
   border-radius: 5px;
 `;
 const ImageArea = styled.div`
   width: 100%;
   height: 100%;
-  margin-bottom: 10px; //
+  margin-bottom: 10px;
 `;
 const Img = styled.img`
   width: 100%;
