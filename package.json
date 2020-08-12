@@ -9,7 +9,7 @@
     "clientInstall": "cd client && npm install ",
     "serverInstall": "cd server && cd src && npm install",
     "clientBuild": "cd client && npm run build",
-    "serverStart": "cd server && cd src && babel-node ./bin/www --exec babel-node --presets @babel/preset-env"
+    "serverStart": "cd server && cd src && npm start"
   },
   "dependencies": {}
 }
