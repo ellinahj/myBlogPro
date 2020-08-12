@@ -1,6 +1,7 @@
-import { insertUser, selectId, login } from "../models/auth.model";
-
+import dotenv from "dotenv";
 dotenv.config();
+
+import { insertUser, selectId, login } from "../models/auth.model";
 const ImgUrl = process.env.ImgUrl;
 
 //회원가입
