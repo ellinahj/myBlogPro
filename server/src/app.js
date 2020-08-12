@@ -18,7 +18,7 @@ import blogRoute from "./routes/blog";
 
 const app = express();
 dotenv.config();
-app.use(morgan("dev")); //combined,dev
+app.use(morgan("combined")); //combined,dev
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
