@@ -9,7 +9,6 @@ export default function Mypage() {
   const [showEdit, setShowEdit] = useState(false);
   const [showEditPw, setShowEditPw] = useState(false);
   const clickEdit = e => {
-    console.log('click');
     setShowEdit(!showEdit);
   };
   const clickEditPw = e => {

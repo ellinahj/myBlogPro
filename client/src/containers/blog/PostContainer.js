@@ -10,14 +10,12 @@ import UploadComponent from '../../components/blog/ThreePhotoUpload';
 import { setBlog, getCate } from '../../../src/api/blog';
 import { BasicTitle, theme } from '../../utils/theme';
 import Router from 'next/router';
-import { setClickMenu } from '../../actions/base';
+import { setClickMenu, setCategory } from '../../actions/base';
 import { set } from 'date-fns';
 
 export default function addContainer(props) {
   const dispatch = useDispatch();
   const [startDate, setStartDate] = useState(new Date());
-  const [category, setCategory] = useState([]);
-  const [radioIndex, setRadioIndex] = useState(0);
   const [imgFile, setImgFile] = useState('');
   const [value, setValue] = useState({
     cate: 0,
@@ -25,11 +23,13 @@ export default function addContainer(props) {
     location: '',
     comment: ''
   });
+  const [test, setTest] = useState({});
   const userColor = useSelector(state => state.common.userColor);
   const clickMenu = useSelector(state => state.common.clickMenu);
+  const category = useSelector(state => state.common.category);
 
   const handleData = e => {
-    console.log(e, 'e');
+    // console.log(e, 'e');
     setValue({ ...value, [e.target.name]: e.target.value });
   };
 
@@ -37,16 +37,13 @@ export default function addContainer(props) {
   //   setStartDate(date);
   // };
 
-  const checked = (id, index) => {
-    setRadioIndex(index);
-    dispatch(setClickMenu(id));
+  const checked = id => {
     setValue({ ...value, cate: id });
   };
-
+  // console.log(clickMenu, 'clickMenu');
   const imgFormData = file => {
     setImgFile(file);
   };
-  console.log(value, 'value');
 
   useEffect(() => {
     const getToken = localStorage.getItem('mydiary_token');
@@ -56,13 +53,19 @@ export default function addContainer(props) {
       };
       getCate(config).then(res => {
         if (res.status === 200 && res.data) {
-          setCategory(res.data.data);
-          console.log(res.data.data, 'rerere');
-          dispatch(setClickMenu(res.data.data[0].id));
+          dispatch(setCategory(res.data.data));
+          // console.log(res.data.data, 'rerere');
         }
       });
     }
   }, []);
+
+  useEffect(() => {
+    if (!category) {
+      return;
+    }
+    setValue({ cate: category[0].id, title: '', location: '', comment: '' });
+  }, [category]);
 
   const submit = () => {
     if (value.title.length > 0 && value.comment.length > 0) {
@@ -73,7 +76,6 @@ export default function addContainer(props) {
       const data = value;
       const numDate = Date.parse(startDate);
       data.date = numDate;
-      data.cate = category && category[radioIndex].id;
       formData.append('data', JSON.stringify(data));
       console.log(formData, 'formdata');
       console.log(startDate, 'start');
@@ -86,9 +88,9 @@ export default function addContainer(props) {
         setBlog(config, formData).then(res => {
           console.log(res, 'res');
           if (res.status === 200) {
-            alert('등록되었습니다.');
+            // alert('등록되었습니다.');
             Router.push('/blog');
-            dispatch(setClickMenu(clickMenu));
+            dispatch(setClickMenu({ cateId: value.cate }));
           }
         });
       }
@@ -96,7 +98,7 @@ export default function addContainer(props) {
       alert('제목과 내용은 필수항목입니다.');
     }
   };
-  console.log(value, 'value');
+
   return (
     <Contaniner>
       <Row>
@@ -110,8 +112,8 @@ export default function addContainer(props) {
                   {item.title}
                   <input
                     type="radio"
-                    onChange={e => checked(item.id, index)}
-                    checked={radioIndex === index}
+                    onChange={e => checked(item.id)}
+                    checked={item.id === value.cate}
                     autoComplete="off"
                   />
                   <span className="checkmark" />

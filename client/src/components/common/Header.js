@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useSelector, useDispatch } from 'react-redux';
 import { colorLuminance } from '../../utils/common';
 import { loginCheck } from '../../api/auth';
-import { setUserInfo, setThemeColor, setToolTip, setFont } from '../../actions/base';
+import { setLoading, setLogin, setUserInfo, setThemeColor, setToolTip, setFont } from '../../actions/base';
 import { useRouter } from 'next/router';
 import { theme } from '../../utils/theme';
 import ImgBtn from '../../components/common/ImgBtn';
@@ -19,6 +19,9 @@ export default function Header() {
   const luminantColor = userColor && colorLuminance(userColor, 0.5);
 
   useEffect(() => {
+    if (isLoggedIn !== undefined) {
+      return;
+    }
     if (Router.asPath !== '/join') {
       const showTool = JSON.parse(localStorage.getItem('showTool'));
       if (showTool === false) {
@@ -33,6 +36,8 @@ export default function Header() {
           dispatch(setThemeColor(res.data.user_color));
           dispatch(setUserInfo(res.data));
           dispatch(setFont(res.data.user_font));
+          dispatch(setLoading(false));
+          dispatch(setLogin(true));
         }
       });
     }

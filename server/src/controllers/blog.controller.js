@@ -2,7 +2,8 @@ import { authCheck } from "../public/function";
 import {
   selectBlog,
   insertBlog,
-  selectSearchedBlog
+  selectSearchedBlog,
+  deleteBlog
 } from "../models/blog.model";
 import fs from "fs";
 import multer from "multer";
@@ -12,6 +13,8 @@ import dotenv from "dotenv";
 import moment from "moment";
 
 dotenv.config();
+const ImgUrl = process.env.ImgUrl;
+
 //파일 업로드 관련
 fs.readdir("uploads/images", error => {
   if (error) {
@@ -30,7 +33,6 @@ const storage = multer.diskStorage({
 });
 
 //s3
-
 const s3 = new AWS.S3();
 AWS.config.loadFromPath(__dirname + "/../config/aws.json");
 
@@ -46,6 +48,7 @@ export const storageS3 = multerS3({
   },
   acl: "public-read"
 });
+//
 
 const setBlog = async (req, res, next) => {
   try {
@@ -95,29 +98,23 @@ const getBlog = async (req, res, next) => {
     selectBlog(result.id, id)
       .then(response => {
         const data = [...response];
-
         console.log(data, "data");
         const newData = data.map(item => {
           item.image_url = [
-            "http://127.0.0.1:3000/images/" + item.first_image,
-            "http://127.0.0.1:3000/images/" + item.second_image,
-            "http://127.0.0.1:3000/images/" + item.third_image
+            ImgUrl + item.first_image,
+            ImgUrl + item.second_image,
+            ImgUrl + item.third_image
           ];
           return item;
         });
-        res
-          .status(200)
-          .json({ data })
-          .end();
+        res.status(200).json({ data, ...newData });
       })
       .catch(err => console.log(err, "get Blog err"));
   } else {
-    res
-      .status(400)
-      .json({ status: 400 })
-      .end();
+    res.status(400).json({ status: 400 });
   }
 };
+
 const getSearchedBlog = async (req, res, next) => {
   const token = req.headers["access_token"];
   const result = await authCheck(token);
@@ -126,30 +123,19 @@ const getSearchedBlog = async (req, res, next) => {
     selectSearchedBlog(result.id, cateId, value)
       .then(response => {
         console.log(response, "responese");
-
-        let image_url = [];
-        for (let i = 0; i < data.length; i++) {
-          if (data[i].first_image) {
-            const url = "http://127.0.0.1:3000/images/" + data[i].first_image;
-
-            data[i].image_url = url;
-          }
-          if (data[i].second_image) {
-            const url = "http://127.0.0.1:3000/images/" + data[i].second_image;
-
-            data[i].image_url = url;
-          }
-          if (data[i].third_image) {
-            const url = "http://127.0.0.1:3000/images/" + data[i].third_image;
-            data[i].image_url = url;
-          }
-          const data = [...response, url];
-          console.log(data, "data");
-        }
-        res
-          .status(200)
-          .json({ data })
-          .end();
+        const data = [...response];
+        console.log(data, "data");
+        // const url = "https://myblogs3.s3.ap-northeast-2.amazonaws.com/";
+        const url = "http://127.0.0.1:3000/images/";
+        const newData = data.map(item => {
+          item.image_url = [
+            url + item.first_image,
+            url + item.second_image,
+            url + item.third_image
+          ];
+          return item;
+        });
+        res.status(200).json({ data, ...newData });
       })
       .catch(err => console.log(err, "get Blog err"));
   } else {
@@ -159,4 +145,59 @@ const getSearchedBlog = async (req, res, next) => {
       .end();
   }
 };
-export { getBlog, setBlog, getSearchedBlog };
+const removeBlog = async (req, res, next) => {
+  const token = req.headers["access_token"];
+  const result = await authCheck(token);
+  const { id, image_url } = req.body;
+  if (result && result.id) {
+    const s3 = new AWS.S3();
+    AWS.config.loadFromPath(__dirname + "/../config/aws.json");
+    const deleteItems = [];
+    const { image_url } = req.body;
+    // const filteredUrl = image_url.filter(item => {
+    //   item.substring(item.length - 4) !== "null" &&
+    //     item.substring(item.length - 1) !== "0";
+    // });
+
+    image_url.forEach(el => {
+      let split = el.split(".com/");
+      const newSplit = split[1];
+      deleteItems.push(newSplit);
+    });
+
+    const params = {
+      Bucket: "myblogs3",
+      Delete: {
+        Objects: deleteItems,
+        Quiet: false
+      }
+    };
+
+    s3.deleteObjects(params, function(err, data) {
+      if (err) console.log(err);
+      else console.log("Success delete", data);
+    });
+    res.json({
+      message: "images deleted",
+      items: deleteItems
+    });
+
+    console.log(id, "data");
+
+    deleteBlog(result.id, req.body.id)
+      .then(result => {
+        console.log(result, "result");
+        res
+          .status(200)
+          .json({ message: "deleted" })
+          .end();
+      })
+      .catch(err => console.log(err, "del Blog err"));
+  } else {
+    res
+      .status(400)
+      .json({ status: 400 })
+      .end();
+  }
+};
+export { getBlog, setBlog, getSearchedBlog, removeBlog };

@@ -86,7 +86,7 @@ export default function JoinContainer() {
         )}
 
         <SubTitle>비밀번호 *</SubTitle>
-        <input name="pwd" value={pwd} onChange={e => pwdConfirm(e.target.value)} autoComplete="off" />
+        <input type="password" name="pwd" value={pwd} onChange={e => pwdConfirm(e.target.value)} autoComplete="off" />
         {pwd.length > 0 && !pwRegCheck(pwd) && (
           <WarningWrap>
             <Warning>영문,숫자,특수문자 조합 6~13자리로 입력해주세요.</Warning>
@@ -95,6 +95,7 @@ export default function JoinContainer() {
 
         <SubTitle>비밀번호 확인 *</SubTitle>
         <input
+          type="password"
           name="pwdCheck"
           onKeyUp={enterKey}
           value={pwdCheck}
@@ -148,7 +149,8 @@ const JoinBtn = styled.button`
   height: 45px;
   box-sizing: border-box;
   font-size: 15px;
-  background: ${props => (props.allOk ? '#ff254f' : '#ddd')};
+  background: ${props => (props.allOk ? '#7c7cec' : '#ddd')};
+  cursor: ${props => (props.allOk ? 'pointer' : 'not-allowed')};
   text-align: center;
   line-height: 45px;
   margin-top: 20px;

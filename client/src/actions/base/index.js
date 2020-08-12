@@ -35,13 +35,13 @@ const setUserInfo = payload => {
     payload
   };
 };
-const setCate = payload => {
+const setCategory = payload => {
   return {
     type: SET_CATE,
     payload
   };
 };
-const setLoding = payload => {
+const setLoading = payload => {
   return {
     type: SET_LOADING,
     payload
@@ -65,4 +65,4 @@ const setFont = payload => {
     payload
   };
 };
-export { increment, setThemeColor, setLogin, setUserInfo, setCate, setLoding, setToolTip, setClickMenu, setFont };
+export { increment, setThemeColor, setLogin, setUserInfo, setCategory, setLoading, setToolTip, setClickMenu, setFont };

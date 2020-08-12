@@ -39,7 +39,7 @@ const GlobalStyle = createGlobalStyle`
       list-style:none;
   };
   button{
-    font-family: ${props => props.currentValue};
+    //font-family: ${props => props.currentValue};
     font-size:${theme.theme.sFont};
     :hover {
     opacity: 1;

@@ -46,6 +46,7 @@ const insertBlog = (user_id, data) => {
   });
 };
 const selectSearchedBlog = (user_id, cate_id, value) => {
+  console.log(cate_id, value, "value");
   const markedValue = "%" + value + "%";
   return new Promise((resolve, reject) => {
     console.log(markedValue, "marked");
@@ -56,10 +57,25 @@ const selectSearchedBlog = (user_id, cate_id, value) => {
         if (err) {
           reject(err);
         } else {
+          console.log(rows, "sear rows");
           resolve(rows);
         }
       }
     );
   });
 };
-export { selectBlog, insertBlog, selectSearchedBlog };
+const deleteBlog = (user_id, blogId) => {
+  return new Promise((resolve, reject) => {
+    connection.query(
+      "delete from mydiary.blog where user_id=? and id=?",
+      [user_id, blogId],
+      function(err, rows) {
+        if (err) {
+          reject(err);
+        } else {
+        }
+      }
+    );
+  });
+};
+export { selectBlog, insertBlog, selectSearchedBlog, deleteBlog };

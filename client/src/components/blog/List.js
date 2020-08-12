@@ -1,13 +1,15 @@
 import styled from 'styled-components';
 import { it } from 'date-fns/locale';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { theme } from '../../utils/theme';
 import moment from 'moment';
 import Carousel from 'nuka-carousel';
 
 export default function List(props) {
-  const { luminantColor, blogData, sendToListValue } = props;
+  const { luminantColor, blogData, deleteItem, handleMenuClick } = props;
   const userColor = useSelector(state => state.common.userColor);
+  const clickMenu = useSelector(state => state.common.clickMenu);
+
   return (
     <ListArea>
       <Content>
@@ -22,14 +24,30 @@ export default function List(props) {
             const convertedDate = moment(stillUtc).format('YYYY월 M월 D일');
             return (
               <CardContainer key={index} luminantColor={luminantColor} userColor={userColor}>
-                <ImageArea>
-                  <Carousel>
-                    {item &&
-                      item.image_url.map(item => {
+                <IconCloseCon onClick={() => deleteItem(item.id, item.image_url)}>
+                  <IconCloseImg src={'/images/close.svg'} />
+                </IconCloseCon>
+                {item && item.image_url.length > 0 ? (
+                  <ImageArea>
+                    <Carousel
+                      defaultControlsConfig={{
+                        nextButtonText: '>',
+                        prevButtonText: '<',
+                        pagingDotsStyle: {
+                          fill: '#ddd'
+                        }
+                      }}
+                      heightMode="current"
+                    >
+                      {item.image_url.map(item => {
                         return <Img src={item} />;
                       })}
-                  </Carousel>
-                </ImageArea>
+                    </Carousel>
+                  </ImageArea>
+                ) : (
+                  <></>
+                )}
+
                 <ContentArea>
                   <Date>{item.now_date ? `작성일 ${convertedDate}` : ''}</Date>
                   <Title>{item.title}</Title>
@@ -43,10 +61,17 @@ export default function List(props) {
             );
           })}
         {blogData && blogData.length === 0 && (
-          <WriteWrap>
-            <Write>첫번째 글을 작성해보세요.</Write>
-            <WriteImg src={'/images/keyboard.png'} />
-          </WriteWrap>
+          <Col>
+            <AllViewWrap>
+              <AllView onClick={() => handleMenuClick(clickMenu.cateId)} userColor={userColor}>
+                전체보기
+              </AllView>
+            </AllViewWrap>
+            <WriteWrap>
+              <Write>첫번째 글을 작성해보세요.</Write>
+              <WriteImg src={'/images/keyboard.png'} />
+            </WriteWrap>
+          </Col>
         )}
       </Content>
     </ListArea>
@@ -71,9 +96,10 @@ const CardContainer = styled.div`
   width: 100%;
   padding: 30px;
   box-sizing: border-box;
-  border-: 2px dotted ${props => (props.userColor ? props.userColor : '#ddd')};
+  border-top: 2px dotted ${props => (props.userColor ? props.userColor : '#ddd')};
   background: #f6f6f6;
   border-radius: 5px;
+  position: relative;
 `;
 const ImageArea = styled.div`
   width: 100%;
@@ -131,4 +157,36 @@ const Write = styled.div`
 const WriteImg = styled.img`
   max-width: 80px;
   max-height: 80px;
+`;
+const IconCloseCon = styled.div`
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 20px;
+  height: 20px;
+  background-color: #ddd;
+  border-radius: 12px;
+  cursor: pointer;
+  :hover {
+    opacity: 0.5;
+  }
+`;
+const IconCloseImg = styled.img`
+  position: absolute;
+  top: 3px;
+  left: 3px;
+`;
+const Col = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+const AllViewWrap = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 40px;
+`;
+const AllView = styled.div`
+  color: ${props => props.userColor && props.userColor};
+  font-size: ${theme.mFont};
+  cursor: pointer;
 `;

@@ -13,13 +13,13 @@ import {
 export const initialState = {
   number: 0,
   userColor: '#7c7cec',
-  isLoggedIn: false,
+  isLoggedIn: undefined,
   userInfo: undefined,
   category: undefined,
   loading: false,
   showToolTip: true,
-  clickMenu: 0,
-  selectFont: `'Noto Sans KR', sans-serifo'`
+  clickMenu: { cateId: undefined },
+  selectFont: "'Noto Sans KR', sans-serifo"
 };
 
 const commonReducer = (state = initialState, action) => {

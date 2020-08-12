@@ -80,7 +80,6 @@ const updateUser = (user_id, data) => {
               if (err) {
                 reject(err);
               } else {
-                console.log(rows, "rows");
                 const data = rows[0];
                 delete data.password;
                 resolve(data);

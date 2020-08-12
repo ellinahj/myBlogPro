@@ -14,7 +14,7 @@ export default function TopInfo(props) {
     localStorage.removeItem('mydiary_token');
     dispatch(setUserInfo(null));
     dispatch(setThemeColor('#7c7cec'));
-    dispatch(setFont(`'Noto Sans KR', sans-serifo'`));
+    dispatch(setFont("'Noto Sans KR', sans-serifo"));
   };
   return (
     <MyInfoWrap>

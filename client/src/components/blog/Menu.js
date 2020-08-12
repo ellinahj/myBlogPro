@@ -2,6 +2,8 @@ import styled, { css } from 'styled-components';
 import { useSelector } from 'react-redux';
 export default function MenuCo(props) {
   const category = useSelector(state => state.common.category);
+  const clickMenu = useSelector(state => state.common.clickMenu);
+
   const { userColor, luminantColor, isSticky, menuIndex, handleMenuClick } = props;
   return (
     <MenuWrap luminantColor={luminantColor} isSticky={isSticky}>
@@ -9,9 +11,9 @@ export default function MenuCo(props) {
         category.length > 0 &&
         category.map((item, index) => {
           return (
-            <Menu onClick={e => handleMenuClick(index, item.id)} key={index}>
+            <Menu onClick={e => handleMenuClick(item.id)} key={index}>
               {item.title}
-              <MenuBorder userColor={userColor} active={menuIndex === index} />
+              <MenuBorder userColor={userColor} active={clickMenu && clickMenu.cateId === item.id} />
             </Menu>
           );
         })}

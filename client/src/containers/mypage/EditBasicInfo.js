@@ -99,6 +99,7 @@ export default function InfoContainer(props) {
       }
     });
   };
+  // console.log(userInfo, 'userInfof');
   return (
     <Con>
       <Column>

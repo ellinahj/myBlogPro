@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled, { css } from 'styled-components';
-import { setCate } from '../../actions/base';
+import { setCategory } from '../../actions/base';
 import { getCate } from '../../api/blog';
 import { deleteCate, updateCate } from '../../api/category';
 import Container from '../../components/common/Container';
@@ -29,7 +29,7 @@ export default function ChangeMenu(props) {
       };
       getCate(config).then(res => {
         if (res.status === 200 && res.data) {
-          dispatch(setCate(res.data.data));
+          dispatch(setCategory(res.data.data));
           const result = {};
           res.data.data
             ? res.data.data.forEach((item, idx) => {
@@ -45,12 +45,14 @@ export default function ChangeMenu(props) {
   const handleEditMenu = () => {
     setEdit(!edit);
   };
+
   const handleInput = (index, value) => {
     setCateValue({
       ...cateValue,
       [index]: { ...cateValue[index], title: value }
     });
   };
+
   const increaseCateValue = () => {
     if (countCate + cateInputCount < max_category_count) setCateInputCount(cateInputCount + 1);
   };
@@ -85,7 +87,7 @@ export default function ChangeMenu(props) {
         const data = { id: cateId };
         deleteCate(config, data).then(res => {
           if (res.status === 200 && res.data) {
-            dispatch(setCate(res.data.data));
+            dispatch(setCategory(res.data.data));
             const result = {};
             res.data.data
               ? res.data.data.forEach((item, idx) => {
@@ -133,7 +135,7 @@ export default function ChangeMenu(props) {
         };
         updateCate(config, data).then(res => {
           if (res.status === 200 && res.data) {
-            dispatch(setCate(res.data.data));
+            dispatch(setCategory(res.data.data));
             console.log(res.data.data, ' 변경 후');
             const result = {};
             res.data.data
@@ -211,7 +213,7 @@ export default function ChangeMenu(props) {
                         <Input
                           name={index}
                           value={cateValue[index] ? cateValue[index].title : ''}
-                          onChange={e => handleInput(e)}
+                          onChange={e => handleInput(index, e.target.value)}
                           autoComplete="off"
                         />
                         <CloseBtn

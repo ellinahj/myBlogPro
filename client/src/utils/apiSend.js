@@ -1,7 +1,7 @@
 import axios from 'axios';
 import Router from 'next/router';
 import store from '../store';
-import { setUserInfo, setLogin, setThemeColor, setLoading, setLoding } from '../actions/base';
+import { setUserInfo, setLogin, setThemeColor, setLoading } from '../actions/base';
 const localURL = 'http://127.0.0.1:3000';
 const proURL = '';
 const instance = axios.create({
@@ -11,7 +11,7 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
   function(config) {
-    // store.dispatch(setLoding(true));
+    // store.dispatch(setLoading(true));
     return config;
   },
   function(error) {
@@ -23,8 +23,7 @@ instance.interceptors.response.use(
     // http status가 200인 경우
     // 응답 바로 직전에 대해 작성
     // .then()
-    store.dispatch(setLoding(false));
-    store.dispatch(setLogin(true));
+
     return response;
   },
 
