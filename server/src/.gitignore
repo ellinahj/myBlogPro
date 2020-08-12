@@ -115,8 +115,8 @@ dist
 .pnp.*
 
 #dev
-config/
-uploads/images
+#config/
+#uploads/images
 
 #pro
-#uploads/images
+uploads/*
