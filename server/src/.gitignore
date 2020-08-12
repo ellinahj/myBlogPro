@@ -120,3 +120,5 @@ dist
 
 #pro
 uploads/*
+
+node_modules
