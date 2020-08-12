@@ -125,13 +125,11 @@ const getSearchedBlog = async (req, res, next) => {
         console.log(response, "responese");
         const data = [...response];
         console.log(data, "data");
-        // const url = "https://myblogs3.s3.ap-northeast-2.amazonaws.com/";
-        const url = "http://127.0.0.1:3000/images/";
         const newData = data.map(item => {
           item.image_url = [
-            url + item.first_image,
-            url + item.second_image,
-            url + item.third_image
+            ImgUrl + item.first_image,
+            ImgUrl + item.second_image,
+            ImgUrl + item.third_image
           ];
           return item;
         });

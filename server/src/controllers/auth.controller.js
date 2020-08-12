@@ -1,5 +1,8 @@
 import { insertUser, selectId, login } from "../models/auth.model";
 
+dotenv.config();
+const ImgUrl = process.env.ImgUrl;
+
 //회원가입
 const findDuplicatedId = (req, res, next) => {
   try {
@@ -74,7 +77,7 @@ const loginController = (req, res, next) => {
               user_color,
               main_title
             } = result;
-            const profile_url = "http://127.0.0.1:3000/images/" + profile_photo;
+            const profile_url = ImgUrl + profile_photo;
             res.status(200).json({
               message: "ok",
               access_token: token,
