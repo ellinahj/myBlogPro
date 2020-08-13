@@ -4,7 +4,7 @@ module.exports = {
     port: "3306",
     user: "admin",
     password: "rdsdpfflsk1?",
-    database: "mysql"
+    database: "mydiary"
   },
   dev: {
     host: "localhost",
