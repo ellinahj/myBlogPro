@@ -1,6 +1,6 @@
 module.exports = {
   pro: {
-    host: "myblogdb.cbl9z0u2kths.us-east-1.rds.amazonaws.com",
+    host: "mydiary.cbl9z0u2kths.us-east-1.rds.amazonaws.com",
     port: "3306",
     user: "admin",
     password: "rdsdpfflsk1?",
