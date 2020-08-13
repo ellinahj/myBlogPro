@@ -16,21 +16,21 @@ dotenv.config();
 const ImgUrl = process.env.ImgUrl;
 
 //파일 업로드 관련
-fs.readdir("uploads/images", error => {
-  if (error) {
-    fs.mkdirSync("uploads/images");
-  }
-});
+// fs.readdir("uploads/images", error => {
+//   if (error) {
+//     fs.mkdirSync("uploads/images");
+//   }
+// });
 
-const upload = multer({ storage: storage }).any();
-const storage = multer.diskStorage({
-  destination: function(req, file, cb) {
-    cb(null, "./uploads/images");
-  },
-  filename: function(req, file, cb) {
-    cb(null, Date.now() + "_" + file.originalname);
-  }
-});
+// const upload = multer({ storage: storage }).any();
+// const storage = multer.diskStorage({
+//   destination: function(req, file, cb) {
+//     cb(null, "./uploads/images");
+//   },
+//   filename: function(req, file, cb) {
+//     cb(null, Date.now() + "_" + file.originalname);
+//   }
+// });
 
 //s3
 const s3 = new AWS.S3();

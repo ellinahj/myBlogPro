@@ -83,21 +83,21 @@ const getUserInfo = async (req, res, next) => {
 };
 
 //파일 업로드 관련
-fs.readdir("uploads/images", error => {
-  if (error) {
-    fs.mkdirSync("uploads/images");
-  }
-});
-const storage = multer.diskStorage({
-  destination: function(req, file, cb) {
-    cb(null, "./uploads/images");
-  },
-  filename: function(req, file, cb) {
-    cb(null, Date.now() + "_" + file.originalname);
-  }
-});
-const upload = multer({ storage: storage }).any();
-const dirPath = path.join(__dirname, "../uploads");
+// fs.readdir("uploads/images", error => {
+//   if (error) {
+//     fs.mkdirSync("uploads/images");
+//   }
+// });
+// const storage = multer.diskStorage({
+//   destination: function(req, file, cb) {
+//     cb(null, "./uploads/images");
+//   },
+//   filename: function(req, file, cb) {
+//     cb(null, Date.now() + "_" + file.originalname);
+//   }
+// });
+// const upload = multer({ storage: storage }).any();
+// const dirPath = path.join(__dirname, "../uploads");
 
 const updateInfo = async (req, res, next) => {
   AWS.config.loadFromPath(__dirname + "/../config/aws.json");
