@@ -8,6 +8,8 @@ import { authCheck } from "../public/function";
 const getCateNumber = async (req, res, next) => {
   try {
     const token = req.headers["access_token"];
+    console.log(token, "token");
+    console.log(req.headers, "header");
     const result = await authCheck(token);
     console.log(result, "result");
     if (result && result.id) {
