@@ -19,6 +19,7 @@ module.exports = function() {
 
     db_open: function(con) {
       con.connect(function(err) {
+        console.log(process.env.NODE_ENV);
         if (err) {
           console.info(err.stack, "db connect err");
           app.use(function(error, req, res, next) {
