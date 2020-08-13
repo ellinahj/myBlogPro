@@ -9,10 +9,12 @@ const getCateNumber = async (req, res, next) => {
   try {
     const token = req.headers["access_token"];
     const result = await authCheck(token);
+    console.log(result, "result");
     if (result && result.id) {
       selectCateNumber(result.id)
         .then(data => {
           if (data) {
+            console.log(data, "data");
             res
               .status(200)
               .json({ status: 200, message: "ok", data: [...data] });
