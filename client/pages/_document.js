@@ -22,7 +22,7 @@ export default class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@400;700&family=Nanum+Myeongjo:wght@400;700&display=swap"
             rel="stylesheet"
           />
-          {this.styleTags}
+          {this.props.styleTags}
         </Head>
         <body>
           <Main />
