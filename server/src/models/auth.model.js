@@ -16,7 +16,6 @@ const selectId = function(user_id) {
         if (err) {
           reject(err);
         } else {
-          console.log(rows[0].count, "rows[0].count");
           resolve(rows[0].count);
         }
       }
@@ -51,7 +50,7 @@ const insertUser = (user_id, password) => {
             reject(err);
           } else {
             if (result.insertId) {
-              const cateName = "기본1";
+              const cateName = "기본메뉴";
               connection.query(
                 "INSERT INTO mydiary.category (user_id,title) VALUES (?,?) ",
                 [result.insertId, cateName],

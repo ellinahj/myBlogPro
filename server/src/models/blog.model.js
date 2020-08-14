@@ -12,7 +12,7 @@ const selectBlog = (user_id, cate_id) => {
         if (err) {
           reject(err);
         } else {
-          resolve(rows);
+          return resolve(rows);
         }
       }
     );
@@ -73,6 +73,10 @@ const deleteBlog = (user_id, blogId) => {
         if (err) {
           reject(err);
         } else {
+          selectBlog(user_id, blogId).then(res => {
+            console.log(res, "deleelelelelelllres");
+            resolve(res);
+          });
         }
       }
     );

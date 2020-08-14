@@ -31,7 +31,6 @@ const getSearchedBlog = (config, cateId, value) => {
 };
 
 const deleteBlog = (config, data) => {
-  console.log(data, 'data');
   return apiSend({
     url: `/blog/delete/`,
     method: 'post',

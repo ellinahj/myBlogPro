@@ -99,7 +99,7 @@ export default function InfoContainer(props) {
       }
     });
   };
-  // console.log(userInfo, 'userInfof');
+
   return (
     <Con>
       <Column>
@@ -119,6 +119,7 @@ export default function InfoContainer(props) {
                     <Input
                       name="nickname"
                       value={nickname}
+                      placeholder="닉네임을 설정해보세요"
                       onChange={e => handleNicknameChange(e.target.value)}
                       maxLength="10"
                       autoComplete="off"
@@ -134,7 +135,7 @@ export default function InfoContainer(props) {
                     </CountRow>
                   )}
                 </InputRow>
-                {showEdit && !!nickname && nicknameAvailable === true && <Match>사용가능</Match>}
+                {showEdit && !!userInfo.nickname && nicknameAvailable === true && <Match>사용가능</Match>}
                 {showEdit && userInfo.nickname !== nickname && nicknameAvailable === false && (
                   <Mismatch>이미사용중입니다.</Mismatch>
                 )}

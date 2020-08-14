@@ -23,13 +23,10 @@ export default function addContainer(props) {
     location: '',
     comment: ''
   });
-  const [test, setTest] = useState({});
   const userColor = useSelector(state => state.common.userColor);
-  const clickMenu = useSelector(state => state.common.clickMenu);
   const category = useSelector(state => state.common.category);
 
   const handleData = e => {
-    // console.log(e, 'e');
     setValue({ ...value, [e.target.name]: e.target.value });
   };
 
@@ -88,7 +85,7 @@ export default function addContainer(props) {
         setBlog(config, formData).then(res => {
           console.log(res, 'res');
           if (res.status === 200) {
-            // alert('등록되었습니다.');
+            alert('등록되었습니다.');
             Router.push('/blog');
             dispatch(setClickMenu({ cateId: value.cate }));
           }
@@ -101,14 +98,14 @@ export default function addContainer(props) {
 
   return (
     <Contaniner>
-      <Row>
+      <Row userColor={userColor}>
         <Subject>분류</Subject>
         {category &&
           category.length > 0 &&
           category.map((item, index) => {
             return (
               <CateWrap>
-                <label className="radio_container" key={index} userColor={userColor}>
+                <label className="radio_container" key={index}>
                   {item.title}
                   <input
                     type="radio"
@@ -179,7 +176,7 @@ export default function addContainer(props) {
         <UploadComponent imgFormData={e => imgFormData(e)} />
       </Row>
       <RowRight>
-        <Col>
+        <Col userColor={userColor}>
           <SubmitBtn onClick={e => submit(e)}>저장</SubmitBtn>
         </Col>
       </RowRight>
@@ -245,11 +242,11 @@ const Row = styled.div`
     left: 0;
     height: 21px;
     width: 21px;
-    background: ${props => props.userColor || '#aaa'};
+    background: #ddd;
     border-radius: 50%;
   }
   .radio_container:hover input ~ .checkmark {
-    background-color: ${props => props.userColor || '#aaa'};
+    background-color: #ddd;
   }
   .radio_container input:checked ~ .checkmark {
     background-color: ${props => props.userColor || '#aaa'};

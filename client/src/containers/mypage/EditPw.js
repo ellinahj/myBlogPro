@@ -169,7 +169,7 @@ const MainTitle = styled(Title)`
 `;
 const TopCon = styled.div`
   width: 100%;
-  background: #fafafa;
+  background: #fcfcfc;
   padding: 30px;
 `;
 const SubmitBtn = styled.button`

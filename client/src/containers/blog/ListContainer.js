@@ -16,10 +16,7 @@ export default function ListContainer() {
   const category = useSelector(state => state.common.category);
   const clickMenu = useSelector(state => state.common.clickMenu);
 
-  const [menuIndex, setMenuIndex] = useState(0);
   const [isSticky, setSticky] = useState(false);
-  const [loadMore, setLoadMore] = useState(true);
-  const [selectedCateId, setSelectedCateId] = useState();
   const [blogData, setBlogData] = useState(undefined);
   const [sendToListValue, setSendToListValue] = useState('');
 
@@ -55,8 +52,6 @@ export default function ListContainer() {
     }
   }, []);
 
-  // console.log(clickMenu, 'clickMenu');
-
   const fetchBlogData = cateId => {
     const storedToken = localStorage.getItem('mydiary_token');
     if (!storedToken) {
@@ -67,7 +62,6 @@ export default function ListContainer() {
     };
     getBlog(config, cateId).then(res => {
       if (res.status === 200) {
-        // console.log(res.data, 'clickMenu res.data');
         setBlogData(res.data.data);
         dispatch(setClickMenu({ cateId }));
       }
@@ -90,7 +84,6 @@ export default function ListContainer() {
       const config = {
         access_token: storedToken
       };
-      console.log(clickMenu.cateId, 'clickMenu.cateId');
       getSearchedBlog(config, clickMenu && clickMenu.cateId, value).then(res => {
         if (res.status === 200) {
           setBlogData(res.data.data);
@@ -100,7 +93,6 @@ export default function ListContainer() {
     }
   };
   const deleteItem = (id, imageName) => {
-    console.log(id, imageName, 'im');
     const getToken = localStorage.getItem('mydiary_token');
     if (getToken) {
       const config = {
@@ -110,19 +102,14 @@ export default function ListContainer() {
       deleteBlog(config, data).then(res => {
         if (res.status === 200 && res.data) {
           setBlogData(res.data.data);
+          alert('삭제되었습니다.');
         }
       });
     }
   };
   return (
     <ListCon>
-      <Menu
-        handleMenuClick={handleMenuClick}
-        luminantColor={luminantColor}
-        isSticky={isSticky}
-        menuIndex={menuIndex}
-        userColor={userColor}
-      />
+      <Menu handleMenuClick={handleMenuClick} luminantColor={luminantColor} isSticky={isSticky} userColor={userColor} />
       {blogData && blogData.length !== 0 && <Search getSearch={getSearch} />}
       <MyList
         blogData={blogData}

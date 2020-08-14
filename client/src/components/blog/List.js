@@ -152,7 +152,7 @@ const WriteWrap = styled.div`
 const Write = styled.div`
   font-size: ${theme.mFont};
   color: #ccc;
-  margin: 200px 0 10px;
+  margin: 180px 0 10px;
 `;
 const WriteImg = styled.img`
   max-width: 80px;

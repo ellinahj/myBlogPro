@@ -3,7 +3,6 @@ var connection = mysql_dbc.init();
 mysql_dbc.db_open(connection);
 
 const selectCateNumber = id => {
-  console.log(id, "id");
   return new Promise((resolve, reject) => {
     connection.query(
       "select id, title from mydiary.category WHERE user_id = ?",
@@ -20,14 +19,11 @@ const selectCateNumber = id => {
   });
 };
 const updateCategory = async (userId, cate) => {
-  console.log(cate, "ㅊㅁㅅㄷ");
   const cateArr = Object.values(cate);
-  console.log(userId, cateArr, "cate");
   return Promise.all(
     cateArr.map(item => {
       return new Promise((resolve, reject) => {
         if (item.id) {
-          console.log(item.id, "존재");
           connection.query(
             "update  mydiary.category set title=? where id=? and user_id=?",
             [item.title, item.id, userId],
@@ -40,7 +36,6 @@ const updateCategory = async (userId, cate) => {
             }
           );
         } else {
-          console.log(item.title, "비존재");
           connection.query(
             "insert into mydiary.category(title,user_id) values(?,?) ",
             [item.title, userId],
@@ -79,7 +74,7 @@ const updateCategory = async (userId, cate) => {
     });
 };
 const deleteCategory = (userId, cateId) => {
-  console.log(cateId, userId, "iddddd");
+  console.log(cateId, userId, "delete");
   return new Promise((resolve, reject) => {
     connection.query(
       "delete from mydiary.category WHERE user_id = ? and id = ?",

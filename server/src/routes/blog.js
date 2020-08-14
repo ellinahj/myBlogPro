@@ -4,7 +4,7 @@ const router = express.Router();
 const multer = require("multer");
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
-import AWS from "aws-sdk";
+import path from "path";
 
 import {
   getBlog,
@@ -14,7 +14,25 @@ import {
   removeBlog
 } from "../controllers/blog.controller";
 
-router.post("/write", multer({ storage: storageS3 }).array("file", 3), setBlog);
+router.post(
+  "/write",
+  multer({
+    storage: storageS3,
+    fileFilter: function(req, file, callback) {
+      const ext = path.extname(file.originalname);
+      if (
+        ext !== ".png" &&
+        ext !== ".jpg" &&
+        ext !== ".gif" &&
+        ext !== ".jpeg"
+      ) {
+        return callback(null, false);
+      }
+      callback(null, true);
+    }
+  }).array("file", 3),
+  setBlog
+);
 router.get("/read/:id", getBlog);
 router.get("/read/search/:cateId/:value", getSearchedBlog);
 router.post("/delete", removeBlog);

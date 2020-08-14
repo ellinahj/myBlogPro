@@ -19,7 +19,6 @@ const ImgUrl = process.env.ImgUrl;
 //s3
 const s3 = new AWS.S3();
 AWS.config.loadFromPath(__dirname + "/../config/aws.json");
-
 export const storageS3 = multerS3({
   s3: s3,
   bucket: "myblogs3",
@@ -58,16 +57,12 @@ const getUserInfo = async (req, res, next) => {
     if (result && result.id) {
       selectUser(result.userId)
         .then(data => {
-          let profile_url = null;
-          console.log(data, "data");
-          if (data.profile_photo !== null) {
+          let profile_url;
+          if (data.profile_photo !== null && data.profile_photo !== "") {
             profile_url = ImgUrl + data.profile_photo;
-            console.log(data.profile_photo, "notnull");
           } else if (data.profile_photo === null) {
-            console.log(data.profile_photo, "null");
             profile_url = data.profile_photo;
           }
-          console.log(profile_url, "profile_url");
           delete data.profile_photo;
           delete data.id;
           delete data.access_token;
@@ -110,6 +105,7 @@ const updateInfo = async (req, res, next) => {
     const token = req.headers["     access_token"];
     const result = await authCheck(token);
     if (result) {
+      console.log(req.file, "req.file");
       if (req.file.key) {
         //기존 프로필이미지가 있을경우
         console.log(req.file.key, "key======");
@@ -148,16 +144,17 @@ const updateInfo = async (req, res, next) => {
             let { data } = req.body;
             console.log(data, "가져온 텍스트들");
             data = JSON.parse(data);
+            console.log(req.file.key, "req.file.key");
             data["profile_photo"] = req.file.key;
             console.log(data, "최종 바꿀값data");
             updateUser(result.userId, data).then(data => {
               console.log(data, "바뀐값");
-              let profile_url = null;
+              let profile_url;
               if (data.profile_photo !== null) {
                 profile_url = ImgUrl + data.profile_photo;
               }
               delete data.profile_photo;
-
+              console.log(profile_url, "profile_url");
               data = { ...data, profile_url };
               console.log(data, "dataaaa");
               res.status(200).json({ ...data });

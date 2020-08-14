@@ -30,7 +30,6 @@ const selectUser = user_id => {
         if (err) {
           return reject(err);
         } else {
-          console.log(rows, "rows");
           const data = rows[0];
           delete data.password;
           return resolve(data);

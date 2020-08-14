@@ -121,8 +121,6 @@ const ToolTipWrap = styled.div`
   position: absolute;
   top: ${props => (props.profileUrl ? '45px' : '30px')};
   right: ${props => (props.profileUrl ? '12px' : '0px')};
-  width: 112px;
-  height: 35px;
   padding: 8px;
   background: #fefefe;
   z-index: 9;
@@ -130,7 +128,7 @@ const ToolTipWrap = styled.div`
   align-items: center;
   justify-content: flex-start;
   border-radius: 3px;
-  border: 1px solid #eee;
+  border: 1px solid #ddd;
   animation: motion 0.8s linear infinite alternate;
   margin-top: 0;
 
@@ -161,6 +159,7 @@ const ToolTip = styled.div`
   font-size: ${theme.ssFont};
   line-height: 18px;
   color: ${props => props.userColor};
+  margin-right: 13px;
 `;
 const Img = styled.img`
   cursor: pointer;

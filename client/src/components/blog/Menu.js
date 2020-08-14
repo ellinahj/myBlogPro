@@ -4,7 +4,7 @@ export default function MenuCo(props) {
   const category = useSelector(state => state.common.category);
   const clickMenu = useSelector(state => state.common.clickMenu);
 
-  const { userColor, luminantColor, isSticky, menuIndex, handleMenuClick } = props;
+  const { userColor, luminantColor, isSticky, handleMenuClick } = props;
   return (
     <MenuWrap luminantColor={luminantColor} isSticky={isSticky}>
       {category &&

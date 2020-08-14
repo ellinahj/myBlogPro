@@ -78,7 +78,7 @@ const loginController = (req, res, next) => {
             } = result;
 
             let profile_url;
-            if (profile_photo !== null) {
+            if (profile_photo !== null && profile_url !== "") {
               profile_url = ImgUrl + profile_photo;
             } else {
               profile_url = profile_photo;

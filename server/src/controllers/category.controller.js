@@ -13,7 +13,6 @@ const getCateNumber = async (req, res, next) => {
       selectCateNumber(result.id)
         .then(data => {
           if (data) {
-            console.log(data, "data");
             res
               .status(200)
               .json({ status: 200, message: "ok", data: [...data] });

@@ -39,16 +39,15 @@ AWS.config.loadFromPath(__dirname + "/../config/aws.json");
 export const storageS3 = multerS3({
   s3: s3,
   bucket: "myblogs3",
-  metadata: function(req, file, cb) {
-    cb(null, { fieldName: file.fieldname });
-  },
+  // metadata: function(req, file, cb) {
+  //   cb(null, { fieldName: file.fieldname });
+  // },
   key: function(req, file, cb) {
     cb(null, "images" + "/" + Date.now().toString() + file.originalname);
     //cb(null, Date.now().toString() );
   },
   acl: "public-read"
 });
-//
 
 const setBlog = async (req, res, next) => {
   try {
@@ -58,25 +57,19 @@ const setBlog = async (req, res, next) => {
       if (req) {
         const fileNameArr = [];
         const imgFile = req.files;
-
-        console.log(imgFile, "imgRile");
         if (imgFile && imgFile.length > 0) {
           imgFile.forEach(item => {
-            console.log(item, "item");
             fileNameArr.push(item.key);
           });
         }
         let { data } = req.body;
-        console.log(data, "data1");
         data = JSON.parse(data);
-        console.log(fileNameArr, "filenameArr");
         const transDate = moment(data.date).format("YYYY-MM-DD HH:mm");
         data.date = transDate;
         data.files = fileNameArr;
-        console.log(data, "data2");
         insertBlog(result.id, data)
           .then(data => {
-            console.log(data, "data");
+            console.log(data, "set blog data");
             res.status(200).json({ status: 200 });
           })
           .catch(err => console.log(err, "file upload err"));
@@ -98,13 +91,11 @@ const getBlog = async (req, res, next) => {
     selectBlog(result.id, id)
       .then(response => {
         const data = [...response];
-        console.log(data, "data");
         const newData = data.map(item => {
-          item.image_url = [
-            ImgUrl + item.first_image,
-            ImgUrl + item.second_image,
-            ImgUrl + item.third_image
-          ];
+          const arr = [item.first_image, item.second_image, item.third_image];
+          const notNullName = arr.filter(i => i !== null);
+          const newImgArr = notNullName.map(name => ImgUrl + name);
+          item.image_url = newImgArr;
           return item;
         });
         res.status(200).json({ data, ...newData });
@@ -122,18 +113,19 @@ const getSearchedBlog = async (req, res, next) => {
   if (result) {
     selectSearchedBlog(result.id, cateId, value)
       .then(response => {
-        console.log(response, "responese");
-        const data = [...response];
-        console.log(data, "data");
-        const newData = data.map(item => {
-          item.image_url = [
-            ImgUrl + item.first_image,
-            ImgUrl + item.second_image,
-            ImgUrl + item.third_image
-          ];
-          return item;
-        });
-        res.status(200).json({ data, ...newData });
+        if (!response) {
+          const data = [...response];
+          const newData = data.map(item => {
+            const arr = [item.first_image, item.second_image, item.third_image];
+            const notNullName = arr.filter(i => i !== null);
+            const newImgArr = notNullName.map(name => ImgUrl + name);
+            item.image_url = newImgArr;
+            return item;
+          });
+          res.status(200).json({ data, ...newData });
+        } else {
+          res.status(200).json({ response });
+        }
       })
       .catch(err => console.log(err, "get Blog err"));
   } else {
@@ -147,50 +139,50 @@ const removeBlog = async (req, res, next) => {
   const token = req.headers["access_token"];
   const result = await authCheck(token);
   const { id, image_url } = req.body;
+  const s3 = new AWS.S3();
+  AWS.config.loadFromPath(__dirname + "/../config/aws.json");
   if (result && result.id) {
-    const s3 = new AWS.S3();
-    AWS.config.loadFromPath(__dirname + "/../config/aws.json");
-    const deleteItems = [];
-    const { image_url } = req.body;
-    // const filteredUrl = image_url.filter(item => {
-    //   item.substring(item.length - 4) !== "null" &&
-    //     item.substring(item.length - 1) !== "0";
-    // });
+    console.log(image_url, "imageurl");
+    if (image_url.length > 0) {
+      //삭제할 이미지가 있을때
+      console.log(image_url, "image");
+      const deleteItems = [];
+      const notNullImgArr = image_url.filter(i => i !== null);
+      console.log(notNullImgArr, "notNullImgArr");
+      notNullImgArr.forEach(el => {
+        let split = el.split(".com/");
+        const newSplit = split[1];
+        deleteItems.push({ Key: newSplit });
+      });
 
-    image_url.forEach(el => {
-      let split = el.split(".com/");
-      const newSplit = split[1];
-      deleteItems.push(newSplit);
-    });
+      console.log(deleteItems, "deleteItems");
 
-    const params = {
-      Bucket: "myblogs3",
-      Delete: {
-        Objects: deleteItems,
-        Quiet: false
-      }
-    };
-
-    s3.deleteObjects(params, function(err, data) {
-      if (err) console.log(err);
-      else console.log("Success delete", data);
-    });
-    res.json({
-      message: "images deleted",
-      items: deleteItems
-    });
-
-    console.log(id, "data");
-
-    deleteBlog(result.id, req.body.id)
-      .then(result => {
-        console.log(result, "delete result");
-        res
-          .status(200)
-          .json({ message: "deleted" })
-          .end();
-      })
-      .catch(err => console.log(err, "del Blog err"));
+      const params = {
+        Bucket: "myblogs3",
+        Delete: {
+          Objects: deleteItems,
+          Quiet: false
+        }
+      };
+      s3.deleteObjects(params, function(err, data) {
+        if (err) console.log(err);
+        else {
+          deleteBlog(result.id, req.body.id)
+            .then(result => {
+              console.log(result, "delete result");
+              res.status(200).json({ status: 200, message: "deleted" });
+            })
+            .catch(err => console.log(err, "del Blog err"));
+        }
+      });
+    } else {
+      deleteBlog(result.id, req.body.id)
+        .then(result => {
+          console.log(result, "delete result");
+          res.status(200).json({ status: 200, message: "deleted" });
+        })
+        .catch(err => console.log(err, "del Blog err"));
+    }
   } else {
     res
       .status(400)
