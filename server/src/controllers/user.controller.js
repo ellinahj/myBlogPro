@@ -102,11 +102,11 @@ const updateInfo = async (req, res, next) => {
   AWS.config.loadFromPath(__dirname + "/../config/aws.json");
   const s3 = new AWS.S3();
   try {
-    const token = req.headers["     access_token"];
+    const token = req.headers["access_token"];
     const result = await authCheck(token);
     if (result) {
-      console.log(req.file, "req.file");
-      if (req.file.key) {
+      console.log(req, "req.file");
+      if (req.file) {
         //기존 프로필이미지가 있을경우
         console.log(req.file.key, "key======");
         selectProfilePhoto(result.userId).then(name => {
@@ -140,26 +140,36 @@ const updateInfo = async (req, res, next) => {
               }
             });
           } else {
-            //처음 가입자, 프로필 이미지 없을경우
+            //새가입자가 처음 프사 넣을경우, s3 삭제없이 바로 db에 넣는다
+
             let { data } = req.body;
             console.log(data, "가져온 텍스트들");
             data = JSON.parse(data);
-            console.log(req.file.key, "req.file.key");
             data["profile_photo"] = req.file.key;
             console.log(data, "최종 바꿀값data");
             updateUser(result.userId, data).then(data => {
               console.log(data, "바뀐값");
-              let profile_url;
+              let profile_url = null;
               if (data.profile_photo !== null) {
                 profile_url = ImgUrl + data.profile_photo;
               }
               delete data.profile_photo;
-              console.log(profile_url, "profile_url");
               data = { ...data, profile_url };
               console.log(data, "dataaaa");
               res.status(200).json({ ...data });
             });
           }
+        });
+      } else {
+        //처음 가입자, 프로필 이미지 없을 경우
+        let { data } = req.body;
+        data = JSON.parse(data);
+        data["profile_photo"] = null;
+        updateUser(result.userId, data).then(data => {
+          delete data.profile_photo;
+          const profile_url = null;
+          data = { ...data, profile_url };
+          res.status(200).json({ ...data });
         });
       }
     }

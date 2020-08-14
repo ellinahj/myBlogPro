@@ -13,14 +13,14 @@ export default function InfoContainer(props) {
   const { setShowEdit, showEdit, clickEdit } = props;
   const userInfo = useSelector(state => state.common.userInfo);
   const userColor = useSelector(state => state.common.userColor);
+  const selectFont = useSelector(state => state.common.selectFont);
   const [changeImgFile, setChangeImgFile] = useState([]);
   const [prevImg, setPrevImg] = useState('');
   const [checkTimeout, setCheckTimeout] = useState(0);
   const [nickname, setNickname] = useState(undefined);
   const [mainTitle, setMainTitle] = useState('');
   const [nicknameAvailable, setNicknameAvailable] = useState(null);
-  const [radioIndex, setRadioIndex] = useState(userInfo && userInfo.user_font === `'Gothic A1', sans-serif` ? 0 : 1);
-
+  const [radioIndex, setRadioIndex] = useState(selectFont && selectFont === `'Gothic A1', sans-serif` ? 0 : 1);
   const dispatch = useDispatch();
 
   const checked = index => {
@@ -34,6 +34,7 @@ export default function InfoContainer(props) {
   const handleTitleChange = value => {
     setMainTitle(value);
   };
+
   useEffect(() => {
     userInfo && setNickname(userInfo.nickname);
   }, [userInfo]);
@@ -43,18 +44,20 @@ export default function InfoContainer(props) {
   }, [userInfo]);
 
   const handleNicknameChange = value => {
-    // if (value.length > 0) {
-    console.log(value, 'value');
+    // const replace = value.replace(' ', '');
+    // if (replace.length === 0) {
+    //   return;
+    // }
     setNickname(value);
     setNicknameAvailable(null);
     checkTimeout && clearTimeout(checkTimeout);
     if (!!value) {
+      // console.log(userInfo.nickname, nickname, 'userInfo, nickname');
       const timer = setTimeout(() => {
         const getToken = localStorage.getItem('mydiary_token');
         if (getToken) {
           const data = { nickname: value };
           findNickname(data).then(res => {
-            console.log(res, 'resrer');
             if (res.status === 200) {
               if (res.data.message === 'available') {
                 setNicknameAvailable(true);
@@ -135,10 +138,8 @@ export default function InfoContainer(props) {
                     </CountRow>
                   )}
                 </InputRow>
-                {showEdit && !!userInfo.nickname && nicknameAvailable === true && <Match>사용가능</Match>}
-                {showEdit && userInfo.nickname !== nickname && nicknameAvailable === false && (
-                  <Mismatch>이미사용중입니다.</Mismatch>
-                )}
+                {showEdit && nicknameAvailable === true && <Match>사용가능</Match>}
+                {showEdit && nickname !== '' && nicknameAvailable === false && <Mismatch>이미사용중입니다.</Mismatch>}
               </InputCol>
             </MarginRow>
             <MarginRow>
@@ -185,8 +186,8 @@ export default function InfoContainer(props) {
             <Row>
               {showEdit && (
                 <SubmitBtn
-                  disabled={userInfo.nickname !== nickname && nicknameAvailable !== true}
-                  available={userInfo.nickname === nickname || nicknameAvailable === true}
+                  disabled={nickname === undefined && nicknameAvailable === false}
+                  // available={(nickname !== undefined && userInfo.nickname === nickname) || nicknameAvailable === true}
                   onClick={handleSubmit}
                   usercolor={userColor}
                 >

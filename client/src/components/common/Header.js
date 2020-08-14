@@ -105,12 +105,9 @@ const ProfileContainer = styled.div`
   margin-right: 20px;
   position: relative;
 `;
-const StyledLink = styled.a`
-  cursor: pointer;
-`;
 const StyledTitle = styled.span`
   color: #fff;
-  font-size: 17px;
+  font-size: 14px;
   :hover {
     color: ${props => props.hoverColor && '#f7f7f7'};
     cursor: ${props => (props.hoverColor ? 'pointer' : '')};
@@ -119,6 +116,8 @@ const StyledTitle = styled.span`
 
 const ToolTipWrap = styled.div`
   position: absolute;
+  height: 37px;
+  width: 118px;
   top: ${props => (props.profileUrl ? '45px' : '30px')};
   right: ${props => (props.profileUrl ? '12px' : '0px')};
   padding: 8px;
@@ -159,7 +158,7 @@ const ToolTip = styled.div`
   font-size: ${theme.ssFont};
   line-height: 18px;
   color: ${props => props.userColor};
-  margin-right: 13px;
+  /* margin-right: 13px; */
 `;
 const Img = styled.img`
   cursor: pointer;

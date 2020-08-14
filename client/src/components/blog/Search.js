@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
+import { theme } from '../../utils/theme';
 
 export default function SearchContainer(props) {
   const [searchValue, setSearchValue] = useState('');
@@ -8,10 +9,12 @@ export default function SearchContainer(props) {
   const [showHistory, setShowHistory] = useState(false);
   const inputArea = useRef(null);
   const bodyArea = useRef(null);
-  const { getSearch } = props;
-  const selectFont = useSelector(state => state.common.selectFont);
+  const { getSearch, blogData, handleMenuClick } = props;
+  const userColor = useSelector(state => state.common.userColor);
+  const clickMenu = useSelector(state => state.common.clickMenu);
+
   useEffect(() => {
-    const replace = searchValue.replace(/^ /gi, '');
+    const replace = searchValue.replace(' ', '');
     setSearchValue(replace);
   }, [searchValue]);
 
@@ -37,7 +40,6 @@ export default function SearchContainer(props) {
   };
 
   const removeHistory = index => {
-    console.log(index, 'inde');
     const arr = JSON.parse(localStorage.getItem('searchedHistory')) || [];
     arr.splice(index, 1);
     localStorage.setItem('searchedHistory', JSON.stringify(arr));
@@ -104,6 +106,15 @@ export default function SearchContainer(props) {
             </ul>
           </SearchHistoryCon>
         </Container>
+        {blogData && blogData.length > 0 && (
+          <Col>
+            <AllViewWrap>
+              <AllView onClick={() => handleMenuClick(clickMenu.cateId)} userColor={userColor}>
+                전체보기
+              </AllView>
+            </AllViewWrap>
+          </Col>
+        )}
       </Content>
     </ListArea>
   );
@@ -113,7 +124,7 @@ const ListArea = styled.div`
   height: 100%;
 `;
 const Content = styled.section`
-  padding: 40px;
+  padding: 40px 40px 20px;
   box-sizing: border-box;
   display: flex;
   flex-wrap: wrap;
@@ -127,7 +138,8 @@ const Container = styled.div`
 const SearchCon = styled.div`
   width: 100%;
   height: 45px;
-  border-radius: 5px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
   background-color: #f4f4f4;
   display: flex;
   align-items: center;
@@ -146,11 +158,15 @@ const Input = styled.input`
   border: none;
   outline: none;
   font-size: 18px;
-  font-family: ${props => props.selectFont};
 `;
 const SearchHistoryCon = styled.div`
   display: ${props => !props.showHistory && 'none'};
-  width: 100%;
+  width: 99.6%;
+  border-bottom: 1px solid #eee;
+  border-left: 1px solid #eee;
+  border-right: 1px solid #eee;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
   ul {
     padding: 0;
     width: 100%;
@@ -186,4 +202,18 @@ const IconCloseImg = styled.img`
   position: absolute;
   top: 2px;
   left: 2px;
+`;
+const Col = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+const AllViewWrap = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 40px;
+`;
+const AllView = styled.div`
+  color: ${props => props.userColor && props.userColor};
+  font-size: ${theme.mFont};
+  cursor: pointer;
 `;

@@ -19,7 +19,7 @@ export const initialState = {
   loading: false,
   showToolTip: true,
   clickMenu: { cateId: undefined },
-  selectFont: "'Noto Sans KR', sans-serifo"
+  selectFont: `'Gothic A1', sans-serif`
 };
 
 const commonReducer = (state = initialState, action) => {

@@ -110,7 +110,9 @@ export default function ListContainer() {
   return (
     <ListCon>
       <Menu handleMenuClick={handleMenuClick} luminantColor={luminantColor} isSticky={isSticky} userColor={userColor} />
-      {blogData && blogData.length !== 0 && <Search getSearch={getSearch} />}
+      {blogData && blogData.length !== 0 && (
+        <Search getSearch={getSearch} blogData={blogData} handleMenuClick={handleMenuClick} />
+      )}
       <MyList
         blogData={blogData}
         luminantColor={luminantColor}
@@ -118,7 +120,6 @@ export default function ListContainer() {
         userColor={userColor}
         sendToListValue={sendToListValue}
         deleteItem={deleteItem}
-        handleMenuClick={handleMenuClick}
       />
     </ListCon>
   );

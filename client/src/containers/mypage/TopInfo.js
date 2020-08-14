@@ -7,14 +7,13 @@ import { setLogin, setThemeColor, setUserInfo, setFont } from '../../actions/bas
 export default function TopInfo(props) {
   const dispatch = useDispatch();
   const userInfo = useSelector(state => state.common.userInfo);
-
   const logout = () => {
     Router.push('/login');
     dispatch(setLogin(false));
     localStorage.removeItem('mydiary_token');
     dispatch(setUserInfo(null));
     dispatch(setThemeColor('#7c7cec'));
-    dispatch(setFont("'Noto Sans KR', sans-serifo"));
+    dispatch(setFont(`'Gothic A1', sans-serif`));
     alert('로그아웃되었습니다.');
   };
   return (

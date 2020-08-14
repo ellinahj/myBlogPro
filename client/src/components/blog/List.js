@@ -6,7 +6,7 @@ import moment from 'moment';
 import Carousel from 'nuka-carousel';
 
 export default function List(props) {
-  const { luminantColor, blogData, deleteItem, handleMenuClick } = props;
+  const { luminantColor, blogData, deleteItem } = props;
   const userColor = useSelector(state => state.common.userColor);
   const clickMenu = useSelector(state => state.common.clickMenu);
 
@@ -16,11 +16,8 @@ export default function List(props) {
         {blogData &&
           blogData.length > 0 &&
           blogData.map((item, index) => {
-            // console.log(blogData, 'blog');
             const date = item.now_date ? item.now_date : '';
-            // console.log(date, 'date');
             var stillUtc = moment.utc(date).format();
-            // const stillUtc = momentz
             const convertedDate = moment(stillUtc).format('YYYY월 M월 D일');
             return (
               <CardContainer key={index} luminantColor={luminantColor} userColor={userColor}>
@@ -39,15 +36,14 @@ export default function List(props) {
                       }}
                       heightMode="current"
                     >
-                      {item.image_url.map(item => {
-                        return <Img src={item} />;
+                      {item.image_url.map((item, index) => {
+                        return <Img key={index} src={item} />;
                       })}
                     </Carousel>
                   </ImageArea>
                 ) : (
                   <></>
                 )}
-
                 <ContentArea>
                   <Date>{item.now_date ? `작성일 ${convertedDate}` : ''}</Date>
                   <Title>{item.title}</Title>
@@ -62,11 +58,6 @@ export default function List(props) {
           })}
         {blogData && blogData.length === 0 && (
           <Col>
-            <AllViewWrap>
-              <AllView onClick={() => handleMenuClick(clickMenu.cateId)} userColor={userColor}>
-                전체보기
-              </AllView>
-            </AllViewWrap>
             <WriteWrap>
               <Write>첫번째 글을 작성해보세요.</Write>
               <WriteImg src={'/images/keyboard.png'} />
@@ -179,14 +170,4 @@ const IconCloseImg = styled.img`
 const Col = styled.div`
   display: flex;
   flex-direction: column;
-`;
-const AllViewWrap = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 40px;
-`;
-const AllView = styled.div`
-  color: ${props => props.userColor && props.userColor};
-  font-size: ${theme.mFont};
-  cursor: pointer;
 `;

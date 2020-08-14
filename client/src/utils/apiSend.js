@@ -39,7 +39,7 @@ instance.interceptors.response.use(
         if (!(error.response.data.message === 'IdORPwd')) {
           alert('아이디나 비밀번호를 확인해주세요.');
         } else if (!(error.response.data.message === 'Mismatched pwd')) {
-          alert('비밀번호를 확인해주세요.');
+          alert('아이디나 비밀번호를 확인해주세요.');
         }
       } else if (error.response.status === 400) {
         Router.push('/login');

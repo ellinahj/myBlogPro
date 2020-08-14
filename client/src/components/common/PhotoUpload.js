@@ -95,7 +95,9 @@ export default function Upload(props) {
 
   return (
     <Row>
-      <TitleCenter onClick={e => clickEdit(e)}>프로필변경</TitleCenter>
+      <TitleCenter>
+        <span onClick={e => clickEdit(e)}>프로필변경</span>
+      </TitleCenter>
       <ProfileRow>
         <ProfileCenter>
           {showEdit && (
@@ -163,8 +165,11 @@ const TitleCenter = styled.div`
   justify-content: center;
   width: 100%;
   margin: 20px 0;
-  ${BlueEditBtn};
-  font-size: ${props => props.theme.mFont};
+
+  span {
+    ${BlueEditBtn};
+    font-size: ${props => props.theme.mFont};
+  }
 `;
 
 const ProfileCenter = styled.div`

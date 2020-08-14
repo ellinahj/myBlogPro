@@ -77,8 +77,7 @@ export default function MyApp({ Component, pageProps }) {
   useEffect(() => {
     function handleChange() {
       const newValue = store.getState().common.selectFont;
-
-      if (newValue !== currentValue) {
+      if (newValue && newValue !== currentValue) {
         setCurrentValue(newValue);
       }
     }
