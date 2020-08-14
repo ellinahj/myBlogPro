@@ -8,8 +8,6 @@ import bodyParser from "body-parser";
 import path from "path";
 import moment from "moment";
 import * as Sentry from "@sentry/node";
-import AWS from "aws-sdk";
-import multerS3 from "multer-s3";
 
 import authRoute from "./routes/auth";
 import userRoute from "./routes/user";
@@ -18,7 +16,7 @@ import blogRoute from "./routes/blog";
 
 const app = express();
 dotenv.config();
-app.use(morgan("combined")); //combined,dev
+app.use(morgan("dev")); //combined,dev
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -36,10 +34,9 @@ app.use("/api/auth", authRoute);
 app.use("/api/category", cateRoute);
 app.use("/api/blog", blogRoute);
 
-if (process.env.NODE_ENV === "pro") {
+if (process.env.NODE_ENV === "dev") {
   app.use((err, req, res, next) => {
     let apiError = err;
-
     if (!err.status) {
       apiError = createError(err);
     }

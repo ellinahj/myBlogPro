@@ -7,7 +7,6 @@ const authCheck = token => {
     return new Promise(function(resolve, reject) {
       jwt.verify(token, config.jwtSecretKey, function(err, decoded) {
         if (err) {
-          console.log(err, "jwt err");
           return reject(err);
         } else {
           return resolve(decoded);

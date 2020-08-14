@@ -15,6 +15,7 @@ export default function TopInfo(props) {
     dispatch(setUserInfo(null));
     dispatch(setThemeColor('#7c7cec'));
     dispatch(setFont("'Noto Sans KR', sans-serifo"));
+    alert('로그아웃되었습니다.');
   };
   return (
     <MyInfoWrap>

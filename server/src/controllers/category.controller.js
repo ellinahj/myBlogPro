@@ -8,10 +8,7 @@ import { authCheck } from "../public/function";
 const getCateNumber = async (req, res, next) => {
   try {
     const token = req.headers["access_token"];
-    console.log(token, "token");
-    console.log(req.headers, "header");
     const result = await authCheck(token);
-    console.log(result, "result");
     if (result && result.id) {
       selectCateNumber(result.id)
         .then(data => {
@@ -64,12 +61,11 @@ const delCategory = async (req, res, next) => {
     const token = req.headers["access_token"];
     const result = await authCheck(token);
     const { id } = req.body;
-    console.log(id, result, "id,result");
+
     if (result && result.id) {
-      console.log(result, "result");
       deleteCategory(result.id, id)
         .then(data => {
-          console.log(data, "delete cate res");
+          console.log(data, "delete cate 카테고리에 딸린 이미지도 삭제");
           if (data) {
             res
               .status(200)

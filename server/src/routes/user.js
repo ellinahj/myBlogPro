@@ -18,5 +18,4 @@ router
   .post(multer({ storage: storageS3 }).single("file"), updateInfo);
 router.route("/pwd").post(getPwd);
 router.route("/update/pwd").post(updatePwd);
-// router.post("/write", multer({ storage: storageS3 }).array("file", 3), setBlog);
 module.exports = router;

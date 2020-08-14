@@ -7,12 +7,19 @@ module.exports = {
     database: "mydiary"
   },
   dev: {
-    host: "localhost",
+    host: "mydiary.cbl9z0u2kths.us-east-1.rds.amazonaws.com",
     port: "3306",
-    user: "root",
-    password: "myadmin!?",
+    user: "admin",
+    password: "rdsdpfflsk1?",
     database: "mydiary"
   },
+  // dev: {
+  //   host: "localhost",
+  //   port: "3306",
+  //   user: "root",
+  //   password: "myadmin!?",
+  //   database: "mydiary"
+  // },
   test: {
     host: "localhost",
     port: "3306",

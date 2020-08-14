@@ -64,12 +64,13 @@ export default function Header() {
             </StyledTitle>
           ))}
         {!userInfo && <StyledTitle>나의 색깔에 맞는, 나의 로그.</StyledTitle>}
-        {isLoggedIn && tooltip && (
+        {userInfo && tooltip && (
           <ToolTipWrap profileUrl={userInfo && userInfo.profile_url}>
-            <span className="triangle test_1"></span>
-            <ToolTip>
-              나의 정보를 <br />
-              입력해보세요!
+            <span className="triangle border"></span>
+            <ToolTip userColor={userColor}>
+              나의 정보와 메뉴를
+              <br />
+              생성해보세요!
             </ToolTip>
             <CloseBtn src={'/images/minClose.svg'} width={12} height={12} onClick={handleToolTip} />
           </ToolTipWrap>
@@ -120,13 +121,14 @@ const ToolTipWrap = styled.div`
   position: absolute;
   top: ${props => (props.profileUrl ? '45px' : '30px')};
   right: ${props => (props.profileUrl ? '12px' : '0px')};
-  width: 95px;
-  height: 50px;
+  width: 112px;
+  height: 35px;
+  padding: 8px;
   background: #fefefe;
   z-index: 9;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   border-radius: 3px;
   border: 1px solid #eee;
   animation: motion 0.8s linear infinite alternate;
@@ -140,7 +142,6 @@ const ToolTipWrap = styled.div`
       margin-top: 7px;
     }
   }
-
   .triangle {
     top: -19px;
     right: 12px;
@@ -152,14 +153,14 @@ const ToolTipWrap = styled.div`
     border-width: 10px 5px;
     border-radius: 3px;
   }
-  .triangle.test_1 {
+  .triangle.border {
     border-color: transparent transparent #fefefe transparent;
   }
 `;
 const ToolTip = styled.div`
-  color: #000;
   font-size: ${theme.ssFont};
   line-height: 18px;
+  color: ${props => props.userColor};
 `;
 const Img = styled.img`
   cursor: pointer;

@@ -111,6 +111,7 @@ const LoginBtn = styled.button`
   margin-bottom: 20px;
   color: #fff;
   border: none;
+  border-radius: 3px;
 `;
 const Title = styled.div`
   text-align: center;
@@ -120,7 +121,7 @@ const Title = styled.div`
 `;
 const SubTitle = styled.div`
   font-size: ${theme.mFont};
-  margin-bottom: 10px;
+  margin: 10px 0 10px;
 `;
 const PwdCon = styled.div`
   margin-bottom: 15px;

@@ -9,7 +9,7 @@ const theme = {
   lFont: '20px',
   xlFont: '23px',
   greenFont: '#2fae00',
-  redFont: '#b30000'
+  redFont: '#ff5a5a'
 };
 const BasicButton = css`
   cursor: pointer;

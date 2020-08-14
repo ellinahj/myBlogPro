@@ -184,7 +184,7 @@ const removeBlog = async (req, res, next) => {
 
     deleteBlog(result.id, req.body.id)
       .then(result => {
-        console.log(result, "result");
+        console.log(result, "delete result");
         res
           .status(200)
           .json({ message: "deleted" })

@@ -21,7 +21,9 @@ const selectId = function(user_id) {
         }
       }
     );
-  }).catch(err, console.log("find id return err ")); //*에러처리 필요;
+  }).catch(err => {
+    throw new Error(err);
+  });
 };
 // const findDuplicatedUser = function(nickname) {
 //   return new Promise((resolve, reject) => {
@@ -41,7 +43,6 @@ const selectId = function(user_id) {
 const insertUser = (user_id, password) => {
   return new Promise((resolve, reject) => {
     bcrypt.hash(password, saltRounds, function(err, hashedPassword) {
-      console.log(user_id, hashedPassword, "has");
       connection.query(
         "INSERT INTO mydiary.users (user_id,password) VALUES (?,?) ",
         [user_id, hashedPassword],
@@ -49,7 +50,6 @@ const insertUser = (user_id, password) => {
           if (err) {
             reject(err);
           } else {
-            console.log(result, "result1");
             if (result.insertId) {
               const cateName = "기본1";
               connection.query(
@@ -59,7 +59,6 @@ const insertUser = (user_id, password) => {
                   if (err) {
                     reject(err);
                   } else {
-                    console.log(lastResult, "result2");
                     resolve(lastResult);
                   }
                 }
@@ -69,9 +68,12 @@ const insertUser = (user_id, password) => {
         }
       );
     });
+  }).catch(err => {
+    throw new Error(err);
   });
 };
 const login = (user_id, password) => {
+  console.log(user_id, password, "아이디 ㅣ뻔");
   return new Promise((resolve, reject) => {
     connection.query(
       "SELECT password FROM mydiary.users WHERE user_id = ?",
@@ -94,6 +96,7 @@ const login = (user_id, password) => {
                       if (err) {
                         reject(err);
                       } else if (result) {
+                        console.log(result, "result");
                         const {
                           id,
                           user_id,
@@ -109,6 +112,7 @@ const login = (user_id, password) => {
                             expiresIn: "60m"
                           }
                         );
+                        console.log(token, "newtoken");
                         const sendResult = {
                           token,
                           nickname,
@@ -139,6 +143,8 @@ const login = (user_id, password) => {
         }
       }
     );
+  }).catch(err => {
+    throw new Error(err);
   });
 };
 export { insertUser, selectId, login };

@@ -59,9 +59,13 @@ const getUserInfo = async (req, res, next) => {
       selectUser(result.userId)
         .then(data => {
           let profile_url = null;
-          // console.log(data, "data");
+          console.log(data, "data");
           if (data.profile_photo !== null) {
             profile_url = ImgUrl + data.profile_photo;
+            console.log(data.profile_photo, "notnull");
+          } else if (data.profile_photo === null) {
+            console.log(data.profile_photo, "null");
+            profile_url = data.profile_photo;
           }
           console.log(profile_url, "profile_url");
           delete data.profile_photo;
@@ -103,10 +107,11 @@ const updateInfo = async (req, res, next) => {
   AWS.config.loadFromPath(__dirname + "/../config/aws.json");
   const s3 = new AWS.S3();
   try {
-    const token = req.headers["access_token"];
+    const token = req.headers["     access_token"];
     const result = await authCheck(token);
     if (result) {
       if (req.file.key) {
+        //기존 프로필이미지가 있을경우
         console.log(req.file.key, "key======");
         selectProfilePhoto(result.userId).then(name => {
           console.log(name.profile_photo, "name==========");
@@ -137,49 +142,9 @@ const updateInfo = async (req, res, next) => {
                   res.status(200).json({ ...data });
                 });
               }
-            }); //
-            // let { data } = fileRes.body;
-            // data = JSON.parse(data);
-            // const { profile_photo } = name;
-            // data["profile_photo"] = profile_photo;
-            // console.log(data, "data");
-            // updateUser(result.userId, data).then(data => {
-            //   let profile_url = null;
-            //   if (data.profile_photo !== null) {
-            //     profile_url =
-            //       ImgUrl + data.profile_photo;
-            //   }
-            //   delete data.profile_photo;
-            //   delete data.id;
-            //   delete data.access_token;
-            //   data = { ...data, profile_url };
-            //   res.status(200).json({ ...data });
-            // });
-            // })
-            // .catch(e => console.log(e, "select e"));
-            // } else {
-            //   let { data } = fileRes.body;
-            //   data = JSON.parse(data);
-            //   data["profile_photo"] = fileRes.files[0].filename;
-            //   updateUser(result.userId, data)
-            //     .then(data => {
-            //       let profile_url = null;
-            //       if (data.profile_photo !== null) {
-            //         profile_url =
-            //           "http://127.0.0.1:3000/images/" + data.profile_photo;
-            //       }
-            //       delete data.profile_photo;
-            //       delete data.id;
-            //       delete data.access_token;
-            //       data = { ...data, profile_url };
-            //       console.log(data, "dataaaa");
-            //       res.status(200).json({ ...data });
-            //     })
-            //     .catch(e => console.log(e, "updateUser e"));
-            // }
-            // })
-            // .catch(e => next(e));
+            });
           } else {
+            //처음 가입자, 프로필 이미지 없을경우
             let { data } = req.body;
             console.log(data, "가져온 텍스트들");
             data = JSON.parse(data);

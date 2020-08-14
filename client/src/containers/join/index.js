@@ -81,7 +81,7 @@ export default function JoinContainer() {
         <input name="id" value={id} onChange={e => idConfirm(e.target.value)} autoComplete="off" />
         {id.length > 0 && !idRegCheck(id) && (
           <WarningWrap>
-            <Warning>영문,숫자조합 6~13자리로 입력해주세요.</Warning>
+            <Warning>영문, 영문+숫자조합 6~15자리로 입력해주세요.</Warning>
           </WarningWrap>
         )}
 
@@ -89,7 +89,7 @@ export default function JoinContainer() {
         <input type="password" name="pwd" value={pwd} onChange={e => pwdConfirm(e.target.value)} autoComplete="off" />
         {pwd.length > 0 && !pwRegCheck(pwd) && (
           <WarningWrap>
-            <Warning>영문,숫자,특수문자 조합 6~13자리로 입력해주세요.</Warning>
+            <Warning>영문,숫자,특수문자(!@#$%^&+=) 조합 6~13자리로 입력해주세요.</Warning>
           </WarningWrap>
         )}
 
@@ -139,7 +139,7 @@ const InputWrap = styled.div`
     width: 100%;
     height: 40px;
     box-sizing: border-box;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
     padding-left: 10px;
     font-size: 17px;
   }
@@ -157,7 +157,7 @@ const JoinBtn = styled.button`
   margin-bottom: 20px;
   color: #fff;
   border: none;
-  font-family: 'Nanum Myeongjo', serif;
+  border-radius: 2px;
 `;
 
 const Title = styled.div`
@@ -173,28 +173,13 @@ const WarningWrap = styled.div`
 `;
 const SubTitle = styled.div`
   font-size: ${theme.mFont};
-  margin-bottom: 10px;
+  margin: 10px 0 10px;
 `;
 const Warning = styled.div`
   color: ${theme.redFont};
-  font-size: ${theme.sFont};
+  font-size: ${theme.ssFont};
 `;
-const PwdCon = styled.div`
-  margin-bottom: 15px;
-  font-size: 13px;
-  cursor: pointer;
-`;
-const JoinCon = styled.div`
-  margin-bottom: 15px;
-  font-size: 13px;
-  cursor: pointer;
-`;
-const BottomWrap = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const idRegex = /^[A-Za-z0-9+]{6,13}$/;
+const idRegex = /^[A-Za-z0-9+]{6,15}$/;
 
 function idRegCheck(value) {
   return idRegex.test(value);

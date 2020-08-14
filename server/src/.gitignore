@@ -110,15 +110,9 @@ dist
 .yarn/build-state.yml
 .pnp.*
 
-#dev
-#config/
-#uploads/images
-
-#pro
-uploads/*
-
 node_modules
 
 # dotenv environment variables file
-#.env
+config/
+.env
 .env.test

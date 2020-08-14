@@ -2,10 +2,10 @@ import axios from 'axios';
 import Router from 'next/router';
 import store from '../store';
 import { setUserInfo, setLogin, setThemeColor, setLoading } from '../actions/base';
-const localURL = 'http://127.0.0.1:3000';
+const localURL = 'http://127.0.0.1:3005';
 const proURL = 'http://api.hyunjung.site';
 const instance = axios.create({
-  baseURL: `${proURL}/api`,
+  baseURL: `${localURL}/api`,
   timeout: 5000
 });
 
@@ -35,8 +35,11 @@ instance.interceptors.response.use(
     */
     if (error.response) {
       if (error.response.status === 401) {
-        if (!(error.response.data.message === 'Mismatched pwd')) {
+        //IdORPwd
+        if (!(error.response.data.message === 'IdORPwd')) {
           alert('아이디나 비밀번호를 확인해주세요.');
+        } else if (!(error.response.data.message === 'Mismatched pwd')) {
+          alert('비밀번호를 확인해주세요.');
         }
       } else if (error.response.status === 400) {
         Router.push('/login');

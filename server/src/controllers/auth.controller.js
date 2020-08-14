@@ -56,19 +56,17 @@ const createUser = async (req, res, next) => {
   }
 };
 const loginController = (req, res, next) => {
-  console.log(req, "req");
   try {
     const { user_id, password } = req.body;
-    console.log(req.body, "req.body");
     if (user_id && password) {
       login(user_id, password)
         .then(result => {
           if (result.loginState === "idError") {
             //아이디 틀린경우
-            res.status(401).json({ message: "non-existent ID" });
+            res.status(401).json({ message: "IdORPwd" });
           } else if (result.loginState === "pwError") {
             //비번이 틀린경우
-            res.status(401).json({ message: "incorrect password" });
+            res.status(401).json({ message: "IdORPwd" });
           } else if (result.loginState === "success") {
             //로그인 성공
             const {
@@ -78,7 +76,13 @@ const loginController = (req, res, next) => {
               user_color,
               main_title
             } = result;
-            const profile_url = ImgUrl + profile_photo;
+
+            let profile_url;
+            if (profile_photo !== null) {
+              profile_url = ImgUrl + profile_photo;
+            } else {
+              profile_url = profile_photo;
+            }
             res.status(200).json({
               message: "ok",
               access_token: token,
