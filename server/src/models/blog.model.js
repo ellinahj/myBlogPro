@@ -46,10 +46,8 @@ const insertBlog = (user_id, data) => {
   });
 };
 const selectSearchedBlog = (user_id, cate_id, value) => {
-  console.log(cate_id, value, "value");
   const markedValue = "%" + value + "%";
   return new Promise((resolve, reject) => {
-    console.log(markedValue, "marked");
     connection.query(
       "select * from mydiary.blog where user_id=? and cate_id=? and concat(title,location_name,comment) like ?",
       [user_id, cate_id, markedValue],

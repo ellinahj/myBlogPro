@@ -110,10 +110,12 @@ const getSearchedBlog = async (req, res, next) => {
   const token = req.headers["access_token"];
   const result = await authCheck(token);
   const { cateId, value } = req.params;
+  console.log(cateId, value, "caetId,value");
   if (result) {
     selectSearchedBlog(result.id, cateId, value)
       .then(response => {
-        if (!response) {
+        console.log(response, "response");
+        if (response) {
           const data = [...response];
           const newData = data.map(item => {
             const arr = [item.first_image, item.second_image, item.third_image];
@@ -121,9 +123,11 @@ const getSearchedBlog = async (req, res, next) => {
             const newImgArr = notNullName.map(name => ImgUrl + name);
             item.image_url = newImgArr;
             return item;
+            console.log(newData, "new");
           });
           res.status(200).json({ data, ...newData });
         } else {
+          console.log(response, "resres");
           res.status(200).json({ response });
         }
       })

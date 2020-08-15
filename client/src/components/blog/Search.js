@@ -9,14 +9,17 @@ export default function SearchContainer(props) {
   const [showHistory, setShowHistory] = useState(false);
   const inputArea = useRef(null);
   const bodyArea = useRef(null);
-  const { getSearch, blogData, handleMenuClick } = props;
-  const userColor = useSelector(state => state.common.userColor);
-  const clickMenu = useSelector(state => state.common.clickMenu);
+  const { getSearch, searched } = props;
 
   useEffect(() => {
     const replace = searchValue.replace(' ', '');
     setSearchValue(replace);
   }, [searchValue]);
+  useEffect(() => {
+    if (!searched) {
+      setSearchValue('');
+    }
+  }, [searched]);
 
   const search = () => {
     if (searchValue === '') return;
@@ -59,6 +62,7 @@ export default function SearchContainer(props) {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [inputArea]);
+
   const handleChange = e => {
     setSearchValue(e.target.value);
   };
@@ -106,15 +110,6 @@ export default function SearchContainer(props) {
             </ul>
           </SearchHistoryCon>
         </Container>
-        {blogData && blogData.length > 0 && (
-          <Col>
-            <AllViewWrap>
-              <AllView onClick={() => handleMenuClick(clickMenu.cateId)} userColor={userColor}>
-                전체보기
-              </AllView>
-            </AllViewWrap>
-          </Col>
-        )}
       </Content>
     </ListArea>
   );
@@ -124,7 +119,7 @@ const ListArea = styled.div`
   height: 100%;
 `;
 const Content = styled.section`
-  padding: 40px 40px 20px;
+  padding: 40px 40px 0;
   box-sizing: border-box;
   display: flex;
   flex-wrap: wrap;
@@ -158,6 +153,11 @@ const Input = styled.input`
   border: none;
   outline: none;
   font-size: 18px;
+  @media (max-width: 480px) {
+    ::-webkit-input-placeholder {
+      font-size: ${theme.sFont};
+    }
+  }
 `;
 const SearchHistoryCon = styled.div`
   display: ${props => !props.showHistory && 'none'};
@@ -202,18 +202,4 @@ const IconCloseImg = styled.img`
   position: absolute;
   top: 2px;
   left: 2px;
-`;
-const Col = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-const AllViewWrap = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 40px;
-`;
-const AllView = styled.div`
-  color: ${props => props.userColor && props.userColor};
-  font-size: ${theme.mFont};
-  cursor: pointer;
 `;

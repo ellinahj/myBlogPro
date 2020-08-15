@@ -83,7 +83,7 @@ const Content = styled.section`
 const CardContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 0 0 30px;
+  margin: 30px 0 0;
   width: 100%;
   padding: 30px;
   box-sizing: border-box;

@@ -7,6 +7,7 @@ import { colorLuminance } from '../../utils/common';
 import { setCategory, setClickMenu } from '../../actions/base';
 import { getCate, getBlog, getSearchedBlog, deleteBlog } from '../../api/blog';
 import Search from '../../components/blog/Search';
+import { theme } from '../../utils/theme';
 
 export default function ListContainer() {
   const dispatch = useDispatch();
@@ -18,7 +19,8 @@ export default function ListContainer() {
 
   const [isSticky, setSticky] = useState(false);
   const [blogData, setBlogData] = useState(undefined);
-  const [sendToListValue, setSendToListValue] = useState('');
+  const [searchValue, setSearchValue] = useState('');
+  const [searched, setSearched] = useState(false);
 
   const handleScroll = () => {
     if (window.pageYOffset >= 150) {
@@ -64,12 +66,14 @@ export default function ListContainer() {
       if (res.status === 200) {
         setBlogData(res.data.data);
         dispatch(setClickMenu({ cateId }));
+        setSearched(true);
       }
     });
   };
 
   const handleMenuClick = cateId => {
     fetchBlogData(cateId);
+    setSearched(false);
   };
 
   useEffect(() => {
@@ -79,6 +83,7 @@ export default function ListContainer() {
   }, [blogData, clickMenu]);
 
   const getSearch = value => {
+    setSearchValue(value);
     if (blogData && blogData.length !== 0 && value !== '') {
       const storedToken = localStorage.getItem('mydiary_token') && localStorage.getItem('mydiary_token');
       const config = {
@@ -87,7 +92,6 @@ export default function ListContainer() {
       getSearchedBlog(config, clickMenu && clickMenu.cateId, value).then(res => {
         if (res.status === 200) {
           setBlogData(res.data.data);
-          setSendToListValue(value);
         }
       });
     }
@@ -107,18 +111,26 @@ export default function ListContainer() {
       });
     }
   };
+
   return (
     <ListCon>
       <Menu handleMenuClick={handleMenuClick} luminantColor={luminantColor} isSticky={isSticky} userColor={userColor} />
-      {blogData && blogData.length !== 0 && (
-        <Search getSearch={getSearch} blogData={blogData} handleMenuClick={handleMenuClick} />
+
+      {blogData && blogData.length !== 0 && <Search getSearch={getSearch} blogData={blogData} searched={searched} />}
+      {searchValue !== '' && searched && (
+        <Col>
+          <AllViewWrap>
+            <AllView onClick={() => handleMenuClick(clickMenu.cateId)} userColor={userColor}>
+              전체보기
+            </AllView>
+          </AllViewWrap>
+        </Col>
       )}
       <MyList
         blogData={blogData}
         luminantColor={luminantColor}
         userInfo={userInfo}
         userColor={userColor}
-        sendToListValue={sendToListValue}
         deleteItem={deleteItem}
       />
     </ListCon>
@@ -128,4 +140,20 @@ const ListCon = styled.div`
   width: 100%;
   height: 100%;
   position: relative;
+`;
+const Col = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+const AllViewWrap = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin: 30px 0 0;
+  padding-right: 40px;
+  box-sizing: border-box;
+`;
+const AllView = styled.div`
+  color: ${props => props.userColor && props.userColor};
+  font-size: ${theme.mFont};
+  cursor: pointer;
 `;
