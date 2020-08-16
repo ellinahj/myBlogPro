@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config();
 const mysql = require("mysql2");
-const config = require("./db_info")[process.env.NODE_ENV];
+const config = require("../config/db_info")[process.env.NODE_ENV];
 const express = require("express");
 const app = express();
 
