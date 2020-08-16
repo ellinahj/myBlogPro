@@ -1,4 +1,4 @@
-const mysql_dbc = require("../config/db_con")();
+const mysql_dbc = require("../db/db_con")();
 const connection = mysql_dbc.init();
 const bcrypt = require("bcrypt");
 const saltRounds = 10;

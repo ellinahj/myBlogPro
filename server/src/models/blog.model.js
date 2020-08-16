@@ -1,4 +1,4 @@
-var mysql_dbc = require("../config/db_con")();
+var mysql_dbc = require("../db/db_con")();
 var connection = mysql_dbc.init();
 mysql_dbc.db_open(connection);
 import moment from "moment";
