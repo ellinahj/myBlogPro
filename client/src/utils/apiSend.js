@@ -1,11 +1,11 @@
 import axios from 'axios';
 import Router from 'next/router';
 import store from '../store';
-import { setUserInfo, setLogin, setThemeColor, setLoading } from '../actions/base';
+import { setUserInfo, setLogin, setThemeColor } from '../actions/base';
 const localURL = 'http://127.0.0.1:3005';
 const proURL = 'http://api.hyunjung.site';
 const instance = axios.create({
-  baseURL: `${localURL}/api`,
+  baseURL: `${proURL}/api`,
   timeout: 5000
 });
 

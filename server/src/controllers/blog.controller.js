@@ -5,8 +5,6 @@ import {
   selectSearchedBlog,
   deleteBlog
 } from "../models/blog.model";
-import fs from "fs";
-import multer from "multer";
 import multerS3 from "multer-s3";
 import AWS from "aws-sdk";
 import dotenv from "dotenv";
@@ -14,23 +12,6 @@ import moment from "moment";
 
 dotenv.config();
 const ImgUrl = process.env.ImgUrl;
-
-//파일 업로드 관련
-// fs.readdir("uploads/images", error => {
-//   if (error) {
-//     fs.mkdirSync("uploads/images");
-//   }
-// });
-
-// const upload = multer({ storage: storage }).any();
-// const storage = multer.diskStorage({
-//   destination: function(req, file, cb) {
-//     cb(null, "./uploads/images");
-//   },
-//   filename: function(req, file, cb) {
-//     cb(null, Date.now() + "_" + file.originalname);
-//   }
-// });
 
 //s3
 const s3 = new AWS.S3();
@@ -44,7 +25,6 @@ export const storageS3 = multerS3({
   // },
   key: function(req, file, cb) {
     cb(null, "images" + "/" + Date.now().toString() + file.originalname);
-    //cb(null, Date.now().toString() );
   },
   acl: "public-read"
 });
@@ -110,11 +90,9 @@ const getSearchedBlog = async (req, res, next) => {
   const token = req.headers["access_token"];
   const result = await authCheck(token);
   const { cateId, value } = req.params;
-  console.log(cateId, value, "caetId,value");
   if (result) {
     selectSearchedBlog(result.id, cateId, value)
       .then(response => {
-        console.log(response, "response");
         if (response) {
           const data = [...response];
           const newData = data.map(item => {
@@ -123,20 +101,18 @@ const getSearchedBlog = async (req, res, next) => {
             const newImgArr = notNullName.map(name => ImgUrl + name);
             item.image_url = newImgArr;
             return item;
-            console.log(newData, "new");
           });
           res.status(200).json({ data, ...newData });
         } else {
-          console.log(response, "resres");
           res.status(200).json({ response });
         }
       })
-      .catch(err => console.log(err, "get Blog err"));
+      .catch(err => {
+        console.log(err, "get Blog err");
+        next(err);
+      });
   } else {
-    res
-      .status(400)
-      .json({ status: 400 })
-      .end();
+    res.status(400).json({ status: 400 });
   }
 };
 const removeBlog = async (req, res, next) => {
@@ -158,9 +134,6 @@ const removeBlog = async (req, res, next) => {
         const newSplit = split[1];
         deleteItems.push({ Key: newSplit });
       });
-
-      console.log(deleteItems, "deleteItems");
-
       const params = {
         Bucket: "myblogs3",
         Delete: {
@@ -176,7 +149,10 @@ const removeBlog = async (req, res, next) => {
               console.log(result, "delete result");
               res.status(200).json({ status: 200, message: "deleted" });
             })
-            .catch(err => console.log(err, "del Blog err"));
+            .catch(err => {
+              console.log(err, "del Blog err");
+              next(e);
+            });
         }
       });
     } else {
@@ -185,13 +161,13 @@ const removeBlog = async (req, res, next) => {
           console.log(result, "delete result");
           res.status(200).json({ status: 200, message: "deleted" });
         })
-        .catch(err => console.log(err, "del Blog err"));
+        .catch(err => {
+          console.log(err, "del Blog err");
+          next(e);
+        });
     }
   } else {
-    res
-      .status(400)
-      .json({ status: 400 })
-      .end();
+    res.status(400).json({ status: 400 });
   }
 };
 export { getBlog, setBlog, getSearchedBlog, removeBlog };

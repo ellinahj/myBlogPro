@@ -16,7 +16,7 @@ import blogRoute from "./routes/blog";
 
 const app = express();
 dotenv.config();
-app.use(morgan("dev")); //combined,dev
+app.use(morgan("pro")); //combined,dev
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -34,16 +34,16 @@ app.use("/api/auth", authRoute);
 app.use("/api/category", cateRoute);
 app.use("/api/blog", blogRoute);
 
-if (process.env.NODE_ENV === "dev") {
+if (process.env.NODE_ENV === "pro") {
+  //Sentry 캡쳐
+  Sentry.init({ dsn: process.env.SENTRY_DSN });
+  app.use(Sentry.Handlers.errorHandler());
   app.use((err, req, res, next) => {
     let apiError = err;
     if (!err.status) {
       apiError = createError(err);
     }
-    //Sentry 캡쳐
-    const Sentry = require("@sentry/node");
-    Sentry.init({ dsn: process.env.SENTRY_DSN });
-    app.use(Sentry.Handlers.errorHandler());
+    //slack
     const { IncomingWebhook } = require("@slack/client");
     const webhook = new IncomingWebhook(process.env.SLACK_WEBHOOK);
     webhook.send(

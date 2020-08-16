@@ -24,21 +24,7 @@ const selectId = function(user_id) {
     throw new Error(err);
   });
 };
-// const findDuplicatedUser = function(nickname) {
-//   return new Promise((resolve, reject) => {
-//     connection.query(
-//       "SELECT count(*) as count FROM mydiary.users WHERE nickname=?",
-//       [nickname],
-//       function(err, rows) {
-//         if (err) {
-//           reject(err);
-//         } else {
-//           resolve(rows[0].count);
-//         }
-//       }
-//     );
-//   });
-// };
+
 const insertUser = (user_id, password) => {
   return new Promise((resolve, reject) => {
     bcrypt.hash(password, saltRounds, function(err, hashedPassword) {
@@ -72,7 +58,6 @@ const insertUser = (user_id, password) => {
   });
 };
 const login = (user_id, password) => {
-  console.log(user_id, password, "아이디 ㅣ뻔");
   return new Promise((resolve, reject) => {
     connection.query(
       "SELECT password FROM mydiary.users WHERE user_id = ?",

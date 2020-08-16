@@ -113,6 +113,6 @@ dist
 node_modules
 
 # dotenv environment variables file
-config/
-.env
-.env.test
+#config/
+#.env
+#.env.test

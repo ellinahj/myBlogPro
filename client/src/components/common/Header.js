@@ -107,7 +107,10 @@ const ProfileContainer = styled.div`
 `;
 const StyledTitle = styled.span`
   color: #fff;
-  font-size: 14px;
+  font-size: ${theme.sFont};
+  @media (max-width: 320px) {
+    font-size: ${theme.ssFont};
+  }
   :hover {
     color: ${props => props.hoverColor && '#f7f7f7'};
     cursor: ${props => (props.hoverColor ? 'pointer' : '')};

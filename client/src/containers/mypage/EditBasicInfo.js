@@ -44,19 +44,18 @@ export default function InfoContainer(props) {
   }, [userInfo]);
 
   const handleNicknameChange = value => {
-    // const replace = value.replace(' ', '');
-    // if (replace.length === 0) {
-    //   return;
-    // }
-    setNickname(value);
+    const replaceValue = value.replace(/\s/g, '');
+    setNickname(replaceValue);
     setNicknameAvailable(null);
     checkTimeout && clearTimeout(checkTimeout);
-    if (!!value) {
-      // console.log(userInfo.nickname, nickname, 'userInfo, nickname');
+    if (replaceValue.length === 0) {
+      return;
+    }
+    if (!!replaceValue) {
       const timer = setTimeout(() => {
         const getToken = localStorage.getItem('mydiary_token');
         if (getToken) {
-          const data = { nickname: value };
+          const data = { nickname: replaceValue };
           findNickname(data).then(res => {
             if (res.status === 200) {
               if (res.data.message === 'available') {
@@ -103,6 +102,9 @@ export default function InfoContainer(props) {
     });
   };
 
+  const isSameNickname = !!userInfo && userInfo.nickname === nickname;
+  const isDisabledBtn = (!nicknameAvailable && !isSameNickname) || !nickname;
+
   return (
     <Con>
       <Column>
@@ -138,8 +140,11 @@ export default function InfoContainer(props) {
                     </CountRow>
                   )}
                 </InputRow>
-                {showEdit && nicknameAvailable === true && <Match>사용가능</Match>}
-                {showEdit && nickname !== '' && nicknameAvailable === false && <Mismatch>이미사용중입니다.</Mismatch>}
+
+                {showEdit && nicknameAvailable === true && !isSameNickname && <Match>사용가능</Match>}
+                {!isSameNickname && showEdit && nickname !== '' && nicknameAvailable === false && (
+                  <Mismatch>이미사용중입니다.</Mismatch>
+                )}
               </InputCol>
             </MarginRow>
             <MarginRow>
@@ -186,7 +191,8 @@ export default function InfoContainer(props) {
             <Row>
               {showEdit && (
                 <SubmitBtn
-                  disabled={nickname === undefined && nicknameAvailable === false}
+                  disabled={isDisabledBtn}
+                  available={!isDisabledBtn}
                   // available={(nickname !== undefined && userInfo.nickname === nickname) || nicknameAvailable === true}
                   onClick={handleSubmit}
                   usercolor={userColor}
