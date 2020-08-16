@@ -8,6 +8,7 @@ import bodyParser from "body-parser";
 import path from "path";
 import moment from "moment";
 import * as Sentry from "@sentry/node";
+import { IncomingWebhook } from "@slack/client";
 
 import authRoute from "./routes/auth";
 import userRoute from "./routes/user";
@@ -20,7 +21,7 @@ app.use(morgan("pro")); //combined,dev
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(cors());
+app.use(cors({ origin: "http://hyunjung.site" }));
 app.use(express.static(path.join(__dirname, "./uploads")));
 var options = {
   inflate: true,
@@ -37,6 +38,8 @@ app.use("/api/blog", blogRoute);
 if (process.env.NODE_ENV === "pro") {
   //Sentry 캡쳐
   Sentry.init({ dsn: process.env.SENTRY_DSN });
+  const webhook = new IncomingWebhook(process.env.SLACK_WEBHOOK);
+
   app.use(Sentry.Handlers.errorHandler());
   app.use((err, req, res, next) => {
     let apiError = err;
@@ -44,8 +47,6 @@ if (process.env.NODE_ENV === "pro") {
       apiError = createError(err);
     }
     //slack
-    const { IncomingWebhook } = require("@slack/client");
-    const webhook = new IncomingWebhook(process.env.SLACK_WEBHOOK);
     webhook.send(
       {
         attachments: [
