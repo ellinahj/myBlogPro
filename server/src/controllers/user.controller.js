@@ -81,23 +81,6 @@ const getUserInfo = async (req, res, next) => {
   }
 };
 
-//파일 업로드 관련
-// fs.readdir("uploads/images", error => {
-//   if (error) {
-//     fs.mkdirSync("uploads/images");
-//   }
-// });
-// const storage = multer.diskStorage({
-//   destination: function(req, file, cb) {
-//     cb(null, "./uploads/images");
-//   },
-//   filename: function(req, file, cb) {
-//     cb(null, Date.now() + "_" + file.originalname);
-//   }
-// });
-// const upload = multer({ storage: storage }).any();
-// const dirPath = path.join(__dirname, "../uploads");
-
 const updateInfo = async (req, res, next) => {
   AWS.config.loadFromPath(__dirname + "/../config/aws.json");
   const s3 = new AWS.S3();
@@ -105,73 +88,46 @@ const updateInfo = async (req, res, next) => {
     const token = req.headers["access_token"];
     const result = await authCheck(token);
     if (result) {
-      console.log(req, "req.file");
-      if (req.file) {
+      selectProfilePhoto(result.userId).then(async name => {
         //기존 프로필이미지가 있을경우
-        console.log(req.file.key, "key======");
-        selectProfilePhoto(result.userId).then(name => {
-          console.log(name.profile_photo, "name==========");
-          if (name && name.profile_photo) {
+        if (name && name.profile_photo) {
+          if (req.file) {
             const params = {
               Bucket: "myblogs3",
               Key: name.profile_photo
             };
-            s3.deleteObject(params, function(err, awsData) {
-              if (err) {
-                console.log(err);
-              } else {
-                console.log(awsData, "삭제성공");
-                let { data } = req.body;
-                console.log(data, "가져온 텍스트들");
-                data = JSON.parse(data);
-                data["profile_photo"] = req.file.key;
-                console.log(data, "최종 바꿀값data");
-                updateUser(result.userId, data).then(data => {
-                  console.log(data, "바뀐값");
-                  let profile_url = null;
-                  if (data.profile_photo !== null) {
-                    profile_url = ImgUrl + data.profile_photo;
-                  }
-                  delete data.profile_photo;
-                  data = { ...data, profile_url };
-                  console.log(data, "dataaaa");
-                  res.status(200).json({ ...data });
-                });
-              }
-            });
-          } else {
-            //새가입자가 처음 프사 넣을경우, s3 삭제없이 바로 db에 넣는다
-
-            let { data } = req.body;
-            console.log(data, "가져온 텍스트들");
-            data = JSON.parse(data);
-            data["profile_photo"] = req.file.key;
-            console.log(data, "최종 바꿀값data");
-            updateUser(result.userId, data).then(data => {
-              console.log(data, "바뀐값");
-              let profile_url = null;
-              if (data.profile_photo !== null) {
-                profile_url = ImgUrl + data.profile_photo;
-              }
-              delete data.profile_photo;
-              data = { ...data, profile_url };
-              console.log(data, "dataaaa");
-              res.status(200).json({ ...data });
-            });
+            try {
+              await s3.deleteObject(params).promise();
+            } catch (e) {
+              next(e);
+            }
           }
-        });
-      } else {
-        //처음 가입자, 프로필 이미지 없을 경우
-        let { data } = req.body;
-        data = JSON.parse(data);
-        data["profile_photo"] = null;
-        updateUser(result.userId, data).then(data => {
-          delete data.profile_photo;
-          const profile_url = null;
-          data = { ...data, profile_url };
-          res.status(200).json({ ...data });
-        });
-      }
+          let { data } = req.body;
+          data = JSON.parse(data);
+          data["profile_photo"] = req.file ? req.file.key : name.profile_photo;
+          updateUser(result.userId, data).then(dbData => {
+            let profile_url = null;
+            if (dbData.profile_photo !== null) {
+              profile_url = ImgUrl + dbData.profile_photo;
+            }
+            delete dbData.profile_photo;
+            res.status(200).json({ ...dbData, profile_url });
+          });
+        } else {
+          //새가입자가 처음 프사 넣을경우, s3 삭제없이 바로 db에 넣는다
+          let { data } = req.body;
+          data = JSON.parse(data);
+          data["profile_photo"] = req.file.key;
+          updateUser(result.userId, data).then(data => {
+            let profile_url = null;
+            if (data.profile_photo !== null) {
+              profile_url = ImgUrl + data.profile_photo;
+            }
+            delete data.profile_photo;
+            res.status(200).json({ ...data, profile_url });
+          });
+        }
+      });
     }
   } catch (e) {
     next(e);

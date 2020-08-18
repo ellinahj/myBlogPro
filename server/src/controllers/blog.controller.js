@@ -90,6 +90,7 @@ const getSearchedBlog = async (req, res, next) => {
   const token = req.headers["access_token"];
   const result = await authCheck(token);
   const { cateId, value } = req.params;
+  console.log(cateId, value, "cate valeu");
   if (result) {
     selectSearchedBlog(result.id, cateId, value)
       .then(response => {

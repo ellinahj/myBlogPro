@@ -66,7 +66,7 @@ export default function Header() {
         {!userInfo && <StyledTitle>나의 색깔에 맞는, 나의 로그.</StyledTitle>}
         {userInfo && tooltip && (
           <ToolTipWrap profileUrl={userInfo && userInfo.profile_url}>
-            <span className="triangle border"></span>
+            {/* <span className="triangle border"></span> */}
             <ToolTip userColor={userColor}>
               나의 정보와 메뉴를
               <br />
@@ -142,7 +142,8 @@ const ToolTipWrap = styled.div`
       margin-top: 7px;
     }
   }
-  .triangle {
+  &:after {
+    content: '';
     top: -19px;
     right: 12px;
     position: absolute;
@@ -151,10 +152,19 @@ const ToolTipWrap = styled.div`
     height: 0;
     border-style: solid;
     border-width: 10px 5px;
-    border-radius: 3px;
-  }
-  .triangle.border {
     border-color: transparent transparent #fefefe transparent;
+  }
+  &:before {
+    content: '';
+    top: -22px;
+    right: 11px;
+    position: absolute;
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 11px 6px;
+    border-color: transparent transparent #ddd transparent;
   }
 `;
 const ToolTip = styled.div`

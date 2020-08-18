@@ -6,7 +6,7 @@ import { getCate } from '../../api/blog';
 import { deleteCate, updateCate } from '../../api/category';
 import Container from '../../components/common/Container';
 import ImgBtn from '../../components/common/ImgBtn';
-import { BasicTitle, BlueEditBtn, BasicButton } from '../../utils/theme';
+import { theme, BasicTitle, BlueEditBtn, BasicButton } from '../../utils/theme';
 
 export default function ChangeMenu(props) {
   const dispatch = useDispatch();
@@ -155,14 +155,14 @@ export default function ChangeMenu(props) {
   };
 
   const showDeleteBtn = Object.values(cateValue).filter(value => !!value?.id).length > 1;
-
+  console.log(cateValue, 'cateValue');
   return (
     <Con>
       <CenterRow>
         <StyledColumn>
           <TitleRow edit={edit}>
             <Title>
-              메뉴<TitleInfo>(최대 3개, 15글자 이하 권장) </TitleInfo>
+              메뉴<TitleInfo>(최대 3개) </TitleInfo>
             </Title>
             <EditTitle onClick={handleEditMenu}>메뉴변경</EditTitle>
           </TitleRow>
@@ -178,7 +178,17 @@ export default function ChangeMenu(props) {
                     name={category.length - 1}
                     onChange={e => handleInput(index, e.target.value)}
                     autoComplete="off"
+                    maxLength={'15'}
                   />
+                  <CountRow>
+                    <CountNickname>
+                      {cateValue[index] && cateValue[index].title.length <= MAX_TITLE
+                        ? cateValue[index].title.length
+                        : 0}
+                    </CountNickname>
+                    <Slush>/</Slush>
+                    <Maxcount>{MAX_TITLE}</Maxcount>
+                  </CountRow>
                 </MenuRow>
               ) : (
                 <MenuRow key={index}>
@@ -215,6 +225,7 @@ export default function ChangeMenu(props) {
                           value={cateValue[index] ? cateValue[index].title : ''}
                           onChange={e => handleInput(index, e.target.value)}
                           autoComplete="off"
+                          maxLength={'15'}
                         />
                         <CloseBtn
                           src={'/images/close.svg'}
@@ -225,6 +236,15 @@ export default function ChangeMenu(props) {
                           padding={2}
                           onClick={() => handleDelete(index)}
                         />
+                        <CountRow>
+                          <CountNickname>
+                            {cateValue[index] && cateValue[index].title.length <= MAX_TITLE
+                              ? cateValue[index].title.length
+                              : 0}
+                          </CountNickname>
+                          <Slush>/</Slush>
+                          <Maxcount>{MAX_TITLE}</Maxcount>
+                        </CountRow>
                       </CenterLeftRow>
                     );
                   })}
@@ -283,9 +303,17 @@ const StyledColumn = styled(Column)`
   background: #fafafa;
   box-sizing: border-box;
   padding: 30px;
+  @media (max-width: 780px) {
+    padding: 15px;
+  }
 `;
 const TitleRow = styled(MenuRow)`
   margin-bottom: 30px;
+  @media (max-width: 780px) {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 15px;
+  }
 `;
 const Title = styled.span`
   ${BasicTitle};
@@ -297,12 +325,18 @@ const TitleInfo = styled.span`
 `;
 const MenuFont = styled.span`
   color: ${props => props.userColor};
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 const NumberFont = styled.span`
   width: 33px;
 `;
 const EditTitle = styled.span`
   ${BlueEditBtn}
+  @media (max-width: 780px) {
+    margin-top: 15px;
+  }
 `;
 const AddMenuBtn = styled.button`
   color: ${props => props.userColor};
@@ -329,3 +363,23 @@ const SubmitBtn = styled.button`
   padding: 5px 10px;
   font-size: ${props => props.theme.mFont};
 `;
+
+const CountRow = styled.div`
+  display: flex;
+`;
+const CountNickname = styled.div`
+  color: #aaa;
+  margin-left: 10px;
+  font-size: ${theme.sFont};
+`;
+const Slush = styled.div`
+  color: #aaa;
+  margin: 0 2px 0;
+  font-size: ${theme.sFont};
+`;
+const Maxcount = styled.span`
+  color: #aaa;
+  font-size: ${theme.sFont};
+`;
+
+const MAX_TITLE = 15;

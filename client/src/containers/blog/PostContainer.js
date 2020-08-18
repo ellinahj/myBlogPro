@@ -104,7 +104,7 @@ export default function addContainer(props) {
           category.length > 0 &&
           category.map((item, index) => {
             return (
-              <CateWrap>
+              <CateWrap key={index}>
                 <label className="radio_container" key={index}>
                   {item.title}
                   <input

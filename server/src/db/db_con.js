@@ -8,7 +8,7 @@ const app = express();
 module.exports = function() {
   return {
     init: function() {
-      return mysql.createConnection({
+      return mysql.createPool({
         host: config.host,
         port: config.port,
         user: config.user,
@@ -18,7 +18,7 @@ module.exports = function() {
     },
 
     db_open: function(con) {
-      con.connect(function(err) {
+      con.getConnection(function(err) {
         console.log(process.env.NODE_ENV + "Mode");
         if (err) {
           console.info(err.stack, "db connect err");

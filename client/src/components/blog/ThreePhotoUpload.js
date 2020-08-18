@@ -27,7 +27,7 @@ export default function Upload(props) {
       reader.addEventListener('load', () => setUpImg(reader.result));
       reader.readAsDataURL(e.target.files[0]);
       setFilename(e.target.files[0].name);
-      setFileInfo(e.target.files[0].type);
+      // setFileInfo(e.target.files[0].type);
     }
   };
 
@@ -62,21 +62,25 @@ export default function Upload(props) {
     );
 
     return new Promise((resolve, reject) => {
-      canvas.toBlob(blob => {
-        if (!blob) {
-          reject(new Error('Canvas is empty'));
-          return;
-        }
-        blob.name = fileName;
-        window.URL.revokeObjectURL(previewUrl);
-        const tempPreviewUrl = [...previewUrl];
-        tempPreviewUrl.splice(index, 1, window.URL.createObjectURL(blob));
-        setPreviewUrl(tempPreviewUrl);
-        const blobToFile = new File([blob], filename);
-        const tempFile = [...file];
-        tempFile.splice(index, 1, blobToFile);
-        setFile(tempFile);
-      }, fileInfo);
+      canvas.toBlob(
+        blob => {
+          if (!blob) {
+            reject(new Error('Canvas is empty'));
+            return;
+          }
+          blob.name = fileName;
+          window.URL.revokeObjectURL(previewUrl);
+          const tempPreviewUrl = [...previewUrl];
+          tempPreviewUrl.splice(index, 1, window.URL.createObjectURL(blob));
+          setPreviewUrl(tempPreviewUrl);
+          const blobToFile = new File([blob], filename);
+          const tempFile = [...file];
+          tempFile.splice(index, 1, blobToFile);
+          setFile(tempFile);
+        },
+        'image/*',
+        1
+      );
     }).catch(err => {
       console.log('blob promise err', err);
     });

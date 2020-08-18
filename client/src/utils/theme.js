@@ -13,6 +13,9 @@ const theme = {
 };
 const BasicButton = css`
   cursor: pointer;
+  background: #eee;
+  border: 1px solid #666;
+  border-radius: 2px;
 `;
 
 const BlueEditBtn = css`

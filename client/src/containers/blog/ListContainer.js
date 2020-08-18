@@ -117,6 +117,7 @@ export default function ListContainer() {
       <Menu handleMenuClick={handleMenuClick} luminantColor={luminantColor} isSticky={isSticky} userColor={userColor} />
 
       {blogData && blogData.length !== 0 && <Search getSearch={getSearch} blogData={blogData} searched={searched} />}
+
       {searchValue !== '' && searched && (
         <Col>
           <AllViewWrap>
@@ -124,6 +125,7 @@ export default function ListContainer() {
               전체보기
             </AllView>
           </AllViewWrap>
+          <SearchResult>'{searchValue}'(으)로 검색한 결과입니다.</SearchResult>
         </Col>
       )}
       <MyList
@@ -144,16 +146,21 @@ const ListCon = styled.div`
 const Col = styled.div`
   display: flex;
   flex-direction: column;
+  padding: 0 40px;
 `;
 const AllViewWrap = styled.div`
   display: flex;
   justify-content: flex-end;
   margin: 30px 0 0;
-  padding-right: 40px;
   box-sizing: border-box;
 `;
 const AllView = styled.div`
   color: ${props => props.userColor && props.userColor};
   font-size: ${theme.mFont};
   cursor: pointer;
+`;
+const SearchResult = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
 `;

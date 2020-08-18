@@ -52,6 +52,12 @@ const MenuWrap = styled.div`
 `;
 const Menu = styled.div`
   position: relative;
+  @media (max-width: 780px) {
+    max-width: 105px;
+  }
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   :hover {
     cursor: pointer;
   }

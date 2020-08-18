@@ -21,7 +21,7 @@ app.use(morgan("pro")); //combined,dev
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(cors({ origin: "http://hyunjung.site" }));
+app.use(cors());
 app.use(express.static(path.join(__dirname, "./uploads")));
 var options = {
   inflate: true,

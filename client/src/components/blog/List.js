@@ -18,7 +18,7 @@ export default function List(props) {
           blogData.map((item, index) => {
             const date = item.now_date ? item.now_date : '';
             var stillUtc = moment.utc(date).format();
-            const convertedDate = moment(stillUtc).format('YYYY월 M월 D일');
+            const convertedDate = moment(stillUtc).format('YYYY년 M월 D일 MM시 mm분');
             return (
               <CardContainer key={index} luminantColor={luminantColor} userColor={userColor}>
                 <IconCloseCon onClick={() => deleteItem(item.id, item.image_url)}>
@@ -45,7 +45,7 @@ export default function List(props) {
                   <></>
                 )}
                 <ContentArea>
-                  <Date>{item.now_date ? `작성일 ${convertedDate}` : ''}</Date>
+                  <Date>{item.now_date ? convertedDate : ''}</Date>
                   <Title>{item.title}</Title>
                   <Comment>{item.comment}</Comment>
                   <Location>
@@ -91,6 +91,9 @@ const CardContainer = styled.div`
   background: #f6f6f6;
   border-radius: 5px;
   position: relative;
+  @media (max-width: 780px) {
+    padding: 20px;
+  }
 `;
 const ImageArea = styled.div`
   width: 100%;
@@ -143,7 +146,7 @@ const WriteWrap = styled.div`
 const Write = styled.div`
   font-size: ${theme.mFont};
   color: #ccc;
-  margin: 180px 0 10px;
+  margin: 130px 0 10px;
 `;
 const WriteImg = styled.img`
   max-width: 80px;

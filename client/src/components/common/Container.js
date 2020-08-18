@@ -7,4 +7,7 @@ const ContainerWrap = styled.section`
   height: 100%;
   padding: 40px;
   box-sizing: border-box;
+  @media screen and (max-width: 780px) {
+    padding: 15px;
+  }
 `;

@@ -185,7 +185,7 @@ export default function InfoContainer(props) {
                   </NanumMyeongjo>
                 </>
               ) : (
-                <div>{radioIndex === 0 ? '폰트1' : '폰트2'}</div>
+                <>{radioIndex === 0 ? <Gothic>폰트1</Gothic> : <NanumMyeongjo>폰트2</NanumMyeongjo>}</>
               )}
             </MarginFontRow>
             <Row>
@@ -226,7 +226,7 @@ const Row = styled.div`
 const MarginRow = styled(Row)`
   margin-bottom: 30px;
   align-items: center;
-  @media screen and (max-width: 780px) {
+  @media (max-width: 780px) {
     display: block;
     margin-bottom: 40px;
   }
@@ -239,6 +239,9 @@ const TopCon = styled.div`
   width: 100%;
   background: #fafafa;
   padding: 20px 30px;
+  @media (max-width: 780px) {
+    padding: 15px;
+  }
 `;
 const Input = styled.input`
   width: 170px;

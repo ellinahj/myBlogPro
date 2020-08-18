@@ -49,7 +49,7 @@ const selectSearchedBlog = (user_id, cate_id, value) => {
   const markedValue = "%" + value + "%";
   return new Promise((resolve, reject) => {
     connection.query(
-      "select * from mydiary.blog where user_id=? and cate_id=? and concat(title,location_name,comment) like ?",
+      "select * from mydiary.blog where user_id=? and cate_id=? and concat(title,location_name,comment,now_date) like ?",
       [user_id, cate_id, markedValue],
       function(err, rows) {
         if (err) {

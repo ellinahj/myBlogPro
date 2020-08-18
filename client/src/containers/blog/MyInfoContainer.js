@@ -42,4 +42,7 @@ const Comment = styled.div`
   font-size: 23px;
   font-weight: bold;
   margin-top: 15px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
