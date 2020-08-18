@@ -78,7 +78,7 @@ export default function Upload(props) {
           tempFile.splice(index, 1, blobToFile);
           setFile(tempFile);
         },
-        'image/*',
+        'image/jpeg',
         1
       );
     }).catch(err => {
