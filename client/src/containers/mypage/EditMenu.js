@@ -155,7 +155,6 @@ export default function ChangeMenu(props) {
   };
 
   const showDeleteBtn = Object.values(cateValue).filter(value => !!value?.id).length > 1;
-  console.log(cateValue, 'cateValue');
   return (
     <Con>
       <CenterRow>
