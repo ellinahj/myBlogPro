@@ -97,6 +97,10 @@ export default function ListContainer() {
     }
   };
   const deleteItem = (id, imageName) => {
+    const delQuestion = confirm('삭제하시겠습니까?');
+    if (!delQuestion) {
+      return;
+    }
     const getToken = localStorage.getItem('mydiary_token');
     if (getToken) {
       const config = {
