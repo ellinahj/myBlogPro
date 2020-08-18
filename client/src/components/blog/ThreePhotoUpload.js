@@ -27,7 +27,6 @@ export default function Upload(props) {
       reader.addEventListener('load', () => setUpImg(reader.result));
       reader.readAsDataURL(e.target.files[0]);
       setFilename(e.target.files[0].name);
-      // setFileInfo(e.target.files[0].type);
     }
   };
 
@@ -45,10 +44,10 @@ export default function Upload(props) {
     const canvas = document.createElement('canvas');
     const scaleX = image.naturalWidth / image.width;
     const scaleY = image.naturalHeight / image.height;
-    canvas.width = crop.width;
-    canvas.height = crop.height;
-    const ctx = canvas.getContext('2d');
+    canvas.width = crop.width * scaleX;
+    canvas.height = crop.height * scaleY;
 
+    const ctx = canvas.getContext('2d');
     ctx.drawImage(
       image,
       crop.x * scaleX,
@@ -57,30 +56,26 @@ export default function Upload(props) {
       crop.height * scaleY,
       0,
       0,
-      crop.width,
-      crop.height
+      crop.width * scaleX,
+      crop.height * scaleY
     );
 
     return new Promise((resolve, reject) => {
-      canvas.toBlob(
-        blob => {
-          if (!blob) {
-            reject(new Error('Canvas is empty'));
-            return;
-          }
-          blob.name = fileName;
-          window.URL.revokeObjectURL(previewUrl);
-          const tempPreviewUrl = [...previewUrl];
-          tempPreviewUrl.splice(index, 1, window.URL.createObjectURL(blob));
-          setPreviewUrl(tempPreviewUrl);
-          const blobToFile = new File([blob], filename);
-          const tempFile = [...file];
-          tempFile.splice(index, 1, blobToFile);
-          setFile(tempFile);
-        },
-        'image/jpeg',
-        1
-      );
+      canvas.toBlob(blob => {
+        if (!blob) {
+          reject(new Error('Canvas is empty'));
+          return;
+        }
+        blob.name = fileName;
+        window.URL.revokeObjectURL(previewUrl);
+        const tempPreviewUrl = [...previewUrl];
+        tempPreviewUrl.splice(index, 1, window.URL.createObjectURL(blob));
+        setPreviewUrl(tempPreviewUrl);
+        const blobToFile = new File([blob], filename);
+        const tempFile = [...file];
+        tempFile.splice(index, 1, blobToFile);
+        setFile(tempFile);
+      }, 'image/jpeg');
     }).catch(err => {
       console.log('blob promise err', err);
     });

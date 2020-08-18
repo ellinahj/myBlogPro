@@ -60,10 +60,10 @@ export default function Header() {
             </Link>
           ) : (
             <StyledTitle hoverColor={userInfo} onClick={() => Router.push('/mypage')}>
-              나의 색깔에 맞는, 나의 로그.
+              나의 색깔에 맞는 나의 블로그.
             </StyledTitle>
           ))}
-        {!userInfo && <StyledTitle>나의 색깔에 맞는, 나의 로그.</StyledTitle>}
+        {!userInfo && <StyledTitle>나의 색깔에 맞는 나의 블로그.</StyledTitle>}
         {userInfo && tooltip && (
           <ToolTipWrap profileUrl={userInfo && userInfo.profile_url}>
             {/* <span className="triangle border"></span> */}
@@ -108,7 +108,7 @@ const ProfileContainer = styled.div`
 const StyledTitle = styled.span`
   color: #fff;
   font-size: ${theme.sFont};
-  @media (max-width: 320px) {
+  @media (max-width: 480px) {
     font-size: ${theme.ssFont};
   }
   :hover {
