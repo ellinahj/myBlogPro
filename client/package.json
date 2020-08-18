@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "next -p 3004",
     "build": "next build",
-    "start": "next start -p 3001"
+    "start": "NODE_ENV=pro next start -p 3001"
   },
   "keywords": [],
   "author": "",
