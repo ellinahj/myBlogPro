@@ -2,10 +2,10 @@ import axios from 'axios';
 import Router from 'next/router';
 import store from '../store';
 import { setUserInfo, setLogin, setThemeColor } from '../actions/base';
-const isPro = process.env.NODE_ENV === 'pro';
-const apiUrl = isPro ? 'http://api.hyunjung.site' : 'http://127.0.0.1:3005';
+const localURL = 'http://127.0.0.1:3005';
+const proURL = 'http://api.hyunjung.site';
 const instance = axios.create({
-  baseURL: `${apiUrl}/api`,
+  baseURL: `${proURL}/api`,
   timeout: 5000
 });
 
