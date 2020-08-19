@@ -71,7 +71,7 @@ export default function Upload(props) {
         const tempPreviewUrl = [...previewUrl];
         tempPreviewUrl.splice(index, 1, window.URL.createObjectURL(blob));
         setPreviewUrl(tempPreviewUrl);
-        const blobToFile = new File([blob], filename);
+        const blobToFile = new File([blob], filename, { type: 'image/jpeg' });
         const tempFile = [...file];
         tempFile.splice(index, 1, blobToFile);
         setFile(tempFile);
