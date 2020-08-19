@@ -6,7 +6,7 @@ const localURL = 'http://127.0.0.1:3005';
 const proURL = 'http://api.hyunjung.site';
 const instance = axios.create({
   baseURL: `${proURL}/api`,
-  timeout: 5000
+  timeout: 10000
 });
 
 instance.interceptors.request.use(

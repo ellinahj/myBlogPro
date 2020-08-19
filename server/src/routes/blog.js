@@ -18,9 +18,8 @@ router.post(
   "/write",
   multer({
     storage: storageS3,
-    limits: { fileSize: 5 * 1024 * 1024 },
+    // limits: { fileSize: 5 * 1024 * 1024 },
     fileFilter: function(req, file, callback) {
-      console.log(file);
       const ext = path.extname(file.originalname);
       if (
         ext !== ".png" &&

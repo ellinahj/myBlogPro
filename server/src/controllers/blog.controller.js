@@ -30,7 +30,6 @@ export const storageS3 = multerS3({
 });
 
 const setBlog = async (req, res, next) => {
-  console.log("in setblog");
   try {
     const token = req.headers["access_token"];
     const result = await authCheck(token);
