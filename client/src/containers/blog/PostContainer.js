@@ -75,7 +75,9 @@ export default function addContainer(props) {
       const getToken = localStorage.getItem('mydiary_token');
       if (getToken) {
         const config = {
-          access_token: getToken
+          access_token: getToken,
+          'Access-Control-Allow-Headers': '*',
+          'Content-Type': 'application/x-www-form-urlencoded'
         };
         setBlog(config, formData).then(res => {
           if (res.status === 200) {
