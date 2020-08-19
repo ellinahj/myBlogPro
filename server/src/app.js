@@ -25,7 +25,7 @@ const corsOptions = {
   origin: "http://hyunjung.site",
   credentials: true
 };
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.static(path.join(__dirname, "./uploads")));
 //route
 app.use("/api/user", userRoute);
