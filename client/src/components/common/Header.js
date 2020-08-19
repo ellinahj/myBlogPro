@@ -19,7 +19,7 @@ export default function Header() {
   const luminantColor = userColor && colorLuminance(userColor, 0.5);
 
   useEffect(() => {
-    if (isLoggedIn !== undefined) {
+    if (userInfo !== undefined) {
       return;
     }
     if (Router.asPath !== '/join') {

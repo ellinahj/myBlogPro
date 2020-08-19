@@ -30,14 +30,10 @@ export default function addContainer(props) {
     setValue({ ...value, [e.target.name]: e.target.value });
   };
 
-  // const handleDateChange = date => {
-  //   setStartDate(date);
-  // };
-
   const checked = id => {
     setValue({ ...value, cate: id });
   };
-  // console.log(clickMenu, 'clickMenu');
+
   const imgFormData = file => {
     setImgFile(file);
   };
@@ -51,7 +47,6 @@ export default function addContainer(props) {
       getCate(config).then(res => {
         if (res.status === 200 && res.data) {
           dispatch(setCategory(res.data.data));
-          // console.log(res.data.data, 'rerere');
         }
       });
     }
@@ -74,7 +69,6 @@ export default function addContainer(props) {
       const numDate = Date.parse(startDate);
       data.date = numDate;
       formData.append('data', JSON.stringify(data));
-      console.log(formData, 'formdata');
       console.log(startDate, 'start');
 
       const getToken = localStorage.getItem('mydiary_token');
@@ -83,7 +77,6 @@ export default function addContainer(props) {
           access_token: getToken
         };
         setBlog(config, formData).then(res => {
-          console.log(res, 'res');
           if (res.status === 200) {
             alert('등록되었습니다.');
             Router.push('/blog');

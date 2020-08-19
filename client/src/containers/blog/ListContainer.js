@@ -14,7 +14,6 @@ export default function ListContainer() {
   const userColor = useSelector(state => state.common.userColor);
   const luminantColor = userColor && colorLuminance(userColor, 0.5);
   const userInfo = useSelector(state => state.common.userInfo);
-  const category = useSelector(state => state.common.category);
   const clickMenu = useSelector(state => state.common.clickMenu);
 
   const [isSticky, setSticky] = useState(false);
@@ -23,7 +22,7 @@ export default function ListContainer() {
   const [searched, setSearched] = useState(false);
 
   const handleScroll = () => {
-    if (window.pageYOffset >= 150) {
+    if (window.pageYOffset >= 140) {
       setSticky(true);
     } else {
       setSticky(false);

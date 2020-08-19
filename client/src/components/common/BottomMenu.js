@@ -61,10 +61,3 @@ const BottomMenuSize = styled.div`
   background: ${props => props.userColor || '#ccc'};
   cursor: pointer;
 `;
-// const AddFont = styled.div`
-//   width: 44px;
-//   height: 44px;
-//   color: #fff;
-//   border-radius: 22px;
-//   background: ${props => props.userColor || '#ccc'};
-// `;

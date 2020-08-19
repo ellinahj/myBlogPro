@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useState } from 'react';
 import Router from 'next/router';
 import styled from 'styled-components';
 import { theme } from '../../utils/theme';
@@ -9,10 +8,6 @@ export default function JoinContainer() {
   const [id, setId] = useState('');
   const [pwd, setPwd] = useState('');
   const [pwdCheck, setPwdCheck] = useState('');
-  // const [idState, setIdState] = useState('');
-  // const [pwdState, setPwdState] = useState('');
-  // const [pwdCheckState, setPwdCheckState] = useState('');
-  const [allState, setAllState] = useState('');
 
   const enterKey = () => {
     if (window.event.keyCode === 13) {
@@ -22,50 +17,17 @@ export default function JoinContainer() {
 
   const idConfirm = value => {
     setId(value);
-    // if (value !== '' && !idRegex.test(value)) {
-    //   console.log('?');
-    //   setIdState(false);
-    //   return;
-    // }
-    // setIdState(true);
   };
   const pwdConfirm = value => {
     setPwd(value);
-    // if (value !== '' && !pwdRegex.test(value)) {
-    //   setPwdState(false);
-    //   return;
-    // }
-    // //
-    // if (value !== '' && pwdCheckState && value !== pwdCheck) {
-    //   setPwdCheckState(false);
-    //   return;
-    // } else if (value !== '' && pwdCheckState && value === pwdCheck) {
-    //   setPwdCheckState(true);
-    // }
-    // setPwdState(true);
   };
   const pwdCheckConfirm = value => {
     setPwdCheck(value);
-    // if (value !== '' && pwd !== value) {
-    //   setPwdCheckState(false);
-    //   return;
-    // }
-    // setPwdCheckState(true);
   };
-
-  // useEffect(() => {
-  //   if (idState && pwdState && pwdCheckState) {
-  //     setAllState(true);
-  //   } else {
-  //     setAllState(false);
-  //   }
-  // }, [idState, pwdState, pwdCheckState]);
 
   const userJoin = () => {
     const data = { user_id: id, password: pwd };
-    console.log(data, 'data');
     join(data).then(res => {
-      console.log(res, 'login res login');
       if (res.status === 200) {
         alert(' 회원가입이 완료되었습니다.');
         Router.push('/login');
@@ -84,7 +46,6 @@ export default function JoinContainer() {
             <Warning>영문, 영문+숫자조합 6~15자리로 입력해주세요.</Warning>
           </WarningWrap>
         )}
-
         <SubTitle>비밀번호 *</SubTitle>
         <input type="password" name="pwd" value={pwd} onChange={e => pwdConfirm(e.target.value)} autoComplete="off" />
         {pwd.length > 0 && !pwRegCheck(pwd) && (
@@ -92,7 +53,6 @@ export default function JoinContainer() {
             <Warning>영문,숫자,특수문자(!@#$%^&+=) 조합 6~13자리로 입력해주세요.</Warning>
           </WarningWrap>
         )}
-
         <SubTitle>비밀번호 확인 *</SubTitle>
         <input
           type="password"

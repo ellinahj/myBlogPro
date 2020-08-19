@@ -37,6 +37,7 @@ const GlobalStyle = createGlobalStyle`
   };
   ul{
       list-style:none;
+      margin:0;
   };
   button{
     font-family: ${props => props.currentValue};

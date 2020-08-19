@@ -83,7 +83,6 @@ export default function ChangeMenu(props) {
           access_token: getToken
         };
         const cateId = tempCateValue[idx].id;
-        console.log(cateId, 'cateId');
         const data = { id: cateId };
         deleteCate(config, data).then(res => {
           if (res.status === 200 && res.data) {
@@ -125,9 +124,7 @@ export default function ChangeMenu(props) {
     if (hasIdArr.length > 0) {
       alert('메뉴이름을 입력해주세요.');
     } else {
-      // console.log(cateValue, 'arr');
       const data = cateValue;
-      // console.log(data, 'data');
       const getToken = localStorage.getItem('mydiary_token');
       if (getToken) {
         const config = {
@@ -136,7 +133,6 @@ export default function ChangeMenu(props) {
         updateCate(config, data).then(res => {
           if (res.status === 200 && res.data) {
             dispatch(setCategory(res.data.data));
-            console.log(res.data.data, ' 변경 후');
             const result = {};
             res.data.data
               ? res.data.data.forEach((item, idx) => {
@@ -147,7 +143,6 @@ export default function ChangeMenu(props) {
             setEdit(false);
             setCateInputCount(0);
             alert('변경되었습니다.');
-            console.log('변경====');
           }
         });
       }

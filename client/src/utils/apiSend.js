@@ -5,7 +5,7 @@ import { setUserInfo, setLogin, setThemeColor, setFont } from '../actions/base';
 const localURL = 'http://127.0.0.1:3005';
 const proURL = 'http://api.hyunjung.site';
 const instance = axios.create({
-  baseURL: `${proURL}/api`,
+  baseURL: `${localURL}/api`,
   timeout: 5000
 });
 

@@ -23,7 +23,6 @@ const getBlog = (config, id) => {
   });
 };
 const getSearchedBlog = (config, cateId, value) => {
-  console.log(cateId, value, 'a');
   return apiSend({
     url: `/blog/read/search/${cateId}/${value}`,
     method: 'get',

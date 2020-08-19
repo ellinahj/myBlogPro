@@ -8,13 +8,14 @@ export default function SearchContainer(props) {
   const [storageValue, setStorageValue] = useState('');
   const [showHistory, setShowHistory] = useState(false);
   const inputArea = useRef(null);
-  const bodyArea = useRef(null);
+  const searchBtnArea = useRef(null);
   const { getSearch, searched } = props;
 
   useEffect(() => {
     const replace = searchValue.replace(' ', '');
     setSearchValue(replace);
   }, [searchValue]);
+
   useEffect(() => {
     if (!searched) {
       setSearchValue('');
@@ -22,7 +23,9 @@ export default function SearchContainer(props) {
   }, [searched]);
 
   const search = () => {
-    if (searchValue === '') return;
+    if (searchValue.length === 0) {
+      return;
+    }
     const getSearchHistory = JSON.parse(localStorage.getItem('searchedHistory')) || [];
     const isDuplicate = getSearchHistory.filter(item => {
       return item === searchValue;
@@ -52,7 +55,7 @@ export default function SearchContainer(props) {
   useEffect(() => {
     //입력창 밖 선택 시 검색내역창 감추기
     function handleClickOutside(e) {
-      if (inputArea.current && !inputArea.current.contains(e.target) && bodyArea.current.contains(e.target)) {
+      if (inputArea.current && !inputArea.current.contains(e.target) && !searchBtnArea.current.contains(e.target)) {
         setShowHistory(false);
         setSearchValue('');
       }
@@ -68,10 +71,10 @@ export default function SearchContainer(props) {
   };
 
   return (
-    <ListArea ref={bodyArea}>
+    <ListArea>
       <Content>
-        <Container>
-          <SearchCon ref={inputArea}>
+        <Container ref={inputArea}>
+          <SearchCon>
             <Input
               type="text"
               onClick={showSearchHistory}
@@ -82,22 +85,21 @@ export default function SearchContainer(props) {
               placeholder="검색어를 입력하세요"
               value={searchValue}
             />
-            <Img src={'/images/search.svg'} width={28} onClick={search} />
+            <Img src={'/images/search.svg'} width="28px" ref={searchBtnArea} onClick={search} />
           </SearchCon>
-          <SearchHistoryCon showHistory={showHistory} ref={inputArea}>
+          <SearchHistoryCon showHistory={showHistory}>
             <ul>
               {storageValue ? (
                 storageValue.map((item, index) => {
                   return (
-                    <li key={index}>
-                      <Word
-                        onClick={() => {
-                          getSearch(storageValue[index]);
-                          setShowHistory(false);
-                        }}
-                      >
-                        {item}
-                      </Word>
+                    <li
+                      key={index}
+                      onClick={() => {
+                        getSearch(storageValue[index]);
+                        setShowHistory(false);
+                      }}
+                    >
+                      <Word>{item}</Word>
                       <IconCloseCon onClick={() => removeHistory(index)}>
                         <IconCloseImg src={'/images/close.svg'} />
                       </IconCloseCon>
@@ -129,6 +131,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
 `;
 const SearchCon = styled.div`
   width: 100%;
@@ -160,8 +163,13 @@ const Input = styled.input`
   }
 `;
 const SearchHistoryCon = styled.div`
+  position: absolute;
+  top: 45px;
+  left: 0;
+  z-index: 3;
+  background: #fff;
+  width: 99.5%;
   display: ${props => !props.showHistory && 'none'};
-  width: 99.6%;
   border-bottom: 1px solid #eee;
   border-left: 1px solid #eee;
   border-right: 1px solid #eee;
@@ -173,9 +181,8 @@ const SearchHistoryCon = styled.div`
   }
   li {
     box-sizing: border-box;
-    padding: 5px 20px;
-    width: 100%;
-    margin-bottom: 5px;
+    padding: 6px 15px;
+    margin: 5px;
     display: flex;
     justify-content: space-between;
     cursor: pointer;
@@ -183,9 +190,11 @@ const SearchHistoryCon = styled.div`
 `;
 const HistoryNotexist = styled.div`
   color: #aaa;
+  padding: 20px 20px;
+  font-size: ${theme.sFont};
 `;
 const Word = styled.div`
-  width: 100%;
+  /* width: 100%; */
 `;
 const IconCloseCon = styled.div`
   width: 18px;

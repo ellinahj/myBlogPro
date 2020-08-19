@@ -19,8 +19,7 @@ export default function MyInfo() {
 
 const MyInfoWrap = styled.section`
   width: 100%;
-  height: 185px;
-  padding: 40px 40px 0;
+  padding: 40px;
   box-sizing: border-box;
   background-image: linear-gradient(90deg, ${props => props.userColor}, ${props => props.luminantColor});
 `;
