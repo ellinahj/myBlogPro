@@ -1,14 +1,14 @@
 import styled from 'styled-components';
-import { it } from 'date-fns/locale';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { theme } from '../../utils/theme';
-import moment from 'moment';
 import Carousel from 'nuka-carousel';
+import moment from 'moment';
+import 'moment/locale/ko';
+moment.locale('ko');
 
 export default function List(props) {
   const { luminantColor, blogData, deleteItem } = props;
   const userColor = useSelector(state => state.common.userColor);
-  const clickMenu = useSelector(state => state.common.clickMenu);
 
   return (
     <ListArea>
@@ -16,9 +16,8 @@ export default function List(props) {
         {blogData &&
           blogData.length > 0 &&
           blogData.map((item, index) => {
-            const date = item.now_date ? item.now_date : '';
-            var stillUtc = moment.utc(date).format();
-            const convertedDate = moment(stillUtc).format('YYYY년 M월 D일 MM시 mm분');
+            const parseDate = new Date(item.now_date);
+            const pasedDate = moment(parseDate).format('YYYY년 MM월 DD일 HH:mm');
             return (
               <CardContainer key={index} luminantColor={luminantColor} userColor={userColor}>
                 <IconCloseCon onClick={() => deleteItem(item.id, item.image_url)}>
@@ -45,7 +44,7 @@ export default function List(props) {
                   <></>
                 )}
                 <ContentArea>
-                  <Date>{item.now_date ? convertedDate : ''}</Date>
+                  <WriteDate>{pasedDate}</WriteDate>
                   <Title>{item.title}</Title>
                   <Comment>{item.comment}</Comment>
                   <Location>
@@ -110,7 +109,7 @@ const ContentArea = styled.div`
   display: flex;
   flex-direction: column;
 `;
-const Date = styled.div`
+const WriteDate = styled.div`
   display: flex;
   justify-content: flex-end;
   font-size: 13px;

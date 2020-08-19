@@ -26,8 +26,7 @@ const insertBlog = (user_id, data) => {
       [
         user_id, //user
         data.cate, //cate
-
-        moment().format("YYYY-MM-DD HH:mm"),
+        data.date,
         data.title,
         data.comment,
         data.files.length > 0 && data.files[0] ? data.files[0] : null,

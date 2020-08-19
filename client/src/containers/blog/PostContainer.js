@@ -66,10 +66,11 @@ export default function addContainer(props) {
 
       existFileItems && existFileItems.forEach(item => formData.append(`file`, item));
       const data = value;
-      const numDate = Date.parse(startDate);
-      data.date = numDate;
+      // const nowDate = new Date();
+      // const numDate = Date.parse(startDate);
+      // console.log(numDate, 'numDat');
+      // data.date = numDate;
       formData.append('data', JSON.stringify(data));
-      console.log(startDate, 'start');
 
       const getToken = localStorage.getItem('mydiary_token');
       if (getToken) {

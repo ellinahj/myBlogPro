@@ -70,6 +70,7 @@ const getBlog = async (req, res, next) => {
   if (result) {
     selectBlog(result.id, id)
       .then(response => {
+        console.log(response, "response");
         const data = [...response];
         const newData = data.map(item => {
           const arr = [item.first_image, item.second_image, item.third_image];
