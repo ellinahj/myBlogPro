@@ -50,6 +50,10 @@ const GlobalStyle = createGlobalStyle`
     font-family: ${props => props.currentValue};
     font-size:${theme.theme.mFont};
 }
+input:disabled {
+  background: #eee;
+  border: 1px solid #ddd;
+}
 input{
   font-family: ${props => props.currentValue};
   font-size:${theme.theme.mFont};
