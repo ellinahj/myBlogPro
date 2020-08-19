@@ -1,11 +1,11 @@
 import axios from 'axios';
 import Router from 'next/router';
 import store from '../store';
-import { setUserInfo, setLogin, setThemeColor } from '../actions/base';
+import { setUserInfo, setLogin, setThemeColor, setFont } from '../actions/base';
 const localURL = 'http://127.0.0.1:3005';
 const proURL = 'http://api.hyunjung.site';
 const instance = axios.create({
-  baseURL: `${proURL}/api`,
+  baseURL: `${localURL}/api`,
   timeout: 5000
 });
 
@@ -45,6 +45,7 @@ instance.interceptors.response.use(
         Router.push('/login');
         store.dispatch(setLogin(false));
         store.dispatch(setUserInfo(undefined));
+        store.dispatch(setFont(undefined));
         store.dispatch(setThemeColor('#7c7cec'));
       } else if (error.response.status === 404) {
         alert('누락된 요청');

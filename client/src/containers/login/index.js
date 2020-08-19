@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Router from 'next/router';
 import styled from 'styled-components';
-import { setUserInfo, setThemeColor, setFont } from '../../actions/base';
+import { setUserInfo, setThemeColor } from '../../actions/base';
 import { login } from '../../api/auth';
 import { theme } from '../../utils/theme';
 
@@ -21,7 +21,7 @@ export default function LoginContainer() {
         localStorage.setItem('mydiary_token', token);
         dispatch(setUserInfo(res.data));
         dispatch(setThemeColor(res.data.user_color));
-        dispatch(setFont(res.data.user_font));
+
         alert(' 로그인되었습니다.');
         Router.push('/blog');
       }

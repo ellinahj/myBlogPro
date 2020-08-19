@@ -20,9 +20,9 @@ export default function InfoContainer(props) {
   const [nickname, setNickname] = useState(undefined);
   const [mainTitle, setMainTitle] = useState('');
   const [nicknameAvailable, setNicknameAvailable] = useState(null);
-  const [radioIndex, setRadioIndex] = useState(selectFont && selectFont === `'Gothic A1', sans-serif` ? 0 : 1);
-  const dispatch = useDispatch();
+  const [radioIndex, setRadioIndex] = useState(selectFont === `'Gothic A1', sans-serif` ? 0 : 1);
 
+  const dispatch = useDispatch();
   const checked = index => {
     setRadioIndex(index);
   };
@@ -42,6 +42,14 @@ export default function InfoContainer(props) {
   useEffect(() => {
     userInfo && setMainTitle(userInfo.main_title);
   }, [userInfo]);
+
+  useEffect(() => {
+    if (setFont === `'Gothic A1', sans-serif`) {
+      setRadioIndex(0);
+    } else {
+      setRadioIndex(1);
+    }
+  }, [selectFont]);
 
   const handleNicknameChange = value => {
     const replaceValue = value.replace(/\s/g, '');
@@ -104,7 +112,6 @@ export default function InfoContainer(props) {
 
   const isSameNickname = !!userInfo && userInfo.nickname === nickname;
   const isDisabledBtn = (!nicknameAvailable && !isSameNickname) || !nickname;
-
   return (
     <Con>
       <Column>
