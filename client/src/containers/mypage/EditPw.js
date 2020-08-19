@@ -153,6 +153,10 @@ const Column = styled.div`
 const Row = styled.div`
   display: flex;
   width: 100%;
+  @media (max-width: 480px) {
+    display: flex;
+    flex-direction: column;
+  }
 `;
 const MarginRow = styled(Row)`
   margin-top: 20px;
@@ -189,6 +193,9 @@ const Input = styled.input`
 `;
 const PwEdit = styled.div`
   ${BlueEditBtn}
+  @media (max-width: 480px) {
+    margin-top: 15px;
+  }
 `;
 const Match = styled.div`
   color: ${theme.greenFont};

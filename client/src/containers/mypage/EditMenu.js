@@ -329,7 +329,7 @@ const MenuFont = styled.span`
   white-space: nowrap;
 `;
 const NumberFont = styled.span`
-  width: 33px;
+  width: 20px;
 `;
 const EditTitle = styled.span`
   ${BlueEditBtn}
@@ -348,11 +348,11 @@ const AddMenuBtn = styled.button`
   margin: 20px 20px 0 33px;
 `;
 const Input = styled.input`
-  width: 210px;
-  height: 20px;
+  width: 170px;
+  height: 25px;
 `;
 const CloseBtn = styled(ImgBtn)`
-  margin-left: 10px;
+  margin-left: 5px;
 `;
 const max_category_count = 3;
 
@@ -368,7 +368,7 @@ const CountRow = styled.div`
 `;
 const CountNickname = styled.div`
   color: #aaa;
-  margin-left: 10px;
+  margin-left: 5px;
   font-size: ${theme.sFont};
 `;
 const Slush = styled.div`

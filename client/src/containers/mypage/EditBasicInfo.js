@@ -20,7 +20,7 @@ export default function InfoContainer(props) {
   const [nickname, setNickname] = useState(undefined);
   const [mainTitle, setMainTitle] = useState('');
   const [nicknameAvailable, setNicknameAvailable] = useState(null);
-  const [radioIndex, setRadioIndex] = useState(selectFont === `'Gothic A1', sans-serif` ? 0 : 1);
+  const [radioIndex, setRadioIndex] = useState(0);
 
   const dispatch = useDispatch();
   const checked = index => {
@@ -46,7 +46,7 @@ export default function InfoContainer(props) {
   useEffect(() => {
     if (setFont === `'Gothic A1', sans-serif`) {
       setRadioIndex(0);
-    } else {
+    } else if (setFont === `'Nanum Myeongjo', serif`) {
       setRadioIndex(1);
     }
   }, [selectFont]);
@@ -252,7 +252,7 @@ const TopCon = styled.div`
 `;
 const Input = styled.input`
   width: 170px;
-  height: 20px;
+  height: 25px;
 `;
 const SubmitBtn = styled.button`
   ${BasicButton};
