@@ -329,7 +329,7 @@ const MenuFont = styled.span`
   white-space: nowrap;
 `;
 const NumberFont = styled.span`
-  width: 20px;
+  margin-right: 5px;
 `;
 const EditTitle = styled.span`
   ${BlueEditBtn}
@@ -349,7 +349,7 @@ const AddMenuBtn = styled.button`
 `;
 const Input = styled.input`
   width: 170px;
-  height: 25px;
+  height: 20px;
 `;
 const CloseBtn = styled(ImgBtn)`
   margin-left: 5px;

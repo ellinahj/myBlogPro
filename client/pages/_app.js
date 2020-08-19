@@ -45,6 +45,10 @@ const GlobalStyle = createGlobalStyle`
     :hover {
     opacity: 1;
     }
+    :disabled {
+    background: #eee;
+    border: 1px solid #ddd;
+    }
   }
   ::-webkit-input-placeholder {
     font-family: ${props => props.currentValue};

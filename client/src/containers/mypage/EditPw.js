@@ -166,7 +166,7 @@ const MarginTopRow = styled(Row)`
 `;
 const Title = styled.div`
   ${BasicTitle};
-  width: 120px;
+  margin-right: 10px;
 `;
 const MainTitle = styled(Title)`
   font-size: ${props => props.theme.mlFont};
@@ -174,7 +174,10 @@ const MainTitle = styled(Title)`
 const TopCon = styled.div`
   width: 100%;
   background: #fcfcfc;
-  padding: 30px;
+  padding: 15px;
+  @media (max-width: 480px) {
+    width: auto;
+  }
 `;
 const SubmitBtn = styled.button`
   margin: 30px auto 0;
