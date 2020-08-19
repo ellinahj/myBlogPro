@@ -27,12 +27,6 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 app.use(express.static(path.join(__dirname, "./uploads")));
-var options = {
-  inflate: true,
-  limit: "1000mb",
-  type: "application/octet-stream"
-};
-app.use(bodyParser.raw(options));
 //route
 app.use("/api/user", userRoute);
 app.use("/api/auth", authRoute);
