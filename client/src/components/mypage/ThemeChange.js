@@ -12,7 +12,6 @@ export default function ThemeChange(props) {
 
   const popover = {
     position: 'absolute',
-    // right: '30px',
     zIndex: '2'
   };
   const cover = {
