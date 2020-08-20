@@ -3,8 +3,6 @@ import { useSelector } from 'react-redux';
 import { theme } from '../../utils/theme';
 import Carousel from 'nuka-carousel';
 import moment from 'moment';
-import 'moment/locale/ko';
-moment.locale('ko');
 
 export default function List(props) {
   const { luminantColor, blogData, deleteItem } = props;

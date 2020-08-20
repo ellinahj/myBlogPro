@@ -24,28 +24,29 @@ export default function JoinContainer() {
   };
 
   const idConfirm = value => {
+    console.log(value, 'vluaa');
     const replaceValue = value.replace(/\s/g, '');
     setId(replaceValue);
     setIdAvailable(null);
+    console.log(value);
     checkTimeout && clearTimeout(checkTimeout);
     if (replaceValue.length === 0) {
       return;
     }
     if (!!replaceValue && idRegCheck(replaceValue) === true) {
+      console.log(replaceValue, 'in');
       const timer = setTimeout(() => {
-        const getToken = localStorage.getItem('mydiary_token');
-        if (getToken) {
-          const data = { user_id: replaceValue };
-          findId(data).then(res => {
-            if (res.status === 200) {
-              if (res.data.message === 'available') {
-                setIdAvailable(true);
-              } else if (res.data.message === 'dupilicatedId') {
-                setIdAvailable(false);
-              }
+        const data = { user_id: replaceValue };
+        findId(data).then(res => {
+          console.log(res, 'res');
+          if (res.status === 200) {
+            if (res.data.message === 'available') {
+              setIdAvailable(true);
+            } else if (res.data.message === 'dupilicatedId') {
+              setIdAvailable(false);
             }
-          });
-        }
+          }
+        });
       }, 1000);
       setCheckTimeout(timer);
     }
@@ -59,7 +60,7 @@ export default function JoinContainer() {
       }
     });
   };
-
+  console.log(idAvailable, 'idAvailable');
   return (
     <Container>
       <InputWrap>
@@ -95,7 +96,7 @@ export default function JoinContainer() {
           </WarningWrap>
         )}
         <JoinBtn
-          disabled={idAvailable === false || !idRegCheck(id) || !pwRegCheck(pwd) || pwdCheck !== pwd}
+          disabled={idAvailable !== true || !idRegCheck(id) || !pwRegCheck(pwd) || pwdCheck !== pwd}
           onClick={userJoin}
           onKeyUp={enterKey}
           allOk={idAvailable === true && idRegCheck(id) && pwRegCheck(pwd) && pwdCheck === pwd}

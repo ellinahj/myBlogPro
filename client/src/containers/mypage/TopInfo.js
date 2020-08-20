@@ -12,9 +12,10 @@ export default function TopInfo(props) {
     Router.push('/login');
     dispatch(setLogin(false));
     localStorage.removeItem('mydiary_token');
-    dispatch(setUserInfo(null));
+    dispatch(setUserInfo(undefined));
     dispatch(setThemeColor('#7c7cec'));
     dispatch(setFont(`'Gothic A1', sans-serif`));
+
     alert('로그아웃되었습니다.');
   };
   return (
