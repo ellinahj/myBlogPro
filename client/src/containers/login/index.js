@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Router from 'next/router';
 import styled from 'styled-components';
-import { setUserInfo, setThemeColor } from '../../actions/base';
+import { setUserInfo, setThemeColor, setLoading } from '../../actions/base';
 import { login } from '../../api/auth';
 import { theme } from '../../utils/theme';
 
@@ -15,14 +15,14 @@ export default function LoginContainer() {
 
   const userLogin = () => {
     const data = { user_id: id, password: pw };
+    dispatch(setLoading(true));
     login(data).then(res => {
       if (res.status === 200) {
         const token = res.data.access_token;
         localStorage.setItem('mydiary_token', token);
         dispatch(setUserInfo(res.data));
         dispatch(setThemeColor(res.data.user_color));
-
-        alert(' 로그인되었습니다.');
+        dispatch(setLoading(false));
         Router.push('/blog');
       }
     });
@@ -41,6 +41,16 @@ export default function LoginContainer() {
       pwValue.current.type = 'password';
     }
   };
+
+  const idRegex = /^[A-Za-z0-9+]{6,15}$/;
+  function idRegCheck(value) {
+    return idRegex.test(value);
+  }
+
+  const pwdRegex = /^.*(?=^.{6,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
+  function pwRegCheck(value) {
+    return pwdRegex.test(value);
+  }
 
   return (
     <Container>
@@ -62,7 +72,12 @@ export default function LoginContainer() {
           비밀번호 표시
           <CheckBox type="checkbox" onClick={showPwd} />
         </CheckBoxCon>
-        <LoginBtn onClick={userLogin} userColor={userColor}>
+        <LoginBtn
+          onClick={userLogin}
+          userColor={userColor}
+          disabled={!idRegCheck(id) || !pwRegCheck(pw)}
+          allOk={idRegCheck(id) && pwRegCheck(pw)}
+        >
           로그인
         </LoginBtn>
         <BottomWrap>
@@ -102,7 +117,8 @@ const LoginBtn = styled.button`
   height: 45px;
   box-sizing: border-box;
   font-size: 15px;
-  background: ${props => props.userColor};
+  background: ${props => (props.allOk ? '#7c7cec' : '#ddd')};
+  cursor: ${props => (props.allOk ? 'pointer' : 'not-allowed')};
   text-align: center;
   line-height: 45px;
   margin-top: 20px;
@@ -121,12 +137,6 @@ const SubTitle = styled.div`
   font-size: ${theme.mFont};
   margin: 10px 0 10px;
 `;
-const PwdCon = styled.div`
-  margin-bottom: 15px;
-  font-size: 13px;
-  cursor: pointer;
-`;
-
 const JoinCon = styled.div`
   margin-bottom: 15px;
   font-size: 13px;

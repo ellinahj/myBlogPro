@@ -80,7 +80,6 @@ const login = (user_id, password) => {
                       if (err) {
                         reject(err);
                       } else if (result) {
-                        console.log(result, "result");
                         const {
                           id,
                           user_id,
@@ -96,7 +95,6 @@ const login = (user_id, password) => {
                             expiresIn: "60m"
                           }
                         );
-                        console.log(token, "newtoken");
                         const sendResult = {
                           token,
                           nickname,

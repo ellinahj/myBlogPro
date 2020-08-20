@@ -49,7 +49,6 @@ const setBlog = async (req, res, next) => {
         data.files = fileNameArr;
         insertBlog(result.id, data)
           .then(data => {
-            console.log(data, "set blog data");
             res.status(200).json({ status: 200 });
           })
           .catch(err => console.log(err, "file upload err"));

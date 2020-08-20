@@ -75,6 +75,9 @@ export default function JoinContainer() {
         >
           회원가입
         </JoinBtn>
+        <BottomWrap>
+          <LoginCon onClick={() => Router.push('/login')}>로그인</LoginCon>
+        </BottomWrap>
       </InputWrap>
     </Container>
   );
@@ -150,3 +153,13 @@ const pwdRegex = /^.*(?=^.{6,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
 function pwRegCheck(value) {
   return pwdRegex.test(value);
 }
+
+const LoginCon = styled.div`
+  margin-bottom: 15px;
+  font-size: 13px;
+  cursor: pointer;
+`;
+const BottomWrap = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;

@@ -34,10 +34,8 @@ export default function ChangePwd(props) {
             }
           })
           .catch(err => {
-            if (err.response.status === 401) {
-              setPrevPwdTyping(true);
-              setPrevPwdState(false);
-            }
+            setPrevPwdTyping(true);
+            setPrevPwdState(false);
           });
       }
     }, 1000);

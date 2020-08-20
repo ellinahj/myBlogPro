@@ -36,7 +36,6 @@ export default function Header() {
           dispatch(setThemeColor(res.data.user_color));
           dispatch(setUserInfo(res.data));
           dispatch(setFont(res.data.user_font));
-          dispatch(setLoading(false));
           dispatch(setLogin(true));
         }
       });

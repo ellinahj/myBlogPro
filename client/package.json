@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "next -p 3004",
+    "dev": "next -p 3001",
     "build": "next build",
     "start": "NODE_ENV=pro next start -p 3001"
   },

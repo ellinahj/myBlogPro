@@ -97,6 +97,8 @@ const loginController = (req, res, next) => {
           res.status(500).json({ message: "server error" });
           next(err);
         });
+    } else {
+      res.status(401).json({ message: "IdORPwd" });
     }
   } catch (e) {
     next(e);

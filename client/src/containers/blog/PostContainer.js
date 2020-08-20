@@ -10,12 +10,11 @@ import UploadComponent from '../../components/blog/ThreePhotoUpload';
 import { setBlog, getCate } from '../../../src/api/blog';
 import { BasicTitle, theme } from '../../utils/theme';
 import Router from 'next/router';
-import { setClickMenu, setCategory } from '../../actions/base';
+import { setClickMenu, setCategory, setLoading } from '../../actions/base';
 import { set } from 'date-fns';
 
 export default function addContainer(props) {
   const dispatch = useDispatch();
-  const [startDate, setStartDate] = useState(new Date());
   const [imgFile, setImgFile] = useState('');
   const [value, setValue] = useState({
     cate: 0,
@@ -44,9 +43,11 @@ export default function addContainer(props) {
       const config = {
         access_token: getToken
       };
+      dispatch(setLoading(true));
       getCate(config).then(res => {
         if (res.status === 200 && res.data) {
           dispatch(setCategory(res.data.data));
+          dispatch(setLoading(false));
         }
       });
     }
@@ -75,12 +76,12 @@ export default function addContainer(props) {
       const getToken = localStorage.getItem('mydiary_token');
       if (getToken) {
         const config = {
-          access_token: getToken,
-          'Access-Control-Allow-Headers': '*',
-          'Content-Type': 'application/x-www-form-urlencoded'
+          access_token: getToken
         };
+        dispatch(setLoading(true));
         setBlog(config, formData).then(res => {
           if (res.status === 200) {
+            dispatch(setLoading(false));
             alert('등록되었습니다.');
             Router.push('/blog');
             dispatch(setClickMenu({ cateId: value.cate }));
