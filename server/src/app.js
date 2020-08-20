@@ -22,7 +22,7 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 const corsOptions = {
-  origin: "http://hyungjung.site",
+  origin: "http://hyunjung.site",
   credentials: true
 };
 app.use(cors(corsOptions));
