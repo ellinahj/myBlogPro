@@ -1,6 +1,3 @@
-import fs from "fs";
-import multer from "multer";
-import path from "path";
 import AWS from "aws-sdk";
 import multerS3 from "multer-s3";
 import {
@@ -70,7 +67,6 @@ const getUserInfo = async (req, res, next) => {
           res.status(200).json({ ...data });
         })
         .catch(err => {
-          console.log(err, "selectUser err");
           next(err);
         });
     } else {
@@ -117,15 +113,19 @@ const updateInfo = async (req, res, next) => {
           //새가입자가 처음 프사 넣을경우, s3 삭제없이 바로 db에 넣는다
           let { data } = req.body;
           data = JSON.parse(data);
-          data["profile_photo"] = req.file.key;
-          updateUser(result.userId, data).then(data => {
-            let profile_url = null;
-            if (data.profile_photo !== null) {
-              profile_url = ImgUrl + data.profile_photo;
-            }
-            delete data.profile_photo;
-            res.status(200).json({ ...data, profile_url });
-          });
+          data["profile_photo"] = req.file ? req.file.key : null;
+          updateUser(result.userId, data)
+            .then(data => {
+              let profile_url = null;
+              if (data.profile_photo !== null) {
+                profile_url = ImgUrl + data.profile_photo;
+              }
+              delete data.profile_photo;
+              res.status(200).json({ ...data, profile_url });
+            })
+            .catch(e => {
+              next(e);
+            });
         }
       });
     }
@@ -138,16 +138,13 @@ const getPwd = async (req, res, next) => {
     const token = req.headers["access_token"];
     const result = await authCheck(token);
     const { pwd } = req.body;
-    console.log(pwd, "pwd");
     if (result) {
       selectPwd(result.userId, pwd)
         .then(data => {
-          console.log(data, "data");
           res.status(200).json({ status: 200 });
         })
         .catch(err => {
           res.status(401).json({ message: "Mismatched pwd" });
-          console.log(err, "selectUser err");
         });
     } else {
       res.status(400).json({ status: 400 });
@@ -164,7 +161,6 @@ const updatePwd = async (req, res, next) => {
     if (result) {
       checkAndInsertPwd(result.userId, prevPwd, newPwd)
         .then(data => {
-          console.log(data, "data");
           res.status(200).json({ status: 200 });
         })
         .catch(err => {

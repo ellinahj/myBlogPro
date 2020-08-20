@@ -8,7 +8,6 @@ mysql_dbc.db_open(connection);
 
 const selectId = function(user_id) {
   return new Promise((resolve, reject) => {
-    console.log(user_id, "user id");
     connection.query(
       "SELECT count(*) as count FROM mydiary.users WHERE user_id = ?",
       [user_id],

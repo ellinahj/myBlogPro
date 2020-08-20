@@ -19,13 +19,12 @@ const selectBlog = (user_id, cate_id) => {
   });
 };
 const insertBlog = (user_id, data) => {
-  console.log(user_id, data, "model");
   return new Promise((resolve, reject) => {
     connection.query(
       "insert into mydiary.blog (user_id,cate_id,now_date,title,comment,first_image,second_image,third_image,location_name) VALUES (?,?,?,?,?,?,?,?,?) ",
       [
-        user_id, //user
-        data.cate, //cate
+        user_id,
+        data.cate,
         data.date,
         data.title,
         data.comment,
@@ -70,7 +69,6 @@ const deleteBlog = (user_id, blogId) => {
           reject(err);
         } else {
           selectBlog(user_id, blogId).then(res => {
-            console.log(res, "deleelelelelelllres");
             resolve(res);
           });
         }

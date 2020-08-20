@@ -11,7 +11,6 @@ const selectCateNumber = id => {
         if (err) {
           reject(err);
         } else {
-          // console.log(rows, "rows");
           resolve(rows);
         }
       }
@@ -52,7 +51,6 @@ const updateCategory = async (userId, cate) => {
     })
   )
     .then(values => {
-      console.log(values, "2");
       return new Promise((resolve, reject) => {
         connection.query(
           "select id, title from mydiary.category WHERE user_id = ?",
@@ -61,7 +59,6 @@ const updateCategory = async (userId, cate) => {
             if (err) {
               reject(err);
             } else {
-              console.log(rows, "slect rows");
               resolve(rows);
             }
           }
@@ -69,12 +66,10 @@ const updateCategory = async (userId, cate) => {
       });
     })
     .catch(err => {
-      console.log(err, "all err");
       return err;
     });
 };
 const deleteCategory = (userId, cateId) => {
-  console.log(cateId, userId, "delete");
   return new Promise((resolve, reject) => {
     connection.query(
       "delete from mydiary.category WHERE user_id = ? and id = ?",
@@ -90,7 +85,6 @@ const deleteCategory = (userId, cateId) => {
               if (err) {
                 reject(err);
               } else {
-                console.log(rows, "slect rows");
                 resolve(rows);
               }
             }

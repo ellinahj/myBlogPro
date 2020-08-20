@@ -29,27 +29,13 @@ const createUser = async (req, res, next) => {
   try {
     //회원 등록
     const { user_id, password } = req.body;
-    console.log(user_id, password, "usr pas");
-    // findDuplicatedUser(user_id, password)
-    //   .then(count => {
-    //     console.log(count, "count");
-    //     if (count >= 1) {
-    //       res.status(400).send({
-    //         status: 400,
-    //         message: "one of user_id,nickname is duplicated"
-    //       });
-    //     } else {
-    //       console.log(user_id, nickname, password, "inini");
     insertUser(user_id, password)
       .then(data =>
         res.status(200).send({ status: 200, message: "join success" })
       )
       .catch(e => {
-        console.log(e, "insertUser e");
         next(e);
       });
-    //   }
-    // })
   } catch (e) {
     next(e);
   }

@@ -55,7 +55,6 @@ const selectProfilePhoto = user_id => {
   });
 };
 const updateUser = (user_id, data) => {
-  console.log(data, "data");
   return new Promise((resolve, reject) => {
     connection.query(
       "update mydiary.users set nickname=?,main_title=?,user_color=?,profile_photo=?,user_font=? where user_id = ?",
@@ -71,7 +70,7 @@ const updateUser = (user_id, data) => {
         if (err) {
           reject(err);
         } else {
-          console.log(row, "row");
+          console.log(row, "가입");
           connection.query(
             "select * from mydiary.users WHERE user_id = ?",
             [user_id],
@@ -98,7 +97,7 @@ const selectPwd = (user_id, password) => {
       [user_id],
       function(err, storedPassword) {
         if (err) {
-          console.log(err, "select pwd err");
+          reject(err);
         } else {
           if (storedPassword.length >= 1) {
             const hash = storedPassword[0].password;
