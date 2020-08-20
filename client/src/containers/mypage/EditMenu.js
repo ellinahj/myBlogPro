@@ -42,6 +42,7 @@ export default function ChangeMenu(props) {
       });
     }
   }, []);
+
   const handleEditMenu = () => {
     setEdit(!edit);
   };

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Router from 'next/router';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
