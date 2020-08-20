@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setThemeColor } from '../../actions/base';
 import ChromePicker from 'react-color';
 export default function ThemeChange(props) {
-  const { handleThemeChange } = props;
+  const { showEdit } = props;
   const dispatch = useDispatch();
   const [openPicker, setOpenPicker] = useState(false);
   const themeButton = useRef(null);
@@ -46,11 +46,14 @@ export default function ThemeChange(props) {
   }, []);
   return (
     <Con>
-      <WidthDiv>
-        <ThemeButton onClick={handleClick} userColor={userColor}>
-          테마변경
-        </ThemeButton>
-      </WidthDiv>
+      {showEdit && (
+        <WidthDiv>
+          <ThemeButton onClick={handleClick} userColor={userColor}>
+            테마변경
+          </ThemeButton>
+        </WidthDiv>
+      )}
+
       {openPicker ? (
         <div style={popover} ref={themeButton}>
           <div style={cover} onClick={handleClose} />

@@ -170,7 +170,7 @@ export default function InfoContainer(props) {
               </InputRow>
             </MarginRow>
             <MarginRow>
-              <ThemeChange />
+              <ThemeChange showEdit={showEdit} />
             </MarginRow>
             <MarginFontRow usercolor={userColor}>
               {showEdit ? <Title>폰트변경</Title> : <Title>폰트</Title>}
