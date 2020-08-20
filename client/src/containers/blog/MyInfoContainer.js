@@ -22,6 +22,9 @@ const MyInfoWrap = styled.section`
   padding: 40px;
   box-sizing: border-box;
   background-image: linear-gradient(90deg, ${props => props.userColor}, ${props => props.luminantColor});
+  @media (max-width: 480px) {
+    padding: 30px;
+  }
 `;
 const Profile = styled.div`
   display: flex;
