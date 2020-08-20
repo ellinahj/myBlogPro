@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Router from 'next/router';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
@@ -7,6 +7,7 @@ import { setLogin, setThemeColor, setUserInfo, setFont } from '../../actions/bas
 export default function TopInfo(props) {
   const dispatch = useDispatch();
   const userInfo = useSelector(state => state.common.userInfo);
+
   const logout = () => {
     Router.push('/login');
     dispatch(setLogin(false));

@@ -1,5 +1,13 @@
 import apiSend from '../utils/apiSend';
 
+const findId = data => {
+  return apiSend({
+    url: '/auth/findId',
+    method: 'post',
+    data: data
+  });
+};
+
 const login = data => {
   return apiSend({
     url: '/auth/login',
@@ -22,4 +30,4 @@ const join = data => {
   });
 };
 
-export { login, loginCheck, join };
+export { findId, login, loginCheck, join };

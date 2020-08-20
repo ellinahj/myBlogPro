@@ -12,8 +12,7 @@ const findDuplicatedId = (req, res, next) => {
     selectId(user_id)
       .then(count => {
         if (count >= 1) {
-          // t.프론트 처리..
-          res.status(400).send({ status: 400, message: "dupilicated" });
+          res.status(200).send({ status: 401, message: "dupilicatedId" });
         } else {
           res.status(200).send({ status: 200, message: "available" });
         }

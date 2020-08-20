@@ -14,7 +14,7 @@ export default function Header() {
   const dispatch = useDispatch();
   const userColor = useSelector(state => state.common.userColor);
   const userInfo = useSelector(state => state.common.userInfo);
-  const isLoggedIn = useSelector(state => state.common.isLoggedIn);
+
   const tooltip = useSelector(state => state.common.showToolTip);
   const luminantColor = userColor && colorLuminance(userColor, 0.5);
 

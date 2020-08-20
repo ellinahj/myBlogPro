@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import Layout from '../../src/components/common/Layout';
 import TopInfo from '../../src/containers/mypage/TopInfo';
 import EditBasicInfo from '../../src/containers/mypage/EditBasicInfo';

@@ -1,17 +1,25 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Router from 'next/router';
 import styled from 'styled-components';
 import { setUserInfo, setThemeColor, setLoading } from '../../actions/base';
-import { login } from '../../api/auth';
+import { login, findId } from '../../api/auth';
 import { theme } from '../../utils/theme';
 
 export default function LoginContainer() {
+  const dispatch = useDispatch();
   const [id, setId] = useState('');
   const [pw, setPw] = useState('');
-  const dispatch = useDispatch();
   const pwValue = useRef(null);
+
   const userColor = useSelector(state => state.common.userColor);
+  const userInfo = useSelector(state => state.common.userInfo);
+
+  useEffect(() => {
+    if (userInfo !== undefined) {
+      Router.push('/blog');
+    }
+  }, [userInfo]);
 
   const userLogin = () => {
     const data = { user_id: id, password: pw };
@@ -107,7 +115,7 @@ const InputWrap = styled.div`
     width: 100%;
     height: 40px;
     box-sizing: border-box;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
     padding-left: 10px;
     font-size: 17px;
   }
@@ -135,7 +143,7 @@ const Title = styled.div`
 `;
 const SubTitle = styled.div`
   font-size: ${theme.mFont};
-  margin: 10px 0 10px;
+  margin: 20px 0 10px;
 `;
 const JoinCon = styled.div`
   margin-bottom: 15px;

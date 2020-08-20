@@ -1,8 +1,8 @@
 import axios from 'axios';
 import Router from 'next/router';
 import store from '../store';
-import { setUserInfo, setLogin, setThemeColor, setFont } from '../actions/base';
-const localURL = 'http://127.0.0.1:3005';
+import { setUserInfo, setLogin, setThemeColor, setFont, setLoading } from '../actions/base';
+const localURL = 'http://127.0.0.1:3000';
 const proURL = 'http://api.hyunjung.site';
 const instance = axios.create({
   baseURL: `${proURL}/api`,
@@ -11,7 +11,9 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
   function(config) {
-    // store.dispatch(setLoading(true));
+    if (config.url !== '/user/nickname' && config.url !== '/user/pwd' && config.url !== '/auth/findId') {
+      store.dispatch(setLoading(true));
+    }
     return config;
   },
   function(error) {
@@ -20,6 +22,13 @@ instance.interceptors.request.use(
 );
 instance.interceptors.response.use(
   function(response) {
+    if (
+      response.config.url !== '/user/nickname' &&
+      response.config.url !== '/user/pwd' &&
+      response.config.url !== '/auth/findId'
+    ) {
+      store.dispatch(setLoading(false));
+    }
     // http status가 200인 경우
     // 응답 바로 직전에 대해 작성
     // .then()
@@ -34,16 +43,13 @@ instance.interceptors.response.use(
         .catch()
     */
     if (error.response) {
+      store.dispatch(setLoading(false));
       if (error.response.status === 401) {
-        //IdORPwd
-        if (!(error.response.data.message === 'IdORPwd')) {
-          alert('아이디나 비밀번호를 확인해주세요.');
-        } else if (!(error.response.data.message === 'Mismatched pwd')) {
+        if (!(error.response.data.message === 'Mismatched pwd')) {
           alert('아이디나 비밀번호를 확인해주세요.');
         }
       } else if (error.response.status === 400) {
         Router.push('/login');
-        store.dispatch(setLogin(false));
         store.dispatch(setUserInfo(undefined));
         store.dispatch(setFont(undefined));
         store.dispatch(setThemeColor('#7c7cec'));

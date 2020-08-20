@@ -2,21 +2,19 @@ import { useState } from 'react';
 import Router from 'next/router';
 import styled from 'styled-components';
 import { theme } from '../../utils/theme';
-import { join } from '../../api/auth';
+import { join, findId } from '../../api/auth';
 
 export default function JoinContainer() {
   const [id, setId] = useState('');
   const [pwd, setPwd] = useState('');
   const [pwdCheck, setPwdCheck] = useState('');
+  const [idAvailable, setIdAvailable] = useState(null);
+  const [checkTimeout, setCheckTimeout] = useState(0);
 
   const enterKey = () => {
     if (window.event.keyCode === 13) {
       userJoin();
     }
-  };
-
-  const idConfirm = value => {
-    setId(value);
   };
   const pwdConfirm = value => {
     setPwd(value);
@@ -25,6 +23,33 @@ export default function JoinContainer() {
     setPwdCheck(value);
   };
 
+  const idConfirm = value => {
+    const replaceValue = value.replace(/\s/g, '');
+    setId(replaceValue);
+    setIdAvailable(null);
+    checkTimeout && clearTimeout(checkTimeout);
+    if (replaceValue.length === 0) {
+      return;
+    }
+    if (!!replaceValue && idRegCheck(replaceValue) === true) {
+      const timer = setTimeout(() => {
+        const getToken = localStorage.getItem('mydiary_token');
+        if (getToken) {
+          const data = { user_id: replaceValue };
+          findId(data).then(res => {
+            if (res.status === 200) {
+              if (res.data.message === 'available') {
+                setIdAvailable(true);
+              } else if (res.data.message === 'dupilicatedId') {
+                setIdAvailable(false);
+              }
+            }
+          });
+        }
+      }, 1000);
+      setCheckTimeout(timer);
+    }
+  };
   const userJoin = () => {
     const data = { user_id: id, password: pwd };
     join(data).then(res => {
@@ -46,6 +71,8 @@ export default function JoinContainer() {
             <Warning>영문, 영문+숫자조합 6~15자리로 입력해주세요.</Warning>
           </WarningWrap>
         )}
+        {id !== '' && idAvailable === true && <Match>사용가능합니다.</Match>}
+        {id !== '' && idAvailable === false && <Mismatch>이미 사용중인 아이디입니다.</Mismatch>}
         <SubTitle>비밀번호 *</SubTitle>
         <input type="password" name="pwd" value={pwd} onChange={e => pwdConfirm(e.target.value)} autoComplete="off" />
         {pwd.length > 0 && !pwRegCheck(pwd) && (
@@ -68,10 +95,10 @@ export default function JoinContainer() {
           </WarningWrap>
         )}
         <JoinBtn
-          disabled={!idRegCheck(id) || !pwRegCheck(pwd) || pwdCheck !== pwd}
+          disabled={idAvailable === false || !idRegCheck(id) || !pwRegCheck(pwd) || pwdCheck !== pwd}
           onClick={userJoin}
           onKeyUp={enterKey}
-          allOk={idRegCheck(id) && pwRegCheck(pwd) && pwdCheck === pwd}
+          allOk={idAvailable === true && idRegCheck(id) && pwRegCheck(pwd) && pwdCheck === pwd}
         >
           회원가입
         </JoinBtn>
@@ -162,4 +189,16 @@ const LoginCon = styled.div`
 const BottomWrap = styled.div`
   display: flex;
   justify-content: space-between;
+`;
+const Match = styled.div`
+  color: ${theme.greenFont};
+  font-size: ${theme.ssFont};
+  display: flex;
+  align-items: center;
+`;
+const Mismatch = styled.div`
+  color: ${theme.redFont};
+  font-size: ${theme.ssFont};
+  display: flex;
+  align-items: center;
 `;
