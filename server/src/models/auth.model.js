@@ -25,6 +25,7 @@ const selectId = function(user_id) {
 };
 
 const insertUser = (user_id, password) => {
+  //bcrypt
   return new Promise((resolve, reject) => {
     bcrypt.hash(password, saltRounds, function(err, hashedPassword) {
       connection.query(

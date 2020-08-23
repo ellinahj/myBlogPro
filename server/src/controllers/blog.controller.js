@@ -146,7 +146,6 @@ const removeBlog = async (req, res, next) => {
         else {
           deleteBlog(result.id, req.body.id)
             .then(result => {
-              console.log(result, "delete result");
               res.status(200).json({ status: 200, message: "deleted" });
             })
             .catch(err => {
@@ -158,7 +157,6 @@ const removeBlog = async (req, res, next) => {
     } else {
       deleteBlog(result.id, req.body.id)
         .then(result => {
-          console.log(result, "delete result");
           res.status(200).json({ status: 200, message: "deleted" });
         })
         .catch(err => {

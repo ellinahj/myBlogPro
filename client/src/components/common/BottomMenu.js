@@ -10,7 +10,7 @@ export default function BottomMenu({ isScrollDown }) {
   return (
     <BottomMenuWrap isScrollDown={isScrollDown}>
       {Router.asPath === '/blog' && (
-        <BottomMenuSize userColor={userColor} onClick={() => Router.push('/post')}>
+        <BottomMenuSize userColor={userColor}>
           <svg
             onClick={() => Router.push('/post')}
             height="40"

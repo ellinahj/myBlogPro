@@ -13,7 +13,6 @@ const selectNickname = nickname => {
         if (err) {
           reject(err);
         } else {
-          console.log(rows[0].count, "rows[0].count");
           resolve(rows[0].count);
         }
       }
