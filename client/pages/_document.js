@@ -27,6 +27,7 @@ export default class MyDocument extends Document {
             property="og:image"
             content="https://myblogs3.s3.ap-northeast-2.amazonaws.com/images/myblogmetaogimg.jpeg"
           />
+          <link rel="shortcut icon" type="image/x-icon" href="http://hyunjung.site/images/myblog.ico" />
           <link
             href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@400;700&family=Nanum+Myeongjo:wght@400;700&display=swap"
             rel="stylesheet"
