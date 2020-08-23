@@ -25,7 +25,7 @@ export default class MyDocument extends Document {
           <meta property="og:description" content="나의 스타일을 표현하는 블로그" />
           <meta
             property="og:image"
-            content="https://myblogs3.s3.ap-northeast-2.amazonaws.com/images/KakaoTalk_Photo_2020-08-23-22-15-05.jpeg"
+            content="https://myblogs3.s3.ap-northeast-2.amazonaws.com/images/myblogmetaogimg.jpeg"
           />
           <link
             href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@400;700&family=Nanum+Myeongjo:wght@400;700&display=swap"
