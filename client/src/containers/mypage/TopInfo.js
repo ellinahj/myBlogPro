@@ -10,10 +10,10 @@ export default function TopInfo(props) {
 
   const logout = () => {
     Router.push('/login');
-    dispatch(setLogin(false));
+    // dispatch(setLogin(false));
     localStorage.removeItem('mydiary_token');
     dispatch(setUserInfo(undefined));
-    dispatch(setThemeColor('#7c7cec'));
+    dispatch(setThemeColor('#e36f63'));
     dispatch(setFont(`'Gothic A1', sans-serif`));
 
     alert('로그아웃되었습니다.');
