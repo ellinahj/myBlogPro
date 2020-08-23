@@ -70,7 +70,7 @@ textarea{
 `;
 
 export default function MyApp({ Component, pageProps }) {
-  const [currentColor, setCurrentColor] = useState('#7c7cec');
+  const [currentColor, setCurrentColor] = useState('#e36f63');
   const [currentValue, setCurrentValue] = useState(`'Gothic A1', sans-serif`);
 
   useEffect(() => {

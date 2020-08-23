@@ -125,7 +125,7 @@ const LoginBtn = styled.button`
   height: 45px;
   box-sizing: border-box;
   font-size: 15px;
-  background: ${props => (props.allOk ? '#7c7cec' : '#ddd')};
+  background: ${props => (props.allOk ? '#e36f63' : '#ddd')};
   cursor: ${props => (props.allOk ? 'pointer' : 'not-allowed')};
   text-align: center;
   line-height: 45px;

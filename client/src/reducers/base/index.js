@@ -12,7 +12,7 @@ import {
 
 export const initialState = {
   number: 0,
-  userColor: '#7c7cec',
+  userColor: '#e36f63',
   isLoggedIn: undefined,
   userInfo: undefined,
   category: undefined,
