@@ -31,6 +31,7 @@ export default function List(props) {
                           fill: '#ddd'
                         }
                       }}
+                      disableEdgeSwiping="false"
                       heightMode="current"
                     >
                       {item.image_url.map((item, index) => {
