@@ -2,7 +2,7 @@ import React from 'react';
 import Router from 'next/router';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
-import { setLogin, setThemeColor, setUserInfo, setFont } from '../../actions/base';
+import { setLogin, setThemeColor, setUserInfo, setFont, setCategory, setClickMenu } from '../../actions/base';
 
 export default function TopInfo(props) {
   const dispatch = useDispatch();
@@ -10,12 +10,12 @@ export default function TopInfo(props) {
 
   const logout = () => {
     Router.push('/login');
-    // dispatch(setLogin(false));
     localStorage.removeItem('mydiary_token');
     dispatch(setUserInfo(undefined));
     dispatch(setThemeColor('#e36f63'));
     dispatch(setFont(`'Gothic A1', sans-serif`));
-
+    dispatch(setCategory(undefined));
+    dispatch(setClickMenu({}));
     alert('로그아웃되었습니다.');
   };
   return (

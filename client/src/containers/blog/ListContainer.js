@@ -52,7 +52,6 @@ export default function ListContainer() {
       });
     }
   }, []);
-
   const fetchBlogData = cateId => {
     const storedToken = localStorage.getItem('mydiary_token');
     if (!storedToken) {
@@ -120,9 +119,7 @@ export default function ListContainer() {
   return (
     <ListCon>
       <Menu handleMenuClick={handleMenuClick} luminantColor={luminantColor} isSticky={isSticky} userColor={userColor} />
-
       {blogData && blogData.length !== 0 && <Search getSearch={getSearch} blogData={blogData} searched={searched} />}
-
       {searchValue !== '' && searched && (
         <Col>
           <AllViewWrap>
