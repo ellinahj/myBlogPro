@@ -88,7 +88,6 @@ const updateUser = (user_id, data) => {
   });
 };
 const selectPwd = (user_id, password) => {
-  console.log(user_id, password, "userid pwd");
   return new Promise((resolve, reject) => {
     connection.query(
       "SELECT password FROM mydiary.users WHERE user_id = ?",
@@ -105,7 +104,6 @@ const selectPwd = (user_id, password) => {
                 const sendResult = "match";
                 resolve(sendResult);
               } else {
-                console.log("불일치");
                 const sendResult = "mismatch";
                 reject(sendResult);
               }
@@ -123,22 +121,19 @@ const checkAndInsertPwd = (user_id, password, newPassword) => {
       [user_id],
       function(err, storedPassword) {
         if (err) {
-          console.log(err, "select pwd err");
+          reject(err);
         } else {
           if (storedPassword.length >= 1) {
             const hash = storedPassword[0].password;
             bcrypt.compare(password, hash, function(error, result) {
               if (result === true) {
-                console.log(newPassword, "일치");
                 const pwdCheckResult = new Promise((resolve, reject) => {
                   bcrypt.hash(newPassword, saltRounds, function(
                     err,
                     hashedPassword
                   ) {
                     if (err) {
-                      console.log(err, " pwd hash err");
                     } else if (hashedPassword) {
-                      console.log(hashedPassword, "has");
                       connection.query(
                         "update mydiary.users set password=? where user_id=?",
                         [hashedPassword, user_id],
@@ -155,15 +150,12 @@ const checkAndInsertPwd = (user_id, password, newPassword) => {
                 });
                 pwdCheckResult
                   .then(res => {
-                    console.log(res, "res");
                     lastResolve(res);
                   })
                   .catch(e => {
-                    console.log(e, "pwdCheckResult err");
                     throw new Error("비번변경 에러");
                   });
               } else {
-                console.log("불일치");
                 const sendResult = "pwError";
                 lastReject(sendResult);
               }
