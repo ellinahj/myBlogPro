@@ -29,9 +29,11 @@ export default function List(props) {
                         prevButtonText: '<',
                         pagingDotsStyle: {
                           fill: '#ddd'
-                        }
+                        },
+                        prevButtonStyle: { outline: 'none' },
+                        nextButtonStyle: { outline: 'none' }
                       }}
-                      disableEdgeSwiping="false"
+                      disableEdgeSwiping="true"
                       heightMode="current"
                     >
                       {item.image_url.map((item, index) => {
