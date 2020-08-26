@@ -29,4 +29,4 @@ const BasicTitle = css`
   font-size: ${theme.mlFont};
   color: #111;
 `;
-export { theme, BasicButton, BlueEditBtn, BasicTitle };
+export { theme, BlueEditBtn, BasicButton, BasicTitle };

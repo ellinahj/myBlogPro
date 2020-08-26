@@ -2,7 +2,6 @@ import styled, { css } from 'styled-components';
 import Container from '../../components/common/Container';
 import { useState, useEffect } from 'react';
 import { updatePwd, checkPwd } from '../../api/user';
-import { theme, BlueEditBtn, BasicTitle, BasicButton } from '../../utils/theme';
 
 export default function ChangePwd(props) {
   const { clickEditPw, showEditPw } = props;
@@ -163,7 +162,7 @@ const MarginTopRow = styled(Row)`
   margin-top: 40px;
 `;
 const Title = styled.div`
-  ${BasicTitle};
+  ${props => props.theme.BasicTitle};
   margin-right: 10px;
 `;
 const MainTitle = styled(Title)`
@@ -180,7 +179,7 @@ const TopCon = styled.div`
 const SubmitBtn = styled.button`
   margin: 30px auto 0;
   padding: 5px 10px;
-  font-size: ${theme.mFont};
+  font-size: ${props => props.theme.mFont};
   ${props =>
     props.allOk &&
     css`
@@ -193,22 +192,22 @@ const Input = styled.input`
   height: 20px;
 `;
 const PwEdit = styled.div`
-  ${BlueEditBtn}
+  ${props => props.theme.BlueEditBtn}
   @media (max-width: 480px) {
     margin-top: 15px;
   }
 `;
 const Match = styled.div`
-  color: ${theme.greenFont};
+  color: ${props => props.theme.greenFont};
   margin: 10px 0 0 0;
-  font-size: ${theme.sFont};
+  font-size: ${props => props.theme.sFont};
   display: flex;
   align-items: center;
 `;
 const Mismatch = styled.div`
-  color: ${theme.redFont};
+  color: ${props => props.theme.redFont};
   margin: 10px 0 0 0;
-  font-size: ${theme.sFont};
+  font-size: ${props => props.theme.sFont};
   display: flex;
   align-items: center;
 `;

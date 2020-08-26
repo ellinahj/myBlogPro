@@ -19,7 +19,7 @@ const GlobalStyle = createGlobalStyle`
         height:100%;
         position: relative;
         font-family: ${props => props.currentValue};
-        font-size:${theme.theme.mFont};
+        font-size:${props => props.theme.mFont};
         background:#fcfcfc;
   };
   #__next{  
@@ -41,8 +41,8 @@ const GlobalStyle = createGlobalStyle`
   };
   button{
     font-family: ${props => props.currentValue};
-    font-size:${theme.theme.sFont};
-    ${theme.BasicButton};
+    font-size:${props => props.theme.sFont};
+    ${props => props.theme.BasicButton};
     :hover {
     opacity: 1;
     }
@@ -53,7 +53,7 @@ const GlobalStyle = createGlobalStyle`
   }
   ::-webkit-input-placeholder {
     font-family: ${props => props.currentValue};
-    font-size:${theme.theme.mFont};
+    font-size:${props => props.theme.mFont};
 }
 input:disabled {
   background: #eee;
@@ -61,11 +61,11 @@ input:disabled {
 }
 input{
   font-family: ${props => props.currentValue};
-  font-size:${theme.theme.mFont};
+  font-size:${props => props.theme.mFont};
 }
 textarea{
   font-family: ${props => props.currentValue};
-  font-size:${theme.theme.mFont};
+  font-size:${props => props.theme.mFont};
 }
 `;
 

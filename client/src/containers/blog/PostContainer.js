@@ -8,7 +8,6 @@ import styled from 'styled-components';
 import Con from '../../components/common/Container';
 import UploadComponent from '../../components/blog/ThreePhotoUpload';
 import { setBlog, getCate } from '../../../src/api/blog';
-import { BasicTitle, theme } from '../../utils/theme';
 import Router from 'next/router';
 import { setClickMenu, setCategory, setLoading } from '../../actions/base';
 import { set } from 'date-fns';
@@ -275,7 +274,7 @@ const Col = styled.div`
 const Subject = styled.div`
   margin-right: 20px;
   white-space: pre;
-  ${BasicTitle}
+  ${props => props.theme.BasicTitle}
 `;
 const Input = styled.input`
   /* flex: 1; */
@@ -312,15 +311,15 @@ const CountRow = styled.div`
 `;
 const CountComment = styled.div`
   color: #aaa;
-  font-size: ${theme.sFont};
+  font-size: ${props => props.theme.sFont};
 `;
 const Slush = styled.div`
   color: #aaa;
   margin: 0 2px 0;
-  font-size: ${theme.sFont};
+  font-size: ${props => props.theme.sFont};
 `;
 const Maxcount = styled.span`
   color: #aaa;
-  font-size: ${theme.sFont};
+  font-size: ${props => props.theme.sFont};
 `;
 const MAX_COMMENT = 200;

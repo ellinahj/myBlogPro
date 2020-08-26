@@ -5,7 +5,6 @@ import ThemeChange from '../../components/mypage/ThemeChange';
 import { useSelector } from 'react-redux';
 import Container from '../../components/common/Container';
 import ProfileChange from '../../components/common/PhotoUpload';
-import { theme, BasicTitle, BasicButton } from '../../utils/theme';
 import { updateInfo, findNickname } from '../../api/user';
 import { setUserInfo, setFont } from '../../actions/base';
 
@@ -239,7 +238,7 @@ const MarginRow = styled(Row)`
   }
 `;
 const Title = styled.div`
-  ${BasicTitle};
+  ${props => props.theme.BasicTitle};
   width: 120px;
 `;
 const TopCon = styled.div`
@@ -255,23 +254,23 @@ const Input = styled.input`
   height: 25px;
 `;
 const SubmitBtn = styled.button`
-  ${BasicButton};
+  ${props => props.theme.BasicButton};
   margin: 30px auto 0;
   padding: 5px 10px;
-  font-size: ${theme.mFont};
+  font-size: ${props => props.theme.mFont};
   cursor: ${props => (props.available === true ? 'pointer' : 'not-allowed')};
 `;
 const Match = styled.div`
-  color: ${theme.greenFont};
+  color: ${props => props.theme.greenFont};
   margin: 10px 0 0 0;
-  font-size: ${theme.sFont};
+  font-size: ${props => props.theme.sFont};
   display: flex;
   align-items: center;
 `;
 const Mismatch = styled.div`
-  color: ${theme.redFont};
+  color: ${props => props.theme.redFont};
   margin: 10px 0 0 0;
-  font-size: ${theme.sFont};
+  font-size: ${props => props.theme.sFont};
   display: flex;
   align-items: center;
 `;
@@ -292,16 +291,16 @@ const CountRow = styled.div`
 const CountNickname = styled.div`
   color: #aaa;
   margin-left: 10px;
-  font-size: ${theme.sFont};
+  font-size: ${props => props.theme.sFont};
 `;
 const Slush = styled.div`
   color: #aaa;
   margin: 0 2px 0;
-  font-size: ${theme.sFont};
+  font-size: ${props => props.theme.sFont};
 `;
 const Maxcount = styled.span`
   color: #aaa;
-  font-size: ${theme.sFont};
+  font-size: ${props => props.theme.sFont};
 `;
 
 const MarginFontRow = styled(Row)`

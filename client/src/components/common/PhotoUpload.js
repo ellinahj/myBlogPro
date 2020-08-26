@@ -167,7 +167,7 @@ const TitleCenter = styled.div`
   margin: 20px 0;
 
   span {
-    ${BlueEditBtn};
+    ${props => props.theme.BlueEditBtn};
     font-size: ${props => props.theme.mFont};
   }
 `;

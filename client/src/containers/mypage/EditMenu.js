@@ -6,7 +6,6 @@ import { getCate } from '../../api/blog';
 import { deleteCate, updateCate } from '../../api/category';
 import Container from '../../components/common/Container';
 import ImgBtn from '../../components/common/ImgBtn';
-import { theme, BasicTitle, BlueEditBtn, BasicButton } from '../../utils/theme';
 
 export default function ChangeMenu(props) {
   const dispatch = useDispatch();
@@ -311,7 +310,7 @@ const TitleRow = styled(MenuRow)`
   }
 `;
 const Title = styled.span`
-  ${BasicTitle};
+  ${props => props.theme.BasicTitle};
   margin-right: 20px;
   font-size: ${props => props.theme.mlFont};
 `;
@@ -328,7 +327,7 @@ const NumberFont = styled.span`
   margin-right: 5px;
 `;
 const EditTitle = styled.span`
-  ${BlueEditBtn}
+  ${props => props.theme.BlueEditBtn}
   @media (max-width: 780px) {
     margin-top: 15px;
   }
@@ -353,7 +352,7 @@ const CloseBtn = styled(ImgBtn)`
 const max_category_count = 3;
 
 const SubmitBtn = styled.button`
-  ${BasicButton};
+  ${props => props.theme.BasicButton};
   margin: 30px auto 0;
   padding: 5px 10px;
   font-size: ${props => props.theme.mFont};
@@ -365,16 +364,16 @@ const CountRow = styled.div`
 const CountNickname = styled.div`
   color: #aaa;
   margin-left: 5px;
-  font-size: ${theme.sFont};
+  font-size: ${props => props.theme.sFont};
 `;
 const Slush = styled.div`
   color: #aaa;
   margin: 0 2px 0;
-  font-size: ${theme.sFont};
+  font-size: ${props => props.theme.sFont};
 `;
 const Maxcount = styled.span`
   color: #aaa;
-  font-size: ${theme.sFont};
+  font-size: ${props => props.theme.sFont};
 `;
 
 const MAX_TITLE = 15;

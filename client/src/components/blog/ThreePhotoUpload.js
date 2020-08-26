@@ -1,7 +1,6 @@
 import styled, { css } from 'styled-components';
 import { useState, useRef, useCallback, useEffect } from 'react';
 import ReactCrop from 'react-image-crop';
-import { BasicTitle } from '../../utils/theme';
 
 export default function Upload(props) {
   const { imgFormData } = props;
@@ -181,6 +180,6 @@ const PhotoName = styled.div`
   margin-top: 5px;
 `;
 const EditFont = styled.div`
-  ${BasicTitle};
+  ${props => props.theme.BasicTitle};
   margin-bottom: 5px;
 `;

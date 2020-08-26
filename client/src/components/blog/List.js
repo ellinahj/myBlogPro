@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
-import { theme } from '../../utils/theme';
 import Carousel from 'nuka-carousel';
 import moment from 'moment';
 
@@ -33,7 +32,7 @@ export default function List(props) {
                         prevButtonStyle: { outline: 'none' },
                         nextButtonStyle: { outline: 'none' }
                       }}
-                      disableEdgeSwiping="true"
+                      disableEdgeSwiping={true}
                       heightMode="current"
                     >
                       {item.image_url.map((item, index) => {
@@ -144,7 +143,7 @@ const WriteWrap = styled.div`
   justify-content: center;
 `;
 const Write = styled.div`
-  font-size: ${theme.mFont};
+  font-size: ${props => props.theme.mFont};
   color: #ccc;
   margin: 130px 0 10px;
 `;
