@@ -1,16 +1,12 @@
 import { useSelector, useDispatch } from 'react-redux';
 import React, { useState, useEffect } from 'react';
-import DatePicker, { registerLocale } from 'react-datepicker';
-import ko from 'date-fns/locale/ko';
-registerLocale('ko', ko);
-
 import styled from 'styled-components';
 import Con from '../../components/common/Container';
 import UploadComponent from '../../components/blog/ThreePhotoUpload';
 import { setBlog, getCate } from '../../../src/api/blog';
 import Router from 'next/router';
 import { setClickMenu, setCategory, setLoading } from '../../actions/base';
-import { set } from 'date-fns';
+import { tokenConfig } from '../../utils/common';
 
 export default function addContainer(props) {
   const dispatch = useDispatch();
@@ -37,19 +33,13 @@ export default function addContainer(props) {
   };
 
   useEffect(() => {
-    const getToken = localStorage.getItem('mydiary_token');
-    if (getToken) {
-      const config = {
-        access_token: getToken
-      };
-      dispatch(setLoading(true));
-      getCate(config).then(res => {
-        if (res.status === 200 && res.data) {
-          dispatch(setCategory(res.data.data));
-          dispatch(setLoading(false));
-        }
-      });
-    }
+    dispatch(setLoading(true));
+    getCate(tokenConfig()).then(res => {
+      if (res.status === 200 && res.data) {
+        dispatch(setCategory(res.data.data));
+        dispatch(setLoading(false));
+      }
+    });
   }, []);
 
   useEffect(() => {
@@ -66,27 +56,16 @@ export default function addContainer(props) {
 
       existFileItems && existFileItems.forEach(item => formData.append(`file`, item));
       const data = value;
-      // const nowDate = new Date();
-      // const numDate = Date.parse(startDate);
-      // console.log(numDate, 'numDat');
-      // data.date = numDate;
       formData.append('data', JSON.stringify(data));
 
-      const getToken = localStorage.getItem('mydiary_token');
-      if (getToken) {
-        const config = {
-          access_token: getToken
-        };
-        dispatch(setLoading(true));
-        setBlog(config, formData).then(res => {
-          if (res.status === 200) {
-            dispatch(setLoading(false));
-            alert('등록되었습니다.');
-            Router.push('/blog');
-            dispatch(setClickMenu({ cateId: value.cate }));
-          }
-        });
-      }
+      setBlog(tokenConfig(), formData).then(res => {
+        if (res.status === 200) {
+          dispatch(setLoading(false));
+          alert('등록되었습니다.');
+          Router.push('/blog');
+          dispatch(setClickMenu({ cateId: value.cate }));
+        }
+      });
     } else {
       alert('제목과 내용은 필수항목입니다.');
     }

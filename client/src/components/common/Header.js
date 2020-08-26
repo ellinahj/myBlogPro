@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
 import { useSelector, useDispatch } from 'react-redux';
-import { colorLuminance } from '../../utils/common';
+import { colorLuminance, tokenConfig } from '../../utils/common';
 import { loginCheck } from '../../api/auth';
-import { setLoading, setLogin, setUserInfo, setThemeColor, setToolTip, setFont } from '../../actions/base';
+import { setUserInfo, setThemeColor, setToolTip, setFont } from '../../actions/base';
 import { useRouter } from 'next/router';
 import { theme } from '../../utils/theme';
 import ImgBtn from '../../components/common/ImgBtn';
@@ -27,16 +27,12 @@ export default function Header() {
       if (showTool === false) {
         dispatch(setToolTip(false));
       }
-      const storedToken = localStorage.getItem('mydiary_token') && localStorage.getItem('mydiary_token');
-      const config = {
-        access_token: storedToken
-      };
-      loginCheck(config).then(res => {
+      loginCheck(tokenConfig()).then(res => {
         if (res.status === 200 && res.data) {
+          console.log(res.data, 'res.dataaaa');
           dispatch(setThemeColor(res.data.user_color));
           dispatch(setUserInfo(res.data));
           dispatch(setFont(res.data.user_font));
-          // dispatch(setLogin(true));
         }
       });
     }

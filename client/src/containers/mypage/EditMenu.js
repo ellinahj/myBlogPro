@@ -6,6 +6,7 @@ import { getCate } from '../../api/blog';
 import { deleteCate, updateCate } from '../../api/category';
 import Container from '../../components/common/Container';
 import ImgBtn from '../../components/common/ImgBtn';
+import { tokenConfig } from '../../utils/common';
 
 export default function ChangeMenu(props) {
   const dispatch = useDispatch();
@@ -21,25 +22,19 @@ export default function ChangeMenu(props) {
   const countCate = category ? category.length : 0;
 
   useEffect(() => {
-    const getToken = localStorage.getItem('mydiary_token');
-    if (getToken) {
-      const config = {
-        access_token: getToken
-      };
-      getCate(config).then(res => {
-        if (res.status === 200 && res.data) {
-          dispatch(setCategory(res.data.data));
-          const result = {};
-          res.data.data
-            ? res.data.data.forEach((item, idx) => {
-                result[idx] = { title: item.title, id: item.id };
-              })
-            : [];
-          setCateValue(result);
-          setCateInputCount(0);
-        }
-      });
-    }
+    getCate(tokenConfig()).then(res => {
+      if (res.status === 200 && res.data) {
+        dispatch(setCategory(res.data.data));
+        const result = {};
+        res.data.data
+          ? res.data.data.forEach((item, idx) => {
+              result[idx] = { title: item.title, id: item.id };
+            })
+          : [];
+        setCateValue(result);
+        setCateInputCount(0);
+      }
+    });
   }, []);
 
   const handleEditMenu = () => {
@@ -77,29 +72,23 @@ export default function ChangeMenu(props) {
       if (!confirmDelete) {
         return;
       }
-      const getToken = localStorage.getItem('mydiary_token');
-      if (getToken) {
-        const config = {
-          access_token: getToken
-        };
-        const cateId = tempCateValue[idx].id;
-        const data = { id: cateId };
-        deleteCate(config, data).then(res => {
-          if (res.status === 200 && res.data) {
-            dispatch(setCategory(res.data.data));
-            const result = {};
-            res.data.data
-              ? res.data.data.forEach((item, idx) => {
-                  result[idx] = { title: item.title, id: item.id };
-                })
-              : [];
-            setCateValue(result);
-            setCateInputCount(0);
-          }
-        });
-      }
+      const cateId = tempCateValue[idx].id;
+      const data = { id: cateId };
+      deleteCate(tokenConfig(), data).then(res => {
+        if (res.status === 200 && res.data) {
+          dispatch(setCategory(res.data.data));
+          const result = {};
+          res.data.data
+            ? res.data.data.forEach((item, idx) => {
+                result[idx] = { title: item.title, id: item.id };
+              })
+            : [];
+          setCateValue(result);
+          setCateInputCount(0);
+        }
+      });
     } else {
-      console.log('??');
+      // console.log('??');
     }
     Object.keys(cateValue).forEach(key => {
       if (Number(key) === idx) {
@@ -125,27 +114,21 @@ export default function ChangeMenu(props) {
       alert('메뉴이름을 입력해주세요.');
     } else {
       const data = cateValue;
-      const getToken = localStorage.getItem('mydiary_token');
-      if (getToken) {
-        const config = {
-          access_token: getToken
-        };
-        updateCate(config, data).then(res => {
-          if (res.status === 200 && res.data) {
-            dispatch(setCategory(res.data.data));
-            const result = {};
-            res.data.data
-              ? res.data.data.forEach((item, idx) => {
-                  result[idx] = { title: item.title, id: item.id };
-                })
-              : [];
-            setCateValue(result);
-            setEdit(false);
-            setCateInputCount(0);
-            alert('변경되었습니다.');
-          }
-        });
-      }
+      updateCate(tokenConfig(), data).then(res => {
+        if (res.status === 200 && res.data) {
+          dispatch(setCategory(res.data.data));
+          const result = {};
+          res.data.data
+            ? res.data.data.forEach((item, idx) => {
+                result[idx] = { title: item.title, id: item.id };
+              })
+            : [];
+          setCateValue(result);
+          setEdit(false);
+          setCateInputCount(0);
+          alert('변경되었습니다.');
+        }
+      });
     }
   };
 

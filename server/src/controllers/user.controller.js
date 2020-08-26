@@ -30,19 +30,23 @@ export const storageS3 = multerS3({
 
 const findNickname = async (req, res, next) => {
   try {
-    //닉네임 중복확인
-    const { nickname } = req.body;
-    selectNickname(nickname)
-      .then(count => {
-        if (count >= 1) {
-          res.status(200).send({ status: 200, message: "dupilicated" });
-        } else if (count === 0) {
-          res.status(200).send({ status: 200, message: "available" });
-        }
-      })
-      .catch(e => {
-        next(e);
-      });
+    const token = req.headers["access_token"];
+    const result = await authCheck(token);
+    if (result && result.id) {
+      //닉네임 중복확인
+      const { nickname } = req.body;
+      selectNickname(nickname)
+        .then(count => {
+          if (count >= 1) {
+            res.status(200).send({ status: 200, message: "dupilicated" });
+          } else if (count === 0) {
+            res.status(200).send({ status: 200, message: "available" });
+          }
+        })
+        .catch(e => {
+          next(e);
+        });
+    }
   } catch (e) {
     next(e);
   }

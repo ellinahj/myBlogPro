@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import MyList from '../../components/blog/List';
 import Menu from '../../components/blog/Menu';
-import { colorLuminance } from '../../utils/common';
+import { colorLuminance, tokenConfig } from '../../utils/common';
 import { setCategory, setClickMenu, setLoading } from '../../actions/base';
 import { getCate, getBlog, getSearchedBlog, deleteBlog } from '../../api/blog';
 import Search from '../../components/blog/Search';
@@ -37,31 +37,18 @@ export default function ListContainer() {
   }, []);
 
   useEffect(() => {
-    const getToken = localStorage.getItem('mydiary_token');
-    if (getToken) {
-      const config = {
-        access_token: getToken
-      };
-      getCate(config).then(res => {
-        if (res.status === 200 && res.data) {
-          dispatch(setCategory(res.data.data));
-          if (!clickMenu.cateId) {
-            dispatch(setClickMenu({ cateId: res.data.data[0].id }));
-          }
+    getCate(tokenConfig()).then(res => {
+      if (res.status === 200 && res.data) {
+        dispatch(setCategory(res.data.data));
+        if (!clickMenu.cateId) {
+          dispatch(setClickMenu({ cateId: res.data.data[0].id }));
         }
-      });
-    }
+      }
+    });
   }, []);
   const fetchBlogData = cateId => {
-    const storedToken = localStorage.getItem('mydiary_token');
-    if (!storedToken) {
-      return;
-    }
-    const config = {
-      access_token: storedToken
-    };
     dispatch(setLoading(true));
-    getBlog(config, cateId).then(res => {
+    getBlog(tokenConfig(), cateId).then(res => {
       if (res.status === 200) {
         setBlogData(res.data.data);
         dispatch(setClickMenu({ cateId }));
@@ -85,11 +72,7 @@ export default function ListContainer() {
   const getSearch = value => {
     setSearchValue(value);
     if (blogData && blogData.length !== 0 && value !== '') {
-      const storedToken = localStorage.getItem('mydiary_token') && localStorage.getItem('mydiary_token');
-      const config = {
-        access_token: storedToken
-      };
-      getSearchedBlog(config, clickMenu && clickMenu.cateId, value).then(res => {
+      getSearchedBlog(tokenConfig(), clickMenu && clickMenu.cateId, value).then(res => {
         if (res.status === 200) {
           setBlogData(res.data.data);
         }
@@ -101,19 +84,13 @@ export default function ListContainer() {
     if (!delQuestion) {
       return;
     }
-    const getToken = localStorage.getItem('mydiary_token');
-    if (getToken) {
-      const config = {
-        access_token: getToken
-      };
-      const data = { id, image_url: imageName };
-      deleteBlog(config, data).then(res => {
-        if (res.status === 200 && res.data) {
-          setBlogData(res.data.data);
-          alert('삭제되었습니다.');
-        }
-      });
-    }
+    const data = { id, image_url: imageName };
+    deleteBlog(tokenConfig(), data).then(res => {
+      if (res.status === 200 && res.data) {
+        setBlogData(res.data.data);
+        alert('삭제되었습니다.');
+      }
+    });
   };
 
   return (

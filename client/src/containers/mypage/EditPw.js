@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components';
 import Container from '../../components/common/Container';
 import { useState, useEffect } from 'react';
 import { updatePwd, checkPwd } from '../../api/user';
+import { tokenConfig } from '../../utils/common';
 
 export default function ChangePwd(props) {
   const { clickEditPw, showEditPw } = props;
@@ -19,24 +20,18 @@ export default function ChangePwd(props) {
     setValue({ ...value, ...nextValue });
     prevPwdTimeout && clearTimeout(prevPwdTimeout);
     const timer = setTimeout(() => {
-      const getToken = localStorage.getItem('mydiary_token');
-      if (getToken) {
-        const config = {
-          access_token: getToken
-        };
-        const data = { pwd: nextValue.prevPwd };
-        checkPwd(config, data)
-          .then(res => {
-            if (res.status === 200) {
-              setPrevPwdTyping(true);
-              setPrevPwdState(true);
-            }
-          })
-          .catch(err => {
+      const data = { pwd: nextValue.prevPwd };
+      checkPwd(tokenConfig(), data)
+        .then(res => {
+          if (res.status === 200) {
             setPrevPwdTyping(true);
-            setPrevPwdState(false);
-          });
-      }
+            setPrevPwdState(true);
+          }
+        })
+        .catch(err => {
+          setPrevPwdTyping(true);
+          setPrevPwdState(false);
+        });
     }, 1000);
     setPrevPwdTimeout(timer);
   };
@@ -67,19 +62,13 @@ export default function ChangePwd(props) {
 
   const handleSubmit = () => {
     //최종 변경
-    const getToken = localStorage.getItem('mydiary_token');
-    if (getToken) {
-      const config = {
-        access_token: getToken
-      };
-      const data = value;
-      updatePwd(config, data).then(res => {
-        if (res.status === 200 && res.data) {
-          alert('변경되었습니다.');
-          showclickEditPwEditPw(false);
-        }
-      });
-    }
+    const data = value;
+    updatePwd(tokenConfig(), data).then(res => {
+      if (res.status === 200 && res.data) {
+        alert('변경되었습니다.');
+        showclickEditPwEditPw(false);
+      }
+    });
   };
 
   return (

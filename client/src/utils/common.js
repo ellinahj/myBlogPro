@@ -1,5 +1,13 @@
 import { useState, useEffect } from 'react';
 
+const tokenConfig = () => {
+  const storedToken = localStorage.getItem('mydiary_token');
+  const config = {
+    access_token: storedToken
+  };
+  return config;
+};
+
 function useInnerWidth() {
   //카드 이미지 반응형 변환
   const [innerWidth, setInnerWidth] = useState(0);
@@ -33,4 +41,4 @@ function colorLuminance(hex, lum) {
   }
   return rgb;
 }
-export { colorLuminance, useInnerWidth };
+export { colorLuminance, useInnerWidth, tokenConfig };

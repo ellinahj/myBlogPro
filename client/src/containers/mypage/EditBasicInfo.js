@@ -7,6 +7,7 @@ import Container from '../../components/common/Container';
 import ProfileChange from '../../components/common/PhotoUpload';
 import { updateInfo, findNickname } from '../../api/user';
 import { setUserInfo, setFont } from '../../actions/base';
+import { tokenConfig } from '../../utils/common';
 
 export default function InfoContainer(props) {
   const { setShowEdit, showEdit, clickEdit } = props;
@@ -60,19 +61,16 @@ export default function InfoContainer(props) {
     }
     if (!!replaceValue) {
       const timer = setTimeout(() => {
-        const getToken = localStorage.getItem('mydiary_token');
-        if (getToken) {
-          const data = { nickname: replaceValue };
-          findNickname(data).then(res => {
-            if (res.status === 200) {
-              if (res.data.message === 'available') {
-                setNicknameAvailable(true);
-              } else if (res.data.message === 'dupilicated') {
-                setNicknameAvailable(false);
-              }
+        const data = { nickname: replaceValue };
+        findNickname(tokenConfig(), data).then(res => {
+          if (res.status === 200) {
+            if (res.data.message === 'available') {
+              setNicknameAvailable(true);
+            } else if (res.data.message === 'dupilicated') {
+              setNicknameAvailable(false);
             }
-          });
-        }
+          }
+        });
       }, 1000);
       setCheckTimeout(timer);
     }
@@ -94,11 +92,8 @@ export default function InfoContainer(props) {
       user_font: font
     };
     formData.append('data', JSON.stringify(data));
-    const token = localStorage.getItem('mydiary_token') && localStorage.getItem('mydiary_token');
-    const config = {
-      access_token: token
-    };
-    updateInfo(config, formData).then(res => {
+
+    updateInfo(tokenConfig(), formData).then(res => {
       if (res.status === 200 && res.data) {
         dispatch(setUserInfo(res.data));
         clickEdit('changed');
