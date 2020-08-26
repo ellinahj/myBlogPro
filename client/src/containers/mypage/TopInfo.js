@@ -67,8 +67,7 @@ const Img = styled.img`
   border: 1px solid #ddd;
 `;
 const NickName = styled.div`
-  font-size: 18px;
-  font-weight: bold;
+  font-size: ${props => props.theme.theme.mFont};
   margin-top: 20px;
 `;
 const LogoutContainer = styled.div`

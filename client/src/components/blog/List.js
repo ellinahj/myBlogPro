@@ -112,22 +112,22 @@ const ContentArea = styled.div`
 const WriteDate = styled.div`
   display: flex;
   justify-content: flex-end;
-  font-size: 13px;
+  font-size: ${props => props.theme.theme.ssFont};
   color: #aaa;
 `;
 const Title = styled.div`
-  font-size: 21px; //theme big
+  font-size: ${props => props.theme.theme.lFont};
   font-weight: bold;
   margin-top: 10px;
 `;
 const Comment = styled.div`
-  font-size: 15px;
+  font-size: ${props => props.theme.theme.sFont};
   margin-top: 10px;
   line-height: 1.4;
 `;
 const Location = styled.div`
   color: #6da3f7;
-  font-size: 13px;
+  font-size: ${props => props.theme.theme.ssFont};
   margin-top: 15px;
   display: flex;
   align-items: center;

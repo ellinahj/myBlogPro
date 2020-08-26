@@ -164,7 +164,7 @@ const Row = styled.div`
   }
   .react-datepicker__input-container input {
     height: 30px;
-    font-size: 15px;
+    font-size: ${props => props.theme.theme.sFont};
     line-height: 30px;
     padding-left: 5px;
     background: #eee;
@@ -181,7 +181,7 @@ const Row = styled.div`
     padding-left: 30px;
     margin-right: 30px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: ${props => props.theme.theme.sFont};
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -262,7 +262,7 @@ const Textarea = styled.textarea`
 const SubmitBtn = styled.button`
   padding: 5px 10px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: ${props => props.theme.theme.sFont};
 `;
 const RowRight = styled(Row)`
   justify-content: center;

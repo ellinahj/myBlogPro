@@ -131,14 +131,14 @@ const InputWrap = styled.div`
     box-sizing: border-box;
     margin-bottom: 10px;
     padding-left: 10px;
-    font-size: 17px;
+    font-size: ${props => props.theme.theme.mFont};
   }
 `;
 const JoinBtn = styled.button`
   width: 100%;
   height: 45px;
   box-sizing: border-box;
-  font-size: 15px;
+  font-size: ${props => props.theme.theme.sFont};
   background: ${props => (props.allOk ? '#e36f63' : '#ddd')};
   cursor: ${props => (props.allOk ? 'pointer' : 'not-allowed')};
   text-align: center;
@@ -153,7 +153,7 @@ const JoinBtn = styled.button`
 const Title = styled.div`
   text-align: center;
   color: #333;
-  font-size: 24px;
+  font-size: ${props => props.theme.theme.xlFont};
   margin-bottom: 30px;
 `;
 const WarningWrap = styled.div`
@@ -183,7 +183,7 @@ function pwRegCheck(value) {
 
 const LoginCon = styled.div`
   margin-bottom: 15px;
-  font-size: 13px;
+  font-size: ${props => props.theme.theme.ssFont};
   cursor: pointer;
 `;
 const BottomWrap = styled.div`

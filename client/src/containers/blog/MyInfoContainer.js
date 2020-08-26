@@ -38,7 +38,7 @@ const Img = styled.img`
   margin-right: 15px;
 `;
 const NickName = styled.div`
-  font-size: 15px;
+  font-size: ${props => props.theme.theme.mFont};
 `;
 const Comment = styled.div`
   font-size: 23px;

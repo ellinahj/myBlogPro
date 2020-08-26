@@ -312,7 +312,7 @@ const MarginFontRow = styled(Row)`
   }
   .react-datepicker__input-container input {
     height: 30px;
-    font-size: 15px;
+    font-size: ${props => props.theme.theme.sFont};
     line-height: 30px;
     padding-left: 5px;
     background: ${props => props.usercolor};
@@ -329,7 +329,7 @@ const MarginFontRow = styled(Row)`
     padding-left: 30px;
     margin-right: 30px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: ${props => props.theme.theme.sFont};
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;

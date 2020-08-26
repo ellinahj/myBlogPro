@@ -28,7 +28,6 @@ export default function Header() {
       }
       loginCheck(tokenConfig()).then(res => {
         if (res.status === 200 && res.data) {
-          console.log(res.data, 'res.dataaaa');
           dispatch(setThemeColor(res.data.user_color));
           dispatch(setUserInfo(res.data));
           dispatch(setFont(res.data.user_font));

@@ -9,7 +9,7 @@ export default function Button(props) {
 }
 const ButtonContainer = styled.button`
   cursor: pointer;
-  font-size: 15px;
+  font-size: ${props => props.theme.theme.sFont};
   padding: ${props => (props.pd ? `${props.pd}px` : '4px')};
 `;
 Button.propTypes = {

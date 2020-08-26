@@ -154,10 +154,10 @@ const Input = styled.input`
   margin: 0 20px;
   border: none;
   outline: none;
-  font-size: 18px;
+  font-size: ${props => props.theme.theme.mFont};
   @media (max-width: 480px) {
     ::-webkit-input-placeholder {
-      font-size: ${props => props.theme.theme.sFont};
+      font-size: ${props => props.theme.theme.mFont};
     }
   }
 `;
@@ -167,7 +167,7 @@ const SearchHistoryCon = styled.div`
   left: 0;
   z-index: 3;
   background: #fff;
-  width: 99.5%;
+  width: 99.8%;
   display: ${props => !props.showHistory && 'none'};
   border-bottom: 1px solid #eee;
   border-left: 1px solid #eee;

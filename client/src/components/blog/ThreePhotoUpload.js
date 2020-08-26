@@ -176,7 +176,7 @@ const ReactCropDiv = styled(ReactCrop)`
   margin-bottom: ${props => (props.uploadImg.length > 0 ? '40px' : '0px')};
 `;
 const PhotoName = styled.div`
-  font-size: 15px;
+  font-size: ${props => props.theme.theme.sFont};
   margin-top: 5px;
 `;
 const EditFont = styled.div`
