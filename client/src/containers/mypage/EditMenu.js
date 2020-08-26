@@ -139,7 +139,8 @@ export default function ChangeMenu(props) {
         <StyledColumn>
           <TitleRow edit={edit}>
             <Title>
-              메뉴<TitleInfo>(최대 3개) </TitleInfo>
+              메뉴
+              {/* <TitleInfo>(최대 3개) </TitleInfo> */}
             </Title>
             <EditTitle onClick={handleEditMenu}>메뉴변경</EditTitle>
           </TitleRow>
@@ -158,11 +159,11 @@ export default function ChangeMenu(props) {
                     maxLength={'15'}
                   />
                   <CountRow>
-                    <CountNickname>
+                    <CountMenuText>
                       {cateValue[index] && cateValue[index].title.length <= MAX_TITLE
                         ? cateValue[index].title.length
                         : 0}
-                    </CountNickname>
+                    </CountMenuText>
                     <Slush>/</Slush>
                     <Maxcount>{MAX_TITLE}</Maxcount>
                   </CountRow>
@@ -214,11 +215,11 @@ export default function ChangeMenu(props) {
                           onClick={() => handleDelete(index)}
                         />
                         <CountRow>
-                          <CountNickname>
+                          <CountMenuText>
                             {cateValue[index] && cateValue[index].title.length <= MAX_TITLE
                               ? cateValue[index].title.length
                               : 0}
-                          </CountNickname>
+                          </CountMenuText>
                           <Slush>/</Slush>
                           <Maxcount>{MAX_TITLE}</Maxcount>
                         </CountRow>
@@ -301,10 +302,10 @@ const TitleInfo = styled.span`
   color: #888;
 `;
 const MenuFont = styled.span`
-  color: ${props => props.userColor};
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-size: ${props => props.theme.theme.mFont};
 `;
 const NumberFont = styled.span`
   margin-right: 5px;
@@ -344,7 +345,7 @@ const SubmitBtn = styled.button`
 const CountRow = styled.div`
   display: flex;
 `;
-const CountNickname = styled.div`
+const CountMenuText = styled.div`
   color: #aaa;
   margin-left: 5px;
   font-size: ${props => props.theme.theme.sFont};

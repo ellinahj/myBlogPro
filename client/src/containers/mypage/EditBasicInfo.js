@@ -275,6 +275,7 @@ const InputCol = styled.div`
 const InputRow = styled.div`
   display: flex;
   align-items: center;
+  font-size: ${props => props.theme.theme.mFont};
   @media screen and (max-width: 780px) {
     margin-top: 15px;
   }
