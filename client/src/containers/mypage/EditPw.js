@@ -66,7 +66,8 @@ export default function ChangePwd(props) {
     updatePwd(tokenConfig(), data).then(res => {
       if (res.status === 200 && res.data) {
         alert('변경되었습니다.');
-        showclickEditPwEditPw(false);
+        clickEditPw(false);
+        setValue({});
       }
     });
   };

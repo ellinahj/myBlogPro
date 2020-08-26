@@ -44,9 +44,9 @@ export default function InfoContainer(props) {
   }, [userInfo]);
 
   useEffect(() => {
-    if (setFont === `'Gothic A1', sans-serif`) {
+    if (selectFont === `'Gothic A1', sans-serif`) {
       setRadioIndex(0);
-    } else if (setFont === `'Nanum Myeongjo', serif`) {
+    } else if (selectFont === `'Nanum Myeongjo', serif`) {
       setRadioIndex(1);
     }
   }, [selectFont]);
