@@ -153,7 +153,7 @@ const MarginTopRow = styled(Row)`
 `;
 const Title = styled.div`
   ${props => props.theme.BasicTitle};
-  margin-right: 10px;
+  margin-right: 20px;
 `;
 const MainTitle = styled(Title)`
   font-size: ${props => props.theme.theme.mlFont};
