@@ -59,6 +59,7 @@ const loginController = (req, res, next) => {
               nickname,
               profile_photo,
               user_color,
+              user_font,
               main_title
             } = result;
 
@@ -74,6 +75,7 @@ const loginController = (req, res, next) => {
               nickname,
               profile_url,
               user_color,
+              user_font,
               main_title
             });
           }

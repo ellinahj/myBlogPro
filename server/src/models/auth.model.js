@@ -86,6 +86,7 @@ const login = (user_id, password) => {
                           nickname,
                           profile_photo,
                           user_color,
+                          user_font,
                           main_title
                         } = result[0];
                         const token = jwt.sign(
@@ -100,6 +101,7 @@ const login = (user_id, password) => {
                           nickname,
                           profile_photo,
                           user_color,
+                          user_font,
                           main_title,
                           loginState: "success"
                         };

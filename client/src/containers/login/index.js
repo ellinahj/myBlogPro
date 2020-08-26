@@ -2,8 +2,8 @@ import { useState, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Router from 'next/router';
 import styled from 'styled-components';
-import { setUserInfo, setThemeColor, setLoading } from '../../actions/base';
-import { login, findId } from '../../api/auth';
+import { setUserInfo, setThemeColor, setLoading, setFont } from '../../actions/base';
+import { login } from '../../api/auth';
 
 export default function LoginContainer() {
   const dispatch = useDispatch();
@@ -22,15 +22,14 @@ export default function LoginContainer() {
 
   const userLogin = () => {
     const data = { user_id: id, password: pw };
-    dispatch(setLoading(true));
     login(data).then(res => {
       if (res.status === 200) {
+        console.log(res.data, 'data');
         const token = res.data.access_token;
         localStorage.setItem('mydiary_token', token);
         dispatch(setUserInfo(res.data));
-        dispatch(setThemeColor(res.data.user_color));
-        dispatch(setLoading(false));
         Router.push('/blog');
+        dispatch(setFont(res.data.user_font));
       }
     });
   };
