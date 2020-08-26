@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { theme } from '../../utils/theme';
 
 export default function SearchContainer(props) {
   const [searchValue, setSearchValue] = useState('');
@@ -158,7 +157,7 @@ const Input = styled.input`
   font-size: 18px;
   @media (max-width: 480px) {
     ::-webkit-input-placeholder {
-      font-size: ${theme.sFont};
+      font-size: ${props => props.theme.theme.sFont};
     }
   }
 `;
@@ -191,7 +190,7 @@ const SearchHistoryCon = styled.div`
 const HistoryNotexist = styled.div`
   color: #aaa;
   padding: 20px 20px;
-  font-size: ${theme.sFont};
+  font-size: ${props => props.theme.theme.sFont};
 `;
 const Word = styled.div`
   /* width: 100%; */

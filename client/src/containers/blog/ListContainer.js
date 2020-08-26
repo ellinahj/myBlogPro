@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import MyList from '../../components/blog/List';
 import Menu from '../../components/blog/Menu';
@@ -7,7 +7,6 @@ import { colorLuminance, tokenConfig } from '../../utils/common';
 import { setCategory, setClickMenu, setLoading } from '../../actions/base';
 import { getCate, getBlog, getSearchedBlog, deleteBlog } from '../../api/blog';
 import Search from '../../components/blog/Search';
-import { theme } from '../../utils/theme';
 
 export default function ListContainer() {
   const dispatch = useDispatch();
@@ -135,7 +134,7 @@ const AllViewWrap = styled.div`
 `;
 const AllView = styled.div`
   color: ${props => props.userColor && props.userColor};
-  font-size: ${theme.mFont};
+  font-size: ${props => props.theme.theme.mFont};
   cursor: pointer;
 `;
 const SearchResult = styled.div`

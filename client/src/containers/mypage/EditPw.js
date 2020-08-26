@@ -155,7 +155,7 @@ const Title = styled.div`
   margin-right: 10px;
 `;
 const MainTitle = styled(Title)`
-  font-size: ${props => props.theme.mlFont};
+  font-size: ${props => props.theme.theme.mlFont};
 `;
 const TopCon = styled.div`
   width: 100%;
@@ -168,7 +168,7 @@ const TopCon = styled.div`
 const SubmitBtn = styled.button`
   margin: 30px auto 0;
   padding: 5px 10px;
-  font-size: ${props => props.theme.mFont};
+  font-size: ${props => props.theme.theme.mFont};
   ${props =>
     props.allOk &&
     css`
@@ -187,16 +187,16 @@ const PwEdit = styled.div`
   }
 `;
 const Match = styled.div`
-  color: ${props => props.theme.greenFont};
+  color: ${props => props.theme.theme.greenFont};
   margin: 10px 0 0 0;
-  font-size: ${props => props.theme.sFont};
+  font-size: ${props => props.theme.theme.sFont};
   display: flex;
   align-items: center;
 `;
 const Mismatch = styled.div`
-  color: ${props => props.theme.redFont};
+  color: ${props => props.theme.theme.redFont};
   margin: 10px 0 0 0;
-  font-size: ${props => props.theme.sFont};
+  font-size: ${props => props.theme.theme.sFont};
   display: flex;
   align-items: center;
 `;

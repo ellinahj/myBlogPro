@@ -2,7 +2,6 @@ import styled, { css } from 'styled-components';
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import ReactCrop from 'react-image-crop';
-import { BlueEditBtn } from '../../utils/theme';
 
 export default function Upload(props) {
   const { imgFormData, prevImg, showEdit, clickEdit } = props;
@@ -168,7 +167,7 @@ const TitleCenter = styled.div`
 
   span {
     ${props => props.theme.BlueEditBtn};
-    font-size: ${props => props.theme.mFont};
+    font-size: ${props => props.theme.theme.mFont};
   }
 `;
 

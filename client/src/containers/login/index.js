@@ -4,7 +4,6 @@ import Router from 'next/router';
 import styled from 'styled-components';
 import { setUserInfo, setThemeColor, setLoading } from '../../actions/base';
 import { login, findId } from '../../api/auth';
-import { theme } from '../../utils/theme';
 
 export default function LoginContainer() {
   const dispatch = useDispatch();
@@ -142,7 +141,7 @@ const Title = styled.div`
   margin-bottom: 30px;
 `;
 const SubTitle = styled.div`
-  font-size: ${theme.mFont};
+  font-size: ${props => props.theme.theme.mFont};
   margin: 20px 0 10px;
 `;
 const JoinCon = styled.div`

@@ -143,7 +143,7 @@ const WriteWrap = styled.div`
   justify-content: center;
 `;
 const Write = styled.div`
-  font-size: ${props => props.theme.mFont};
+  font-size: ${props => props.theme.theme.mFont};
   color: #ccc;
   margin: 130px 0 10px;
 `;

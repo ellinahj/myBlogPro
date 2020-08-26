@@ -6,7 +6,6 @@ import { colorLuminance, tokenConfig } from '../../utils/common';
 import { loginCheck } from '../../api/auth';
 import { setUserInfo, setThemeColor, setToolTip, setFont } from '../../actions/base';
 import { useRouter } from 'next/router';
-import { theme } from '../../utils/theme';
 import ImgBtn from '../../components/common/ImgBtn';
 
 export default function Header() {
@@ -102,9 +101,9 @@ const ProfileContainer = styled.div`
 `;
 const StyledTitle = styled.span`
   color: #fff;
-  font-size: ${theme.sFont};
+  font-size: ${props => props.theme.theme.sFont};
   @media (max-width: 480px) {
-    font-size: ${theme.ssFont};
+    font-size: ${props => props.theme.theme.ssFont};
   }
   :hover {
     color: ${props => props.hoverColor && '#f7f7f7'};
@@ -163,7 +162,7 @@ const ToolTipWrap = styled.div`
   }
 `;
 const ToolTip = styled.div`
-  font-size: ${theme.ssFont};
+  font-size: ${props => props.theme.theme.ssFont};
   line-height: 18px;
   color: ${props => props.userColor};
   /* margin-right: 13px; */

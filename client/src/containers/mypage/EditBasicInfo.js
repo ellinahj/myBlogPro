@@ -217,7 +217,6 @@ const Column = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  /* margin-top: 30px; */
   width: 100%;
 `;
 const Row = styled.div`
@@ -252,20 +251,20 @@ const SubmitBtn = styled.button`
   ${props => props.theme.BasicButton};
   margin: 30px auto 0;
   padding: 5px 10px;
-  font-size: ${props => props.theme.mFont};
+  font-size: ${props => props.theme.theme.mFont};
   cursor: ${props => (props.available === true ? 'pointer' : 'not-allowed')};
 `;
 const Match = styled.div`
-  color: ${props => props.theme.greenFont};
+  color: ${props => props.theme.theme.greenFont};
   margin: 10px 0 0 0;
-  font-size: ${props => props.theme.sFont};
+  font-size: ${props => props.theme.theme.sFont};
   display: flex;
   align-items: center;
 `;
 const Mismatch = styled.div`
-  color: ${props => props.theme.redFont};
+  color: ${props => props.theme.theme.redFont};
   margin: 10px 0 0 0;
-  font-size: ${props => props.theme.sFont};
+  font-size: ${props => props.theme.theme.sFont};
   display: flex;
   align-items: center;
 `;
@@ -286,16 +285,16 @@ const CountRow = styled.div`
 const CountNickname = styled.div`
   color: #aaa;
   margin-left: 10px;
-  font-size: ${props => props.theme.sFont};
+  font-size: ${props => props.theme.theme.sFont};
 `;
 const Slush = styled.div`
   color: #aaa;
   margin: 0 2px 0;
-  font-size: ${props => props.theme.sFont};
+  font-size: ${props => props.theme.theme.sFont};
 `;
 const Maxcount = styled.span`
   color: #aaa;
-  font-size: ${props => props.theme.sFont};
+  font-size: ${props => props.theme.theme.sFont};
 `;
 
 const MarginFontRow = styled(Row)`

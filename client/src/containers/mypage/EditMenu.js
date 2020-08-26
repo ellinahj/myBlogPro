@@ -295,7 +295,7 @@ const TitleRow = styled(MenuRow)`
 const Title = styled.span`
   ${props => props.theme.BasicTitle};
   margin-right: 20px;
-  font-size: ${props => props.theme.mlFont};
+  font-size: ${props => props.theme.theme.mlFont};
 `;
 const TitleInfo = styled.span`
   color: #888;
@@ -338,7 +338,7 @@ const SubmitBtn = styled.button`
   ${props => props.theme.BasicButton};
   margin: 30px auto 0;
   padding: 5px 10px;
-  font-size: ${props => props.theme.mFont};
+  font-size: ${props => props.theme.theme.mFont};
 `;
 
 const CountRow = styled.div`
@@ -347,16 +347,16 @@ const CountRow = styled.div`
 const CountNickname = styled.div`
   color: #aaa;
   margin-left: 5px;
-  font-size: ${props => props.theme.sFont};
+  font-size: ${props => props.theme.theme.sFont};
 `;
 const Slush = styled.div`
   color: #aaa;
   margin: 0 2px 0;
-  font-size: ${props => props.theme.sFont};
+  font-size: ${props => props.theme.theme.sFont};
 `;
 const Maxcount = styled.span`
   color: #aaa;
-  font-size: ${props => props.theme.sFont};
+  font-size: ${props => props.theme.theme.sFont};
 `;
 
 const MAX_TITLE = 15;

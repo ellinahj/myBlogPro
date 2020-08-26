@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import Header from './Header';
 import BottomMenu from './BottomMenu';
 import { useSelector } from 'react-redux';
-import { theme } from '../../utils/theme';
 
 export default function Layout({ children }) {
   const [isScrollDown, setScollDown] = useState(true);
@@ -72,6 +71,6 @@ const LoadingText = styled.div`
   left: 50%;
   top: 50%;
   margin: 20px 0 0 -45px;
-  font-size: ${theme.lFont};
+  font-size: ${props => props.theme.theme.lFont};
   color: ${props => props.userColor};
 `;

@@ -98,23 +98,6 @@ export default function addContainer(props) {
         <Subject>제목</Subject>
         <Input type="text" name="title" value={value.title} onChange={handleData} autoComplete="off" />
       </Row>
-      {/* <Row>
-        <Subject>날짜</Subject>
-        <DatePicker
-          name="date"
-          selected={startDate}
-          onChange={handleDateChange}
-          dateFormat="Pp"
-          locale="ko"
-          showTimeSelect
-          timeFormat="HH:mm"
-          showPopperArrow={false}
-          showPopperArrow={false}
-          timeIntervals={30}
-          dateFormat="yyyy/MM/dd aa hh:mm"
-          placeholderText="날짜 선택"
-        />
-      </Row> */}
       <Row>
         <Subject>장소</Subject>
         <Input
@@ -290,15 +273,15 @@ const CountRow = styled.div`
 `;
 const CountComment = styled.div`
   color: #aaa;
-  font-size: ${props => props.theme.sFont};
+  font-size: ${props => props.theme.theme.sFont};
 `;
 const Slush = styled.div`
   color: #aaa;
   margin: 0 2px 0;
-  font-size: ${props => props.theme.sFont};
+  font-size: ${props => props.theme.theme.sFont};
 `;
 const Maxcount = styled.span`
   color: #aaa;
-  font-size: ${props => props.theme.sFont};
+  font-size: ${props => props.theme.theme.sFont};
 `;
 const MAX_COMMENT = 200;

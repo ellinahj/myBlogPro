@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import Router from 'next/router';
 import styled from 'styled-components';
-import { theme } from '../../utils/theme';
 import { join, findId } from '../../api/auth';
 
 export default function JoinContainer() {
@@ -163,12 +162,12 @@ const WarningWrap = styled.div`
   margin-bottom: 20px;
 `;
 const SubTitle = styled.div`
-  font-size: ${theme.mFont};
+  font-size: ${props => props.theme.theme.mFont};
   margin: 10px 0 10px;
 `;
 const Warning = styled.div`
-  color: ${theme.redFont};
-  font-size: ${theme.ssFont};
+  color: ${props => props.theme.theme.redFont};
+  font-size: ${props => props.theme.theme.ssFont};
 `;
 const idRegex = /^[A-Za-z0-9+]{6,15}$/;
 
@@ -192,14 +191,14 @@ const BottomWrap = styled.div`
   justify-content: space-between;
 `;
 const Match = styled.div`
-  color: ${theme.greenFont};
-  font-size: ${theme.ssFont};
+  color: ${props => props.theme.theme.greenFont};
+  font-size: ${props => props.theme.theme.ssFont};
   display: flex;
   align-items: center;
 `;
 const Mismatch = styled.div`
-  color: ${theme.redFont};
-  font-size: ${theme.ssFont};
+  color: ${props => props.theme.theme.redFont};
+  font-size: ${props => props.theme.theme.ssFont};
   display: flex;
   align-items: center;
 `;

@@ -1,9 +1,10 @@
 import apiSend from '../utils/apiSend';
 
-const findNickname = data => {
+const findNickname = (config, data) => {
   return apiSend({
     url: `/user/nickname`,
     method: 'post',
+    headers: config,
     data: data
   });
 };
