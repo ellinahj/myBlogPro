@@ -24,7 +24,6 @@ export default function LoginContainer() {
     const data = { user_id: id, password: pw };
     login(data).then(res => {
       if (res.status === 200) {
-        console.log(res.data, 'data');
         const token = res.data.access_token;
         localStorage.setItem('mydiary_token', token);
         dispatch(setUserInfo(res.data));

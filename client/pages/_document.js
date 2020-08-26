@@ -13,7 +13,6 @@ export default class MyDocument extends Document {
     return (
       <Html>
         <Head>
-          <title>MyBlog</title>
           <meta charSet="UTF-8" />
           <meta
             name="viewport"
