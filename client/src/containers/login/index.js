@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Router from 'next/router';
 import styled from 'styled-components';
-import { setUserInfo, setThemeColor, setLoading, setFont } from '../../actions/base';
+import { setUserInfo, setFont } from '../../actions/base';
 import { login } from '../../api/auth';
 
 export default function LoginContainer() {

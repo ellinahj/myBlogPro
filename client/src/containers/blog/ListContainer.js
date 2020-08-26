@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import MyList from '../../components/blog/List';
 import Menu from '../../components/blog/Menu';
 import { colorLuminance, tokenConfig } from '../../utils/common';
-import { setCategory, setClickMenu, setLoading } from '../../actions/base';
+import { setCategory, setClickMenu } from '../../actions/base';
 import { getCate, getBlog, getSearchedBlog, deleteBlog } from '../../api/blog';
 import Search from '../../components/blog/Search';
 
@@ -46,13 +46,11 @@ export default function ListContainer() {
     });
   }, []);
   const fetchBlogData = cateId => {
-    dispatch(setLoading(true));
     getBlog(tokenConfig(), cateId).then(res => {
       if (res.status === 200) {
         setBlogData(res.data.data);
         dispatch(setClickMenu({ cateId }));
         setSearched(true);
-        dispatch(setLoading(false));
       }
     });
   };

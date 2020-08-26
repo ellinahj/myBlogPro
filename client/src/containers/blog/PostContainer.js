@@ -5,7 +5,7 @@ import Con from '../../components/common/Container';
 import UploadComponent from '../../components/blog/ThreePhotoUpload';
 import { setBlog, getCate } from '../../../src/api/blog';
 import Router from 'next/router';
-import { setClickMenu, setCategory, setLoading } from '../../actions/base';
+import { setClickMenu, setCategory } from '../../actions/base';
 import { tokenConfig } from '../../utils/common';
 
 export default function addContainer(props) {
@@ -33,11 +33,9 @@ export default function addContainer(props) {
   };
 
   useEffect(() => {
-    dispatch(setLoading(true));
     getCate(tokenConfig()).then(res => {
       if (res.status === 200 && res.data) {
         dispatch(setCategory(res.data.data));
-        dispatch(setLoading(false));
       }
     });
   }, []);
@@ -60,7 +58,6 @@ export default function addContainer(props) {
 
       setBlog(tokenConfig(), formData).then(res => {
         if (res.status === 200) {
-          dispatch(setLoading(false));
           alert('등록되었습니다.');
           Router.push('/blog');
           dispatch(setClickMenu({ cateId: value.cate }));
