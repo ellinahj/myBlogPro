@@ -69,7 +69,6 @@ const updateUser = (user_id, data) => {
         if (err) {
           reject(err);
         } else {
-          console.log(row, "가입");
           connection.query(
             "select * from mydiary.users WHERE user_id = ?",
             [user_id],
