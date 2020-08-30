@@ -1,17 +1,18 @@
 import styled, { css } from 'styled-components';
 import { useSelector } from 'react-redux';
+
 export default function MenuCo(props) {
   const category = useSelector(state => state.common.category);
   const clickMenu = useSelector(state => state.common.clickMenu);
-
   const { userColor, luminantColor, isSticky, handleMenuClick } = props;
+
   return (
     <MenuWrap luminantColor={luminantColor} isSticky={isSticky}>
       {category &&
         category.length > 0 &&
         category.map((item, index) => {
           return (
-            <Menu onClick={e => handleMenuClick(item.id)} key={index}>
+            <Menu userColor={userColor} onClick={e => handleMenuClick(item.id)} key={index}>
               {item.title}
               <MenuBorder userColor={userColor} active={clickMenu && clickMenu.cateId === item.id} />
             </Menu>
@@ -60,6 +61,8 @@ const Menu = styled.div`
   white-space: nowrap;
   :hover {
     cursor: pointer;
+    background: ${props => props.userColor};
+    opacity: 0.8;
   }
 `;
 const MenuBorder = styled.div`
@@ -69,7 +72,7 @@ const MenuBorder = styled.div`
       width: 100%;
       height: 6px;
       position: absolute;
-      background-color: ${props => props.userColor};
+      background: ${props => props.userColor};
       bottom: 0.5px;
       opacity: 0.3;
     `}
