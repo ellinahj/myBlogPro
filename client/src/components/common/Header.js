@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useSelector, useDispatch } from 'react-redux';
 import { colorLuminance, tokenConfig } from '../../utils/common';
 import { loginCheck } from '../../api/auth';
-import { setUserInfo, setThemeColor, setToolTip, setFont } from '../../actions/base';
+import { setUserInfo, setThemeColor, setToolTip, setFont, setLoading } from '../../actions/base';
 import { useRouter } from 'next/router';
 import ImgBtn from '../../components/common/ImgBtn';
 
@@ -16,6 +16,10 @@ export default function Header() {
 
   const tooltip = useSelector(state => state.common.showToolTip);
   const luminantColor = userColor && colorLuminance(userColor, 0.5);
+
+  useEffect(() => {
+    dispatch(setLoading(true));
+  }, []);
 
   useEffect(() => {
     if (userInfo !== undefined) {
@@ -35,6 +39,7 @@ export default function Header() {
       });
     }
   }, []);
+
   const handleToolTip = () => {
     localStorage.setItem('showTool', JSON.stringify(false));
     dispatch(setToolTip(false));

@@ -27,7 +27,6 @@ export default function LoginContainer() {
         const token = res.data.access_token;
         localStorage.setItem('mydiary_token', token);
         dispatch(setUserInfo(res.data));
-        Router.push('/blog');
         dispatch(setFont(res.data.user_font));
       }
     });
