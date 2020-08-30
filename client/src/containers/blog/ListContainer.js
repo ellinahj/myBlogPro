@@ -56,6 +56,7 @@ export default function ListContainer() {
   };
 
   const handleMenuClick = cateId => {
+    setSearchValue('');
     fetchBlogData(cateId);
     setSearched(false);
   };
@@ -89,7 +90,6 @@ export default function ListContainer() {
       }
     });
   };
-
   return (
     <ListCon>
       <Menu handleMenuClick={handleMenuClick} luminantColor={luminantColor} isSticky={isSticky} userColor={userColor} />
@@ -101,7 +101,7 @@ export default function ListContainer() {
               전체보기
             </AllView>
           </AllViewWrap>
-          <SearchResult>'{searchValue}'(으)로 검색한 결과입니다.</SearchResult>
+          {searchValue && <SearchResult>'{searchValue}'(으)로 검색한 결과입니다.</SearchResult>}
         </Col>
       )}
       <MyList
