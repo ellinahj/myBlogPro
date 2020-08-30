@@ -1,15 +1,21 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Router from 'next/router';
 import styled from 'styled-components';
 import { join, findId } from '../../api/auth';
+import { setLoading } from '../../actions/base';
+import { useDispatch } from 'react-redux';
 
 export default function JoinContainer() {
+  const dispatch = useDispatch();
   const [id, setId] = useState('');
   const [pwd, setPwd] = useState('');
   const [pwdCheck, setPwdCheck] = useState('');
   const [idAvailable, setIdAvailable] = useState(null);
   const [checkTimeout, setCheckTimeout] = useState(0);
 
+  useEffect(() => {
+    dispatch(setLoading(false));
+  }, []);
   const enterKey = () => {
     if (window.event.keyCode === 13) {
       userJoin();
@@ -23,21 +29,17 @@ export default function JoinContainer() {
   };
 
   const idConfirm = value => {
-    console.log(value, 'vluaa');
     const replaceValue = value.replace(/\s/g, '');
     setId(replaceValue);
     setIdAvailable(null);
-    console.log(value);
     checkTimeout && clearTimeout(checkTimeout);
     if (replaceValue.length === 0) {
       return;
     }
     if (!!replaceValue && idRegCheck(replaceValue) === true) {
-      console.log(replaceValue, 'in');
       const timer = setTimeout(() => {
         const data = { user_id: replaceValue };
         findId(data).then(res => {
-          console.log(res, 'res');
           if (res.status === 200) {
             if (res.data.message === 'available') {
               setIdAvailable(true);
@@ -59,7 +61,7 @@ export default function JoinContainer() {
       }
     });
   };
-  console.log(idAvailable, 'idAvailable');
+
   return (
     <Container>
       <InputWrap>
