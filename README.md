@@ -1,3 +1,3 @@
-# MyBlog
+## MyBlog
 
-### A blog that creates, colors, and styles its own menus made with next.js(based on react), express.js
+#### A blog that creates, colors, and styles its own menus made with next.js(based on react), express.js
