@@ -74,6 +74,6 @@ const MenuBorder = styled.div`
       position: absolute;
       background: ${props => props.userColor};
       bottom: 0.5px;
-      opacity: 0.3;
+      opacity: 0.5;
     `}
 `;
